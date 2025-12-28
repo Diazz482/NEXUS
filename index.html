@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS LIFE OS v2.0</title>
+    <title>NEXUS LIFE OS v2.1</title>
+    
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='12' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='monospace' font-weight='bold' fill='%2300f0ff' font-size='30' letter-spacing='-2'%3ENS%3C/text%3E%3C/svg%3E">
+
     <style>
         :root {
             --bg-core: #050505;
@@ -44,7 +47,23 @@
             padding-bottom: 1rem;
         }
 
-        h1 { font-size: 1.5rem; letter-spacing: -1px; text-transform: uppercase; }
+        /* Atualização no H1 para alinhar o logo */
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center; /* Alinha o SVG verticalmente com o texto */
+        }
+        
+        /* Estilo do Logo SVG no Header */
+        .logo-icon-header {
+            width: 32px;
+            height: 32px;
+            margin-right: 12px;
+            color: var(--primary); /* O SVG herda essa cor */
+        }
+
         h1 span { color: var(--primary); }
 
         .header-controls { display: flex; gap: 1rem; align-items: center; }
@@ -131,7 +150,13 @@
 <body>
 
     <header>
-        <h1>Nexus <span>Life OS</span></h1>
+        <h1>
+            <svg class="logo-icon-header" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="4" width="56" height="56" rx="12" fill="none" stroke="currentColor" stroke-width="4"/>
+                <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-weight="bold" fill="currentColor" font-size="30" letter-spacing="-2">NS</text>
+            </svg>
+            Nexus <span>Life OS</span>
+        </h1>
         <div class="header-controls">
             <button class="btn btn-lang" id="lang-btn" onclick="nexus.toggleLang()">EN</button>
             <button class="btn btn-add" id="add-btn" onclick="nexus.openModal()">+ Novo</button>
@@ -145,7 +170,7 @@
 
 <script>
 /**
- * NEXUS CORE ENGINE v2.0 (I18N + Context AI)
+ * NEXUS CORE ENGINE v2.1 (I18N + Context AI + Branding)
  * Author: Rodrigo - Senior Architect
  */
 
@@ -198,12 +223,10 @@ const DICTIONARY = {
 
 class NexusOS {
     constructor() {
-        // Carrega idioma salvo ou define PT como padrão
         this.lang = localStorage.getItem('nexus_lang') || 'pt'; 
         this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
         this.grid = document.getElementById('protocol-grid');
         this.modalOverlay = document.getElementById('modal-overlay');
-        
         this.init();
     }
 
@@ -213,9 +236,7 @@ class NexusOS {
         this.render();
     }
 
-    // --- I18N SYSTEM (Tradução) ---
     t(key) {
-        // Navega no objeto DICTIONARY ex: t('cycles.daily')
         return key.split('.').reduce((obj, k) => (obj || {})[k], DICTIONARY[this.lang]) || key;
     }
 
@@ -223,7 +244,7 @@ class NexusOS {
         this.lang = this.lang === 'pt' ? 'en' : 'pt';
         localStorage.setItem('nexus_lang', this.lang);
         this.updateStaticTexts();
-        this.render(); // Re-renderiza o grid para traduzir labels internos
+        this.render();
     }
 
     updateStaticTexts() {
@@ -231,55 +252,43 @@ class NexusOS {
         document.getElementById('lang-btn').innerText = this.lang.toUpperCase();
     }
 
-    // --- CONTEXTUAL AI (Ícones) ---
     getIcon(name) {
         const n = name.toLowerCase();
-        
         const icons = {
             'água': '💧', 'hidrata': '💧', 'water': '💧', 'drink': '💧',
             'treino': '💪', 'gym': '💪', 'workout': '💪', 'muscula': '💪',
             'caminha': '👣', 'walk': '👣', 'run': '🏃', 'correr': '🏃', 'cardio': '🏃',
             'ler': '📚', 'read': '📚', 'book': '📚', 'estudar': '🧠', 'study': '🧠',
-            'code': '💻', 'codar': '💻', 'dev': '👨‍💻', 'java': '☕',
+            'code': '💻', 'codar': '💻', 'dev': '👨‍💻', 'java': '☕', 'js': '🟨',
             'dinheiro': '💰', 'money': '💰', 'invest': '📈', 'profit': '📈',
-            'medita': '🧘', 'sleep': '💤', 'sono': '💤'
+            'medita': '🧘', 'sleep': '💤', 'sono': '💤', 'foco': '🎯', 'focus': '🎯'
         };
-
         for (const key in icons) {
             if (n.includes(key)) return icons[key];
         }
         return '⚡';
     }
 
-    // --- CORE LOGIC (Resets & Time) ---
     checkResets() {
         const now = new Date();
         let hasChanges = false;
-
         this.protocols = this.protocols.map(p => {
             const lastUpdate = new Date(p.lastReset || 0);
             let shouldReset = false;
-
             if (p.cycle === 'daily') {
                 if (now.toDateString() !== lastUpdate.toDateString()) shouldReset = true;
-            } 
-            else if (p.cycle === 'weekly') {
+            } else if (p.cycle === 'weekly') {
                 const currentMonday = this.getMonday(now);
                 if (lastUpdate < currentMonday) shouldReset = true;
-            }
-            else if (p.cycle === 'monthly') {
+            } else if (p.cycle === 'monthly') {
                 if (now.getMonth() !== lastUpdate.getMonth() || now.getFullYear() !== lastUpdate.getFullYear()) shouldReset = true;
             }
-
             if (shouldReset && p.current > 0) {
-                p.current = 0;
-                p.lastReset = now.toISOString();
-                hasChanges = true;
+                p.current = 0; p.lastReset = now.toISOString(); hasChanges = true;
             }
             if (!p.lastReset) { p.lastReset = now.toISOString(); hasChanges = true; }
             return p;
         });
-
         if (hasChanges) this.save();
     }
 
@@ -312,18 +321,12 @@ class NexusOS {
         const target = parseFloat(document.getElementById('p-target').value);
         const unit = document.getElementById('p-unit').value;
         const cycle = document.getElementById('p-cycle').value;
-
         if (!name || !target) return;
-
         this.protocols.push({
-            id: Date.now().toString(36),
-            name, target, unit, cycle,
-            current: 0,
-            lastReset: new Date().toISOString()
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+            name, target, unit, cycle, current: 0, lastReset: new Date().toISOString()
         });
-
-        this.closeModal();
-        this.save();
+        this.closeModal(); this.save();
     }
 
     deleteProtocol(id) {
@@ -333,52 +336,38 @@ class NexusOS {
         }
     }
 
-    // --- UI RENDERING ---
     render() {
         this.grid.innerHTML = '';
-
         if (this.protocols.length === 0) {
-            this.grid.innerHTML = `
-                <div class="empty-state">
-                    <h3>${this.t('emptyTitle')}</h3>
-                    <p>${this.t('emptyDesc')}</p>
-                </div>`;
+            this.grid.innerHTML = `<div class="empty-state"><h3>${this.t('emptyTitle')}</h3><p>${this.t('emptyDesc')}</p></div>`;
             return;
         }
-
         this.protocols.forEach(p => {
             const percentage = Math.min((p.current / p.target) * 100, 100);
             const isComplete = p.current >= p.target;
             const icon = this.getIcon(p.name);
             const cycleLabel = this.t(`cycles.${p.cycle}`);
-
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-header">
                     <div>
-                        <div class="protocol-name">
-                            <span class="protocol-icon">${icon}</span> ${p.name}
-                        </div>
+                        <div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>
                         <div class="protocol-meta">${this.t('cycle')}: ${cycleLabel}</div>
                     </div>
                     <button class="btn btn-danger" onclick="nexus.deleteProtocol('${p.id}')">X</button>
                 </div>
-
                 <div class="stats">
                     <span style="color: ${isComplete ? 'var(--accent)' : 'var(--text-main)'}">
                         ${p.current} <span style="color:var(--text-muted)">/ ${p.target} ${p.unit}</span>
                     </span>
                     <span>${percentage.toFixed(0)}%</span>
                 </div>
-
                 <div class="progress-container">
                     <div class="progress-fill ${isComplete ? 'complete' : ''}" style="width: ${percentage}%"></div>
                 </div>
-
                 <div class="input-action-row">
-                    <input type="number" class="input-fraction" id="input-${p.id}" placeholder="Input" 
-                           onkeydown="if(event.key === 'Enter') nexus.handleInput('${p.id}')">
+                    <input type="number" class="input-fraction" id="input-${p.id}" placeholder="Input" onkeydown="if(event.key === 'Enter') nexus.handleInput('${p.id}')">
                     <button class="btn" onclick="nexus.handleInput('${p.id}')">${this.t('btnSum')}</button>
                 </div>
             `;
@@ -392,33 +381,21 @@ class NexusOS {
         input.value = ''; input.focus();
     }
 
-    // --- DYNAMIC MODAL ---
     openModal() {
-        // Gera o HTML do modal dinamicamente para aplicar a tradução atual
         this.modalOverlay.innerHTML = `
             <div class="modal">
-                <h2 style="margin-bottom: 1.5rem; color: var(--primary);">${this.t('modalTitle')}</h2>
-                <div class="form-group">
-                    <label>${this.t('lblNam')}</label>
-                    <input type="text" id="p-name" class="form-control" placeholder="${this.t('phNam')}">
-                </div>
+                <h2 style="margin-bottom: 1.5rem; color: var(--primary); display:flex; align-items:center; gap:10px">
+                    <svg class="logo-icon-header" style="width:24px;height:24px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="56" rx="12" fill="none" stroke="currentColor" stroke-width="4"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-weight="bold" fill="currentColor" font-size="30" letter-spacing="-2">NS</text></svg>
+                    ${this.t('modalTitle')}
+                </h2>
+                <div class="form-group"><label>${this.t('lblNam')}</label><input type="text" id="p-name" class="form-control" placeholder="${this.t('phNam')}"></div>
                 <div class="input-action-row">
-                    <div class="form-group" style="flex: 1">
-                        <label>${this.t('lblTarget')}</label>
-                        <input type="number" id="p-target" class="form-control" placeholder="100">
-                    </div>
-                    <div class="form-group" style="flex: 1">
-                        <label>${this.t('lblUnit')}</label>
-                        <input type="text" id="p-unit" class="form-control" placeholder="ml, min">
-                    </div>
+                    <div class="form-group" style="flex: 1"><label>${this.t('lblTarget')}</label><input type="number" id="p-target" class="form-control" placeholder="100"></div>
+                    <div class="form-group" style="flex: 1"><label>${this.t('lblUnit')}</label><input type="text" id="p-unit" class="form-control" placeholder="ml, min"></div>
                 </div>
-                <div class="form-group">
-                    <label>${this.t('lblCycle')}</label>
+                <div class="form-group"><label>${this.t('lblCycle')}</label>
                     <select id="p-cycle" class="form-control">
-                        <option value="daily">${this.t('cycles.daily')}</option>
-                        <option value="weekly">${this.t('cycles.weekly')}</option>
-                        <option value="monthly">${this.t('cycles.monthly')}</option>
-                        <option value="infinite">${this.t('cycles.infinite')}</option>
+                        <option value="daily">${this.t('cycles.daily')}</option><option value="weekly">${this.t('cycles.weekly')}</option><option value="monthly">${this.t('cycles.monthly')}</option><option value="infinite">${this.t('cycles.infinite')}</option>
                     </select>
                 </div>
                 <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
@@ -434,21 +411,10 @@ class NexusOS {
     closeModal() { this.modalOverlay.style.display = 'none'; }
 }
 
-// Inicialização segura
 document.addEventListener('DOMContentLoaded', () => {
-    try {
-        window.nexus = new NexusOS();
-    } catch (e) {
-        console.error(e);
-        document.body.innerHTML = "<h2 style='color:red'>Erro fatal. Verifique o console.</h2>";
-    }
+    try { window.nexus = new NexusOS(); } catch (e) { console.error(e); document.body.innerHTML = "<h2 style='color:red'>Erro fatal. Verifique o console.</h2>"; }
 });
-
-// Fecha modal ao clicar fora
-document.getElementById('modal-overlay').addEventListener('click', (e) => {
-    if (e.target.id === 'modal-overlay') nexus.closeModal();
-});
-
+document.getElementById('modal-overlay').addEventListener('click', (e) => { if (e.target.id === 'modal-overlay') nexus.closeModal(); });
 </script>
 </body>
 </html>
