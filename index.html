@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS LIFE OS v1.0</title>
+    <style>
+        :root {
+            --bg-core: #050505;
+            --bg-panel: #111111;
+            --bg-input: #1a1a1a;
+            --primary: #00f0ff; /* Cyberpunk Cyan */
+            --primary-dim: rgba(0, 240, 255, 0.1);
+            --accent: #00ff9d; /* Neon Green */
+            --danger: #ff2a6d;
+            --text-main: #e0e0e0;
+            --text-muted: #666666;
+            --border: #333333;
+            --font-stack: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+        body {
+            background-color: var(--bg-core);
+            color: var(--text-main);
+            font-family: var(--font-stack);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* --- Header --- */
+        header {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        h1 span { color: var(--primary); }
+
+        /* --- Button Component --- */
+        .btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: var(--bg-core);
+            box-shadow: 0 0 15px var(--primary-dim);
+        }
+
+        .btn-add {
+            background: var(--primary-dim);
+            border-color: var(--primary);
+        }
+
+        .btn-danger {
+            color: var(--danger);
+            border-color: #333;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+        }
+        .btn-danger:hover { background: var(--danger); color: white; }
+
+        /* --- Grid Layout --- */
+        #protocol-grid {
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* --- Protocol Card --- */
+        .card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .protocol-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .protocol-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Progress Bar --- */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-input);
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease-out;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .progress-fill.complete { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            margin-bottom: -0.5rem;
+        }
+
+        /* --- Fractional Input Area --- */
+        .input-action-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .input-fraction {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: white;
+            padding: 0.5rem;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .input-fraction:focus { border-color: var(--primary); }
+
+        /* --- Modal --- */
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--primary);
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+        }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: white;
+            font-family: inherit;
+        }
+        select.form-control { cursor: pointer; }
+
+        /* --- Empty State --- */
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem;
+            border: 1px dashed var(--border);
+            width: 100%;
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nexus <span>Life OS</span></h1>
+        <button class="btn btn-add" onclick="nexus.openModal()">+ Novo Protocolo</button>
+    </header>
+
+    <div id="protocol-grid">
+        </div>
+
+    <div id="modal-overlay">
+        <div class="modal">
+            <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Definir Protocolo</h2>
+            
+            <div class="form-group">
+                <label>Nome do Objetivo</label>
+                <input type="text" id="p-name" class="form-control" placeholder="Ex: Leitura Profunda">
+            </div>
+
+            <div class="input-action-row">
+                <div class="form-group" style="flex: 1">
+                    <label>Meta Numérica</label>
+                    <input type="number" id="p-target" class="form-control" placeholder="Ex: 60">
+                </div>
+                <div class="form-group" style="flex: 1">
+                    <label>Unidade</label>
+                    <input type="text" id="p-unit" class="form-control" placeholder="min, ml, R$">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ciclo de Reset</label>
+                <select id="p-cycle" class="form-control">
+                    <option value="daily">Diário (00:00)</option>
+                    <option value="weekly">Semanal (Segunda-feira)</option>
+                    <option value="monthly">Mensal (Dia 1)</option>
+                    <option value="infinite">Acumulativo (Infinito)</option>
+                </select>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                <button class="btn" onclick="nexus.closeModal()">Cancelar</button>
+                <button class="btn btn-add" onclick="nexus.createProtocol()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+/**
+ * NEXUS CORE ENGINE
+ * Author: Rodrigo (Senior Architect)
+ * Philosophy: Pure Functions & Immutable State principles where possible.
+ */
+
+class NexusOS {
+    constructor() {
+        this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
+        this.grid = document.getElementById('protocol-grid');
+        this.init();
+    }
+
+    init() {
+        this.checkResets();
+        this.render();
+    }
+
+    /**
+     * Engine de Tempo e Persistência
+     * Verifica se os ciclos expiraram com base na última atualização
+     */
+    checkResets() {
+        const now = new Date();
+        let hasChanges = false;
+
+        this.protocols = this.protocols.map(p => {
+            const lastUpdate = new Date(p.lastReset || 0);
+            let shouldReset = false;
+
+            if (p.cycle === 'daily') {
+                // Se o dia atual for diferente do dia do último update
+                if (now.toDateString() !== lastUpdate.toDateString()) shouldReset = true;
+            } 
+            else if (p.cycle === 'weekly') {
+                // Calcula a Segunda-feira desta semana
+                const currentMonday = this.getMonday(now);
+                // Se o último update foi antes dessa segunda-feira
+                if (lastUpdate < currentMonday) shouldReset = true;
+            }
+            else if (p.cycle === 'monthly') {
+                // Se mudou o mês
+                if (now.getMonth() !== lastUpdate.getMonth() || now.getFullYear() !== lastUpdate.getFullYear()) {
+                    shouldReset = true;
+                }
+            }
+
+            if (shouldReset && p.current > 0) {
+                // Opcional: Salvar em um histórico antes de zerar
+                console.log(`Resetting cycle for ${p.name}`);
+                p.current = 0;
+                p.lastReset = now.toISOString(); // Marca o momento do reset
+                hasChanges = true;
+            }
+            
+            // Atualiza lastReset mesmo se não zerou, para garantir consistência em novos cadastros
+            if (!p.lastReset) {
+                p.lastReset = now.toISOString();
+                hasChanges = true;
+            }
+
+            return p;
+        });
+
+        if (hasChanges) this.save();
+    }
+
+    getMonday(d) {
+        d = new Date(d);
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+        const monday = new Date(d.setDate(diff));
+        monday.setHours(0,0,0,0);
+        return monday;
+    }
+
+    save() {
+        localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols));
+        this.render();
+    }
+
+    /**
+     * Adição Fracionada (Core Logic)
+     */
+    addProgress(id, amount) {
+        const value = parseFloat(amount);
+        if (isNaN(value) || value === 0) return;
+
+        this.protocols = this.protocols.map(p => {
+            if (p.id === id) {
+                p.current += value;
+                // Arredondar para evitar floats malucos (ex: 0.1 + 0.2)
+                p.current = Math.round(p.current * 100) / 100;
+            }
+            return p;
+        });
+        this.save();
+    }
+
+    createProtocol() {
+        const name = document.getElementById('p-name').value;
+        const target = parseFloat(document.getElementById('p-target').value);
+        const unit = document.getElementById('p-unit').value;
+        const cycle = document.getElementById('p-cycle').value;
+
+        if (!name || !target) return alert("Dados inválidos.");
+
+        const newProtocol = {
+            id: Date.now().toString(36) + Math.random().toString(36).substr(2),
+            name,
+            target,
+            unit,
+            cycle,
+            current: 0,
+            lastReset: new Date().toISOString()
+        };
+
+        this.protocols.push(newProtocol);
+        this.closeModal();
+        this.save();
+        
+        // Limpar form
+        document.getElementById('p-name').value = '';
+        document.getElementById('p-target').value = '';
+        document.getElementById('p-unit').value = '';
+    }
+
+    deleteProtocol(id) {
+        if(confirm('Arquivar este protocolo permanentemente?')) {
+            this.protocols = this.protocols.filter(p => p.id !== id);
+            this.save();
+        }
+    }
+
+    /**
+     * Renderização UI
+     */
+    render() {
+        this.grid.innerHTML = '';
+
+        if (this.protocols.length === 0) {
+            this.grid.innerHTML = `
+                <div class="empty-state">
+                    <h3>SISTEMA OCIOSO</h3>
+                    <p>Nenhum protocolo ativo detectado. Inicie a configuração.</p>
+                </div>
+            `;
+            return;
+        }
+
+        this.protocols.forEach(p => {
+            const percentage = Math.min((p.current / p.target) * 100, 100);
+            const isComplete = p.current >= p.target;
+            const cycleLabels = {
+                'daily': 'DIÁRIO', 'weekly': 'SEMANAL', 'monthly': 'MENSAL', 'infinite': 'ACUMULATIVO'
+            };
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div>
+                        <div class="protocol-name">${p.name}</div>
+                        <div class="protocol-meta">CYCLE: ${cycleLabels[p.cycle]}</div>
+                    </div>
+                    <button class="btn btn-danger" onclick="nexus.deleteProtocol('${p.id}')">X</button>
+                </div>
+
+                <div class="stats">
+                    <span style="color: ${isComplete ? 'var(--accent)' : 'var(--text-main)'}">
+                        ${p.current} <span style="color:var(--text-muted)">/ ${p.target} ${p.unit}</span>
+                    </span>
+                    <span>${percentage.toFixed(0)}%</span>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-fill ${isComplete ? 'complete' : ''}" style="width: ${percentage}%"></div>
+                </div>
+
+                <div class="input-action-row">
+                    <input type="number" 
+                           class="input-fraction" 
+                           id="input-${p.id}" 
+                           placeholder="Input (ex: 15)" 
+                           onkeydown="if(event.key === 'Enter') nexus.handleInput('${p.id}')">
+                    <button class="btn" onclick="nexus.handleInput('${p.id}')">SOMAR</button>
+                </div>
+            `;
+            this.grid.appendChild(card);
+        });
+    }
+
+    handleInput(id) {
+        const input = document.getElementById(`input-${id}`);
+        this.addProgress(id, input.value);
+        input.value = ''; // Reset input
+        input.focus();
+    }
+
+    openModal() { document.getElementById('modal-overlay').style.display = 'flex'; }
+    closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+}
+
+// Inicialização
+const nexus = new NexusOS();
+
+// Fechar modal ao clicar fora
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'modal-overlay') nexus.closeModal();
+});
+
+</script>
+</body>
+</html>
