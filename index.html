@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v11.4 - Connected</title>
+    <title>NEXUS LIFE OS v11.5 - Debug Login</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -310,10 +310,10 @@
 
 <script>
 /**
- * NEXUS CORE v11.4 (Online with Provided Keys)
+ * NEXUS CORE v11.5 (Debug Edition)
  */
 
-// --- CONFIGURAÇÃO DO FIREBASE (Chaves do Print) ---
+// --- CONFIGURAÇÃO DO FIREBASE (Chaves recuperadas) ---
 const firebaseConfig = {
     apiKey: "AIzaSyA7GPxQ2Mjn5ncacnRI2RxMQ0kQiHjaaEI",
     authDomain: "nexus-life-359ec.firebaseapp.com",
@@ -330,9 +330,10 @@ try {
     auth = firebase.auth();
     db = firebase.firestore();
     provider = new firebase.auth.GoogleAuthProvider();
-    console.log("Firebase conectado com sucesso.");
+    console.log("🔥 Firebase inicializado!");
 } catch(e) {
-    document.getElementById('login-status').innerText = "⚠️ Erro de Configuração: " + e.message;
+    console.error("Erro Firebase:", e);
+    document.getElementById('login-status').innerText = "⚠️ Erro ao carregar sistema: " + e.message;
 }
 
 const UNIT_SYSTEM = { /* Mantido */
@@ -380,24 +381,29 @@ class NexusOS {
         });
     }
 
-    // --- MÉTODOS DE LOGIN ---
-    loginGoogle() { if(auth) auth.signInWithPopup(provider).catch(e => alert("Erro Google: " + e.message + "\n(Verifique se 'Google' está ativado no Firebase Console)")); }
+    // --- MÉTODOS DE LOGIN (COM DEBUG) ---
+    loginGoogle() { 
+        if(!auth) return alert("❌ Erro: Firebase não conectado. Verifique o console ou sua conexão.");
+        auth.signInWithPopup(provider).catch(e => alert("❌ Erro Google: " + e.message + "\n\n(Dica: Verifique se 'Authorized Domains' no Firebase tem o seu site.)")); 
+    }
     
     loginEmail() {
+        if(!auth) return alert("❌ Erro: Firebase não conectado.");
         const e = document.getElementById('login-email').value;
         const p = document.getElementById('login-pass').value;
-        if(!e || !p) return alert("Preencha email e senha.");
-        auth.signInWithEmailAndPassword(e, p).catch(err => alert("Erro Login: " + err.message));
+        if(!e || !p) return alert("⚠️ Preencha email e senha.");
+        auth.signInWithEmailAndPassword(e, p).catch(err => alert("❌ Erro Login: " + err.message));
     }
 
     registerEmail() {
+        if(!auth) return alert("❌ Erro: Firebase não conectado.");
         const e = document.getElementById('login-email').value;
         const p = document.getElementById('login-pass').value;
-        if(!e || !p) return alert("Preencha email e senha para criar conta.");
-        auth.createUserWithEmailAndPassword(e, p).catch(err => alert("Erro Cadastro: " + err.message));
+        if(!e || !p) return alert("⚠️ Preencha email e senha para criar conta.");
+        auth.createUserWithEmailAndPassword(e, p).catch(err => alert("❌ Erro Cadastro: " + err.message));
     }
 
-    logout() { auth.signOut(); location.reload(); }
+    logout() { if(auth) auth.signOut(); location.reload(); }
 
     async loadFromCloud() {
         const doc = await db.collection('users').doc(this.user.uid).get();
@@ -518,5 +524,18 @@ class NexusOS {
     renderDashboard(totalPct, count) { const avg = count > 0 ? Math.round(totalPct / count) : 0; const dash = document.getElementById('dashboard'); const streak = Object.keys(this.history).length; const chartColor = avg === 100 ? 'var(--accent)' : 'var(--primary)'; dash.innerHTML = `<div class="dash-card"><svg viewBox="0 0 36 36" class="circular-chart"><path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><path class="circle" stroke-dasharray="${avg}, 100" stroke="${chartColor}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><text x="18" y="20.35" class="percentage">${avg}%</text></svg><div class="dash-label" style="margin-top:10px">${this.t('dash.perf')}</div></div><div class="dash-card"><div class="dash-value" style="color:var(--accent)">${streak}</div><div class="dash-label">${this.t('dash.streak')}</div></div><div class="dash-card"><div class="dash-value">${count}</div><div class="dash-label">${this.t('dash.acts')}</div></div>`; }
     renderCalendar() { const c = document.getElementById('calendar-days'); const ml = document.getElementById('month-label'); c.innerHTML=''; const year = this.calendarViewDate.getFullYear(); const month = this.calendarViewDate.getMonth(); const mNames = this.lang==='pt'?["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]:["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]; ml.innerText = mNames[month] + " " + year; const first = new Date(year,month,1).getDay(); const days = new Date(year,month+1,0).getDate(); for(let i=0;i<first;i++)c.innerHTML+=`<div></div>`; for(let i=1;i<=days;i++){ const d=new Date(year,month,i); const k=this.formatDateKey(d); const isT=this.formatDateKey(this.today)===k; const isS=this.formatDateKey(this.selectedDate)===k; const hasHist=this.history[k]; const hasEvent = this.agenda.some(e => e.date === k); const div=document.createElement('div'); div.className=`day-cell ${isT?'today':''} ${isS?'selected':''} ${hasHist?'has-data':''}`; div.innerText=i; if(hasEvent) div.innerHTML += `<div class="dot-event"></div>`; if(hasHist) div.innerHTML += `<div class="dot-hist"></div>`; div.onclick=()=>this.selectDate(d); c.appendChild(div); } }
     changeMonth(d) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth()+d); this.renderCalendar(); }
-    selectDate(d) {         this.selectedDate=d;         this.switchTab('protocols'); // Volta para aba principal        this.renderCalendar();         this.render();         this.renderSidebarAgenda(); // Atualiza a lista lateral para o dia selecionado        if(window.innerWidth<=850) this.toggleSidebar();     }}
-document.addEventListener('DOMContentLoaded', () => { window.nexus = new NexusOS(); });document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });</script></body></html>
+    selectDate(d) { 
+        this.selectedDate=d; 
+        this.switchTab('protocols'); 
+        this.renderCalendar(); 
+        this.render(); 
+        this.renderSidebarAgenda(); 
+        if(window.innerWidth<=850) this.toggleSidebar(); 
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => { window.nexus = new NexusOS(); });
+document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });
+</script>
+</body>
+</html>
