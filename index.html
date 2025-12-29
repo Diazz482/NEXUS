@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v9.3</title>
+    <title>NEXUS LIFE OS v9.4</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -38,17 +38,25 @@
             display: flex;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (Calendário + Agenda) --- */
         .app-sidebar {
-            width: 320px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; padding: 2rem 1.5rem; flex-shrink: 0; overflow-y: auto;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000;
+            width: 340px; 
+            background: var(--bg-sidebar); 
+            border-right: 1px solid var(--border);
+            display: flex; 
+            flex-direction: column; 
+            padding: 1.5rem; 
+            flex-shrink: 0; 
+            overflow-y: auto;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 2000;
+            height: 100vh;
         }
         .sidebar-close-btn { display: none; margin-bottom: 1rem; color: var(--text-muted); background: transparent; border: none; font-size: 1.5rem; cursor: pointer; text-align: right; }
 
         /* --- CONTENT --- */
         .app-content { flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .content-container { width: 100%; max-width: 800px; padding-bottom: 100px; }
+        .content-container { width: 100%; max-width: 900px; padding-bottom: 100px; }
 
         /* --- HEADER & TABS --- */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
@@ -62,6 +70,38 @@
         .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        /* --- CALENDAR --- */
+        .calendar-container { margin-bottom: 2rem; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .month-label { font-size: 1rem; font-weight: bold; color: white; }
+        .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+        .day-cell { aspect-ratio: 1; display: flex; justify-content: center; align-items: center; font-size: 0.85rem; border-radius: 10px; cursor: pointer; color: var(--text-muted); border: 1px solid transparent; position: relative; }
+        .day-cell:hover { background: var(--bg-input); color: white; }
+        .day-cell.today { border-color: var(--primary); color: var(--primary); font-weight: bold; }
+        .day-cell.selected { background: var(--primary); color: var(--bg-core) !important; font-weight: bold; box-shadow: 0 0 15px var(--primary-dim); border-color: var(--primary); }
+        .dot-hist { position: absolute; bottom: 3px; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; left: 50%; transform: translateX(-50%); }
+        .dot-event { position: absolute; top: 3px; right: 3px; width: 3px; height: 3px; background: var(--event); border-radius: 50%; }
+
+        /* --- SIDEBAR AGENDA --- */
+        .sidebar-agenda { border-top: 1px solid var(--border); padding-top: 1.5rem; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .sidebar-agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .agenda-title { font-size: 0.9rem; font-weight: 700; color: var(--event); letter-spacing: 1px; text-transform: uppercase; }
+        .btn-mini-add { background: var(--bg-input); color: var(--event); border: 1px solid var(--border); width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1rem; }
+        .sidebar-event-list { overflow-y: auto; flex: 1; padding-right: 5px; }
+        
+        /* Sidebar Event Card */
+        .side-event-card { 
+            background: var(--bg-input); border-radius: 10px; padding: 0.8rem; margin-bottom: 0.8rem; 
+            border-left: 3px solid var(--event); position: relative;
+        }
+        .side-event-time { font-size: 0.75rem; color: var(--event); font-weight: 700; margin-bottom: 2px; }
+        .side-event-title { font-size: 0.9rem; font-weight: 600; color: white; }
+        .side-event-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+        .side-event-date { font-size: 0.65rem; color: #666; position: absolute; top: 0.8rem; right: 0.8rem; }
+        .btn-del-event { position: absolute; bottom: 0.5rem; right: 0.5rem; background: none; border: none; color: #444; cursor: pointer; font-size: 0.8rem; }
+        .btn-del-event:hover { color: var(--danger); }
 
         /* --- GRIDS & CARDS --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
@@ -108,15 +148,7 @@
         .sug-card:hover { border-color: var(--primary); transform: translateY(-3px); }
         .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
         
-        /* --- AGENDA & HERO --- */
-        .agenda-view { display: none; } .agenda-view.active { display: block; animation: fadeIn 0.3s; }
-        .agenda-hero { background: linear-gradient(135deg, rgba(189, 0, 255, 0.1), rgba(10, 10, 10, 0)); border: 1px solid var(--event); border-radius: var(--radius-card); padding: 1.5rem; margin-bottom: 2rem; animation: fadeIn 0.5s; }
-        .hero-title { color: var(--event); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-        .agenda-list { display: flex; flex-direction: column; gap: 0.8rem; }
-        .event-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; gap: 1rem; align-items: center; border-left: 4px solid var(--event); }
-        .event-time { font-family: monospace; font-size: 1.1rem; color: var(--text-main); font-weight: 700; min-width: 60px; }
-        .event-details { flex: 1; } .event-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; } .event-desc { font-size: 0.8rem; color: var(--text-muted); }
-        .event-date-badge { font-size: 0.7rem; background: var(--bg-input); padding: 2px 6px; border-radius: 4px; color: var(--text-muted); margin-left: auto; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- INPUTS & CONTROLS --- */
         .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
@@ -131,22 +163,10 @@
         .day-label { width: 35px; height: 35px; border-radius: 50%; background: var(--bg-input); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
         .day-checkbox:checked + .day-label { background: var(--primary); color: var(--bg-core); border-color: var(--primary); font-weight: bold; }
 
-        /* --- CALENDAR --- */
-        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .month-label { font-size: 1.1rem; font-weight: bold; color: white; }
-        .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 2rem; }
-        .day-cell { aspect-ratio: 1; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; border-radius: 12px; cursor: pointer; color: var(--text-muted); border: 1px solid transparent; position: relative; }
-        .day-cell:hover { background: var(--bg-input); color: white; }
-        .day-cell.today { border-color: var(--primary); color: var(--primary); font-weight: bold; }
-        .day-cell.selected { background: var(--primary); color: var(--bg-core) !important; font-weight: bold; box-shadow: 0 0 15px var(--primary-dim); border-color: var(--primary); }
-        .dot-hist { position: absolute; bottom: 4px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; left: 50%; transform: translateX(-50%); }
-        .dot-event { position: absolute; top: 4px; right: 4px; width: 4px; height: 4px; background: var(--event); border-radius: 50%; }
-
         /* --- MOBILE --- */
         @media (max-width: 850px) {
             .mobile-toggle-btn { display: flex; } .sidebar-close-btn { display: block; } h1 span { display: none; } h1 { font-size: 1.2rem; }
-            .app-sidebar { position: fixed; top: 0; left: 0; width: 85%; height: 100vh; transform: translateX(-100%); box-shadow: 10px 0 50px rgba(0,0,0,0.5); }
+            .app-sidebar { position: fixed; top: 0; left: 0; width: 85%; height: 100vh; transform: translateX(-100%); box-shadow: 10px 0 50px rgba(0,0,0,0.5); border-right: none; }
             .app-sidebar.active { transform: translateX(0); }
             .sidebar-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1900; display: none; }
             .sidebar-backdrop.active { display: block; }
@@ -169,15 +189,28 @@
 
     <aside class="app-sidebar" id="app-sidebar">
         <button class="sidebar-close-btn" onclick="nexus.toggleSidebar()">✕</button>
-        <div class="calendar-header">
-            <button class="month-nav" onclick="nexus.changeMonth(-1)">❮</button>
-            <span class="month-label" id="month-label">...</span>
-            <button class="month-nav" onclick="nexus.changeMonth(1)">❯</button>
+        
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button class="month-nav" onclick="nexus.changeMonth(-1)">❮</button>
+                <span class="month-label" id="month-label">...</span>
+                <button class="month-nav" onclick="nexus.changeMonth(1)">❯</button>
+            </div>
+            <div class="calendar-grid">
+                <div style="color:var(--text-muted);font-size:0.7rem;text-align:center">D</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">T</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div>
+                <div id="calendar-days" style="display: contents;"></div>
+            </div>
         </div>
-        <div class="calendar-grid">
-            <div style="color:var(--text-muted);font-size:0.7rem;text-align:center">D</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">T</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div>
-            <div id="calendar-days" style="display: contents;"></div>
+
+        <div class="sidebar-agenda">
+            <div class="sidebar-agenda-header">
+                <div class="agenda-title">📅 Eventos</div>
+                <button class="btn-mini-add" onclick="nexus.openEventModal()" title="Novo Evento">+</button>
+            </div>
+            <div id="sidebar-event-list" class="sidebar-event-list">
+                </div>
         </div>
+
         <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center;">
             <button class="btn" style="width: 100%" onclick="nexus.selectDate(new Date())">VOLTAR PARA HOJE</button>
         </div>
@@ -198,7 +231,6 @@
 
             <nav class="tab-nav">
                 <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">PROTOCOLOS</button>
-                <button class="tab-btn" id="tab-agenda" onclick="nexus.switchTab('agenda')">AGENDA</button>
                 <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR</button>
                 <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
             </nav>
@@ -206,12 +238,10 @@
             <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
             
             <div id="protocol-view">
-                <div id="today-agenda-hero" class="agenda-hero" style="display: none;"></div>
                 <div id="protocol-grid"></div>
                 <section id="dashboard" class="dashboard-section" style="display: none;"></section>
             </div>
 
-            <div id="agenda-view" class="agenda-view"></div>
             <div id="finance-view" class="finance-view"></div>
             <div id="suggestions-view" class="suggestions-container"></div>
 
@@ -225,7 +255,7 @@
 
 <script>
 /**
- * NEXUS CORE v9.3 (Precision Days & Local Finance)
+ * NEXUS CORE v9.4 (Fix: Sidebar Agenda)
  */
 
 const UNIT_SYSTEM = {
@@ -240,44 +270,33 @@ const UNIT_SYSTEM = {
 };
 
 const SUGGESTIONS_DB = [
-    // Boost - Saúde
     { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3, unit: 'L', cycle: 'daily' },
     { type: 'boost', icon: '💪', name_pt: 'Treino Força', name_en: 'Strength Train', target: 1, unit: 'x', cycle: 'daily' },
     { type: 'boost', icon: '🏃', name_pt: 'Cardio', name_en: 'Cardio', target: 30, unit: 'min', cycle: 'daily' },
-    { type: 'boost', icon: '😴', name_pt: 'Sono 8h', name_en: 'Sleep 8h', target: 8, unit: 'h', cycle: 'daily' },
-    { type: 'boost', icon: '🧘', name_pt: 'Meditação', name_en: 'Meditation', target: 15, unit: 'min', cycle: 'daily' },
-    { type: 'boost', icon: '🚿', name_pt: 'Banho Gelado', name_en: 'Cold Shower', target: 1, unit: 'x', cycle: 'daily' },
-    // Boost - Intelecto
     { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 20, unit: 'pgs', cycle: 'daily' },
-    { type: 'boost', icon: '💻', name_pt: 'Estudo Código', name_en: 'Code Study', target: 1, unit: 'h', cycle: 'daily' },
-    { type: 'boost', icon: '✍️', name_pt: 'Diário', name_en: 'Journaling', target: 1, unit: 'x', cycle: 'daily' },
-    // Boost - Financeiro
     { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' },
-    { type: 'boost', icon: '🚫', name_pt: 'Dia Zero Gastos', name_en: 'No Spend Day', target: 1, unit: 'd', cycle: 'daily' },
-    // Detox
     { type: 'detox', icon: '🍬', name_pt: 'Zero Açúcar', name_en: 'No Sugar', target: 1, unit: 'd', cycle: 'daily' },
-    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' },
-    { type: 'detox', icon: '🎮', name_pt: 'Jogos', name_en: 'Gaming', target: 1, unit: 'h', cycle: 'daily' },
-    { type: 'detox', icon: '🍺', name_pt: 'Sem Álcool', name_en: 'No Alcohol', target: 1, unit: 'd', cycle: 'daily' },
-    { type: 'detox', icon: '🚬', name_pt: 'Sem Fumar', name_en: 'No Smoking', target: 1, unit: 'd', cycle: 'daily' }
+    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' }
 ];
 
 const DICTIONARY = {
     pt: {
-        tabs: { protocols: "PROTOCOLOS", agenda: "AGENDA", finance: "FINANÇAS", explore: "EXPLORAR" },
+        tabs: { protocols: "PROTOCOLOS", finance: "FINANÇAS", explore: "EXPLORAR" },
         dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
         fin: { net: "PATRIMÔNIO TOTAL", bal: "SALDO DISPONÍVEL", in: "ENTRADAS", out: "SAÍDAS", inv: "INVESTIDO", desc: "Descrição", val: "Valor" },
         agenda: { title: "AGENDA DO DIA", upcoming: "PRÓXIMOS EVENTOS", desc: "Descrição", name: "Título" },
         cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
-        empty: "Sem dados.", emptyFin: "Sem movimentações nesta data.", btnCancel: "Cancelar", btnConfirm: "Confirmar"
+        empty: "Sem dados.", emptyFin: "Sem movimentações nesta data.", btnCancel: "Cancelar", btnConfirm: "Confirmar",
+        noEvents: "Sem eventos para esta data."
     },
     en: {
-        tabs: { protocols: "PROTOCOLS", agenda: "AGENDA", finance: "FINANCE", explore: "EXPLORE" },
+        tabs: { protocols: "PROTOCOLS", finance: "FINANCE", explore: "EXPLORE" },
         dash: { perf: "PERFORMANCE", streak: "STREAK", acts: "ACTIONS" },
         fin: { net: "NET WORTH", bal: "AVAILABLE CASH", in: "INCOME", out: "EXPENSES", inv: "INVESTED", desc: "Description", val: "Amount" },
         agenda: { title: "TODAY'S AGENDA", upcoming: "UPCOMING", desc: "Description", name: "Title" },
         cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
-        empty: "No data.", emptyFin: "No transactions on this date.", btnCancel: "Cancel", btnConfirm: "Confirm"
+        empty: "No data.", emptyFin: "No transactions on this date.", btnCancel: "Cancel", btnConfirm: "Confirm",
+        noEvents: "No events for this date."
     }
 };
 
@@ -293,25 +312,33 @@ class NexusOS {
         
         this.grid = document.getElementById('protocol-grid');
         this.finView = document.getElementById('finance-view');
-        this.agendaView = document.getElementById('agenda-view');
         this.sugView = document.getElementById('suggestions-view');
+        this.sidebarList = document.getElementById('sidebar-event-list');
         this.modalOverlay = document.getElementById('modal-overlay');
         this.init();
     }
 
     init() {
-        this.checkResets(); this.renderCalendar(); this.updateTexts(); this.render(); this.renderSuggestions();
+        this.checkResets(); 
+        this.renderCalendar(); 
+        this.updateTexts(); 
+        this.render(); 
+        this.renderSuggestions();
+        this.renderSidebarAgenda(); // Initial Render
     }
 
     switchTab(tab) {
         this.currentTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`tab-${tab}`).classList.add('active');
+        const btn = document.getElementById(`tab-${tab}`);
+        if(btn) btn.classList.add('active');
+        
         document.getElementById('protocol-view').style.display = tab === 'protocols' ? 'block' : 'none';
-        this.finView.classList.remove('active'); this.agendaView.classList.remove('active'); this.sugView.classList.remove('active');
+        this.finView.classList.remove('active'); 
+        this.sugView.classList.remove('active');
         document.getElementById('fab-container').style.display = 'block';
+
         if(tab === 'protocols') this.render();
-        else if(tab === 'agenda') { this.agendaView.classList.add('active'); this.renderAgenda(); }
         else if(tab === 'finance') { this.finView.classList.add('active'); this.renderFinance(); }
         else if(tab === 'suggestions') { this.sugView.classList.add('active'); document.getElementById('fab-container').style.display = 'none'; }
     }
@@ -319,7 +346,6 @@ class NexusOS {
     handleFabClick() {
         if(this.currentTab === 'protocols') this.openProtocolModal();
         else if(this.currentTab === 'finance') this.openFinanceModal();
-        else if(this.currentTab === 'agenda') this.openEventModal();
     }
 
     formatDateKey(date) { const d = new Date(date); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
@@ -331,22 +357,11 @@ class NexusOS {
             if (p.cycle === 'daily' && todayKey !== this.formatDateKey(last)) reset = true;
             else if (p.cycle === 'weekly' && last < this.getMonday(now)) reset = true;
             else if (p.cycle === 'monthly' && now.getMonth() !== last.getMonth()) reset = true;
-            
-            // Se for infinito, não reseta o valor, mas atualiza o lastReset para não bugar o calendário
             if (p.cycle === 'infinite') {
-                if(todayKey !== this.formatDateKey(last)) {
-                     // Salva snapshot para ontem
-                     if(p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
-                     p.lastReset = now.toISOString(); 
-                     hasChanges = true; 
-                }
+                if(todayKey !== this.formatDateKey(last)) { if(p.current > 0) this.archiveHistory(this.formatDateKey(last), p); p.lastReset = now.toISOString(); hasChanges = true; }
                 return p;
             }
-
-            if (reset) { 
-                if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
-                p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; 
-            }
+            if (reset) { if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p); p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; }
             if(!p.lastReset) { p.lastReset = now.toISOString(); hasChanges = true; }
             return p;
         });
@@ -363,7 +378,48 @@ class NexusOS {
 
     getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
 
-    // --- RENDER PROTOCOLS (Com filtro de Dias) ---
+    // --- RENDER SIDEBAR AGENDA (NEW) ---
+    renderSidebarAgenda() {
+        const viewKey = this.formatDateKey(this.selectedDate);
+        const isToday = viewKey === this.formatDateKey(this.today);
+        
+        // Se for hoje, mostrar eventos de hoje e futuros próximos. Se for data futura, mostrar eventos daquela data.
+        let eventsToShow = [];
+        
+        if (isToday) {
+             // Mostra eventos de hoje
+             eventsToShow = this.agenda.filter(e => e.date === viewKey);
+             // E os próximos 3 eventos futuros
+             const future = this.agenda.filter(e => e.date > viewKey).sort((a,b) => a.date.localeCompare(b.date));
+             // Merge visualmente? Não, vamos focar no dia selecionado no calendário para manter a consistência UX.
+        } else {
+             eventsToShow = this.agenda.filter(e => e.date === viewKey);
+        }
+        
+        eventsToShow.sort((a,b) => a.time.localeCompare(b.time));
+
+        let html = '';
+        if(eventsToShow.length === 0) {
+            html = `<div style="text-align:center; color:#555; font-size:0.8rem; padding:1rem;">${this.t('noEvents')}</div>`;
+        } else {
+            eventsToShow.forEach(e => {
+                const dateParts = e.date.split('-');
+                const displayDate = `${dateParts[2]}/${dateParts[1]}`;
+                html += `
+                    <div class="side-event-card">
+                        <div class="side-event-time">${e.time}</div>
+                        <div class="side-event-title">${e.title}</div>
+                        <div class="side-event-desc">${e.desc}</div>
+                        ${!isToday && e.date !== viewKey ? `<div class="side-event-date">${displayDate}</div>` : ''}
+                        <button class="btn-del-event" onclick="nexus.deleteEvent('${e.id}')">Excluir</button>
+                    </div>
+                `;
+            });
+        }
+        this.sidebarList.innerHTML = html;
+    }
+
+    // --- RENDER PROTOCOLS ---
     render() {
         if(this.currentTab !== 'protocols') return;
         this.grid.innerHTML = '';
@@ -373,33 +429,18 @@ class NexusOS {
         document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
 
-        const dayEvents = this.agenda.filter(e => e.date === viewKey).sort((a,b) => a.time.localeCompare(b.time));
-        const hero = document.getElementById('today-agenda-hero');
-        if (dayEvents.length > 0) {
-            hero.style.display = 'block';
-            let html = `<div class="hero-title">📅 ${this.t('agenda.title')}</div><div class="agenda-list">`;
-            dayEvents.forEach(e => {
-                html += `<div class="event-card"><div class="event-time">${e.time}</div><div class="event-details"><div class="event-title">${e.title}</div><div class="event-desc">${e.desc}</div></div>${isToday ? `<button style="background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="nexus.deleteEvent('${e.id}')">✕</button>`:''}</div>`;
-            });
-            hero.innerHTML = html + `</div>`;
-        } else hero.style.display = 'none';
-
-        // Filter Logic:
-        // 1. Data Source (Today vs History)
-        // 2. Specific Days Filter (Does this protocol exist on this specific day?)
-        const dayOfWeek = this.selectedDate.getDay(); // 0=Sun, 6=Sat
-        
+        const dayOfWeek = this.selectedDate.getDay(); 
         const rawData = isToday ? this.protocols : (this.history[viewKey] || []);
         
-        // Aplica filtro de dias específicos
+        // Filter Days
         const data = rawData.filter(p => {
-            if (!p.days || p.days.length === 0) return true; // Todos os dias
-            return p.days.includes(dayOfWeek); // Apenas dias selecionados
+            if (!p.days || p.days.length === 0) return true; 
+            return p.days.includes(dayOfWeek); 
         });
 
         let totalPct = 0; let activeCount = 0;
 
-        if (data.length === 0 && dayEvents.length === 0) {
+        if (data.length === 0) {
             this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${this.t('empty')}</h3></div>`;
             document.getElementById('dashboard').style.display = 'none';
         } else {
@@ -428,9 +469,7 @@ class NexusOS {
         }
     }
 
-    // --- RENDER FINANCE (Hybrid Logic) ---
     renderFinance() {
-        // Parte 1: Totais Globais (Sempre Atuais)
         let bal = 0, inv = 0;
         this.finance.forEach(t => {
             const val = parseFloat(t.amount);
@@ -440,18 +479,12 @@ class NexusOS {
         });
         const netWorth = bal + inv;
 
-        // Parte 2: Lista de Transações (Filtrada pela Data Selecionada)
         const viewKey = this.formatDateKey(this.selectedDate);
         const dailyTransactions = this.finance.filter(t => t.date.startsWith(viewKey)).reverse();
         
-        let incDay = 0, expDay = 0;
         let listHTML = '';
-        
         dailyTransactions.forEach(t => {
              const val = parseFloat(t.amount);
-             if(t.type === 'in') incDay += val;
-             else if(t.type === 'out') expDay += val;
-             
              const typeClass = t.type === 'in' ? 'income' : (t.type === 'out' ? 'expense' : 'invest');
              const sign = t.type === 'in' ? '+' : '-';
              const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
@@ -467,31 +500,9 @@ class NexusOS {
                 <div class="fin-card"><div class="fin-label">${this.t('fin.bal')} (CAIXA)</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
                 <div class="fin-card"><div class="fin-label">${this.t('fin.inv')} (ACUMULADO)</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
             </div>
-            
-            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center">
-                <span style="font-size:0.9rem; font-weight:bold; color:var(--text-main)">Transações de ${dateLabel}</span>
-                <span style="font-size:0.8rem; color:var(--text-muted)">Entrada: +${incDay} | Saída: -${expDay}</span>
-            </div>
-
+            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); font-size:0.9rem; font-weight:bold;">Transações de ${dateLabel}</div>
             <div class="fin-list">${listHTML || `<div style="text-align:center;color:#666;padding:2rem">${this.t('emptyFin')}</div>`}</div>
         `;
-    }
-
-    // --- RENDER AGENDA & SUGGESTIONS ---
-    renderAgenda() {
-        const sorted = this.agenda.sort((a,b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
-        const upcoming = sorted.filter(e => e.date >= this.formatDateKey(this.today));
-        let html = `<div style="margin-bottom:1.5rem; color:var(--text-muted)">${this.t('agenda.upcoming')}</div>`;
-        if (upcoming.length === 0) html += `<div style="text-align:center;color:#666">Nenhum evento futuro.</div>`;
-        else {
-            html += `<div class="agenda-list">`;
-            upcoming.forEach(e => {
-                const dateObj = new Date(e.date + 'T12:00:00');
-                html += `<div class="event-card"><div class="event-time">${e.time}</div><div class="event-details"><div class="event-title">${e.title}</div><div class="event-desc">${e.desc}</div></div><div class="event-date-badge">${dateObj.getDate()}/${dateObj.getMonth()+1}</div><button style="background:none;border:none;color:var(--text-muted);cursor:pointer;margin-left:10px" onclick="nexus.deleteEvent('${e.id}')">✕</button></div>`;
-            });
-            html += `</div>`;
-        }
-        this.agendaView.innerHTML = html;
     }
 
     renderSuggestions() {
@@ -510,7 +521,7 @@ class NexusOS {
         this.sugView.innerHTML += renderSection('detox', 'sections.detox');
     }
 
-    // --- MODALS WITH DAY SELECTOR ---
+    // --- MODALS ---
     openProtocolModal(pre={}) {
         let optionsHTML = '';
         for(const key in UNIT_SYSTEM.groups) {
@@ -520,17 +531,7 @@ class NexusOS {
             optionsHTML += `</optgroup>`;
         }
         
-        // Checkboxes Dias da Semana
-        const daysHTML = `
-            <div class="day-selector">
-                ${['D','S','T','Q','Q','S','S'].map((d, i) => `
-                    <label>
-                        <input type="checkbox" class="day-checkbox" value="${i}" checked>
-                        <span class="day-label">${d}</span>
-                    </label>
-                `).join('')}
-            </div>
-        `;
+        const daysHTML = `<div class="day-selector">${['D','S','T','Q','Q','S','S'].map((d, i) => `<label><input type="checkbox" class="day-checkbox" value="${i}" checked><span class="day-label">${d}</span></label>`).join('')}</div>`;
 
         const html = `
             <div class="modal">
@@ -538,3 +539,95 @@ class NexusOS {
                 <input type="text" id="p-name" class="form-control" placeholder="Nome" value="${pre.name||''}">
                 <div style="display:flex;gap:1rem">
                     <input type="number" id="p-target" class="form-control" placeholder="Meta" value="${pre.target||''}">
+                    <select id="p-unit" class="form-control">${optionsHTML}</select>
+                </div>
+                <select id="p-cycle" class="form-control">
+                    <option value="daily" ${pre.cycle==='daily'?'selected':''}>${this.t('cycles.daily')}</option>
+                    <option value="weekly" ${pre.cycle==='weekly'?'selected':''}>${this.t('cycles.weekly')}</option>
+                    <option value="monthly" ${pre.cycle==='monthly'?'selected':''}>${this.t('cycles.monthly')}</option>
+                    <option value="infinite" ${pre.cycle==='infinite'?'selected':''}>${this.t('cycles.infinite')}</option>
+                </select>
+                <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem">Dias da Semana:</div>
+                ${daysHTML}
+                <div style="text-align:right;margin-top:1rem">
+                    <button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button>
+                    <button class="btn btn-add" onclick="nexus.createProtocol()">${this.t('btnConfirm')}</button>
+                </div>
+            </div>`;
+        document.getElementById('modal-overlay').innerHTML = html;
+        document.getElementById('modal-overlay').style.display = 'flex';
+        if(pre.name) setTimeout(()=>document.getElementById('p-target').focus(),100);
+    }
+
+    createProtocol() {
+        const name = document.getElementById('p-name').value;
+        const target = parseFloat(document.getElementById('p-target').value);
+        const unit = document.getElementById('p-unit').value;
+        const cycle = document.getElementById('p-cycle').value;
+        const checkboxes = document.querySelectorAll('.day-checkbox:checked');
+        const selectedDays = Array.from(checkboxes).map(cb => parseInt(cb.value));
+        if(!name || !target) return;
+        this.protocols.push({id:Date.now().toString(36), name, target, unit, cycle, days: selectedDays.length === 7 ? [] : selectedDays, current:0, lastReset:new Date().toISOString()});
+        this.closeModal(); this.save(); this.switchTab('protocols');
+    }
+
+    addTransaction() {
+        const desc = document.getElementById('f-desc').value;
+        const amount = parseFloat(document.getElementById('f-amount').value);
+        const type = document.getElementById('f-type').value;
+        if(!desc || !amount) return;
+        const timeStr = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+        this.finance.push({ id: Date.now(), desc, amount, type, date: new Date().toISOString(), time: timeStr });
+        localStorage.setItem('nexus_finance', JSON.stringify(this.finance));
+        this.closeModal(); this.renderFinance();
+    }
+    
+    addEvent() {
+        const title = document.getElementById('e-title').value;
+        const desc = document.getElementById('e-desc').value;
+        const date = document.getElementById('e-date').value;
+        const time = document.getElementById('e-time').value;
+        if(!title || !date) return;
+        this.agenda.push({ id: Date.now().toString(36), title, desc, date, time });
+        localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda));
+        this.closeModal(); 
+        this.renderCalendar(); 
+        this.renderSidebarAgenda(); // Atualiza lateral
+    }
+
+    t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
+    toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderFinance(); this.renderSuggestions(); this.renderSidebarAgenda(); this.renderCalendar(); }
+    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-finance').innerText = this.t('tabs.finance'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); }
+    save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
+    deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
+    deleteEvent(id) { if(confirm('Del?')) { this.agenda = this.agenda.filter(e=>e.id!==id); localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda)); this.renderCalendar(); this.renderSidebarAgenda(); } }
+    toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('active'); document.getElementById('sidebar-backdrop').classList.toggle('active'); }
+    closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+    openEventModal() { 
+        const todayStr = this.formatDateKey(new Date()); 
+        const html = `<div class="modal"><h2 style="color:var(--event);margin-bottom:1.5rem">Novo Evento</h2><input type="text" id="e-title" class="form-control" placeholder="${this.t('agenda.name')}"><input type="text" id="e-desc" class="form-control" placeholder="${this.t('agenda.desc')}"><div style="display:flex;gap:1rem"><input type="date" id="e-date" class="form-control" value="${todayStr}"><input type="time" id="e-time" class="form-control" value="09:00"></div><div style="text-align:right;margin-top:1rem"><button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button><button class="btn btn-add" style="background:var(--event)" onclick="nexus.addEvent()">${this.t('btnConfirm')}</button></div></div>`; 
+        document.getElementById('modal-overlay').innerHTML = html; document.getElementById('modal-overlay').style.display = 'flex'; 
+        setTimeout(()=>document.getElementById('e-title').focus(),100);
+    }
+    openFinanceModal() { const html = `<div class="modal"><h2 style="color:var(--accent);margin-bottom:1.5rem">Transação Financeira</h2><input type="text" id="f-desc" class="form-control" placeholder="${this.t('fin.desc')}"><input type="number" id="f-amount" class="form-control" placeholder="${this.t('fin.val')}"><select id="f-type" class="form-control"><option value="in">Entrada (+)</option><option value="out">Saída (-)</option><option value="inv">Investimento (Invest)</option></select><div style="text-align:right;margin-top:1rem"><button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button><button class="btn btn-add" onclick="nexus.addTransaction()">${this.t('btnConfirm')}</button></div></div>`; document.getElementById('modal-overlay').innerHTML = html; document.getElementById('modal-overlay').style.display = 'flex'; setTimeout(()=>document.getElementById('f-desc').focus(),100); }
+    getIcon(name) { const n=name.toLowerCase(); const i={'água':'💧','ler':'📚','treino':'💪','sono':'💤','dinheiro':'💰','code':'💻','açúcar':'🍬','social':'📱','jogos':'🎮'}; for(let k in i)if(n.includes(k))return i[k]; return '⚡'; }
+    getCompatibleUnits(targetUnit) { for (const groupName in UNIT_SYSTEM.groups) { const group = UNIT_SYSTEM.groups[groupName]; if (group.units[targetUnit]) return Object.keys(group.units); } return [targetUnit]; }
+    handleInput(id) { const input = document.getElementById(`input-${id}`); const unitSel = document.getElementById(`unit-sel-${id}`); const val = parseFloat(input.value); if(!val) return; const p = this.protocols.find(x => x.id === id); let finalValue = val; if(unitSel && unitSel.value !== p.unit) { let group = null; for(const g in UNIT_SYSTEM.groups) if(UNIT_SYSTEM.groups[g].units[p.unit]) group = UNIT_SYSTEM.groups[g]; if(group) { const inputMult = group.units[unitSel.value]; const targetMult = group.units[p.unit]; finalValue = (val * inputMult) / targetMult; finalValue = Math.round(finalValue * 100) / 100; } } p.current = Math.round((p.current + finalValue) * 100) / 100; this.save(); input.value = ''; }
+    renderDashboard(totalPct, count) { const avg = count > 0 ? Math.round(totalPct / count) : 0; const dash = document.getElementById('dashboard'); const streak = Object.keys(this.history).length; const chartColor = avg === 100 ? 'var(--accent)' : 'var(--primary)'; dash.innerHTML = `<div class="dash-card"><svg viewBox="0 0 36 36" class="circular-chart"><path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><path class="circle" stroke-dasharray="${avg}, 100" stroke="${chartColor}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><text x="18" y="20.35" class="percentage">${avg}%</text></svg><div class="dash-label" style="margin-top:10px">${this.t('dash.perf')}</div></div><div class="dash-card"><div class="dash-value" style="color:var(--accent)">${streak}</div><div class="dash-label">${this.t('dash.streak')}</div></div><div class="dash-card"><div class="dash-value">${count}</div><div class="dash-label">${this.t('dash.acts')}</div></div>`; }
+    renderCalendar() { const c = document.getElementById('calendar-days'); const ml = document.getElementById('month-label'); c.innerHTML=''; const year = this.calendarViewDate.getFullYear(); const month = this.calendarViewDate.getMonth(); const mNames = this.lang==='pt'?["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]:["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"]; ml.innerText = mNames[month] + " " + year; const first = new Date(year,month,1).getDay(); const days = new Date(year,month+1,0).getDate(); for(let i=0;i<first;i++)c.innerHTML+=`<div></div>`; for(let i=1;i<=days;i++){ const d=new Date(year,month,i); const k=this.formatDateKey(d); const isT=this.formatDateKey(this.today)===k; const isS=this.formatDateKey(this.selectedDate)===k; const hasHist=this.history[k]; const hasEvent = this.agenda.some(e => e.date === k); const div=document.createElement('div'); div.className=`day-cell ${isT?'today':''} ${isS?'selected':''} ${hasHist?'has-data':''}`; div.innerText=i; if(hasEvent) div.innerHTML += `<div class="dot-event"></div>`; if(hasHist) div.innerHTML += `<div class="dot-hist"></div>`; div.onclick=()=>this.selectDate(d); c.appendChild(div); } }
+    changeMonth(d) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth()+d); this.renderCalendar(); }
+    selectDate(d) { 
+        this.selectedDate=d; 
+        this.switchTab('protocols'); // Volta para aba principal
+        this.renderCalendar(); 
+        this.render(); 
+        this.renderSidebarAgenda(); // Atualiza a lista lateral para o dia selecionado
+        if(window.innerWidth<=850) this.toggleSidebar(); 
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => { window.nexus = new NexusOS(); });
+document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });
+</script>
+</body>
+</html>
