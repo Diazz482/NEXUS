@@ -3,68 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v10.2</title>
+    <title>NEXUS LIFE OS v11.0 - Cloud</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
     <style>
+        /* MANTIDO TODO O CSS ANTERIOR */
         :root {
-            --bg-core: #0a0a0a;
-            --bg-panel: #161616;
-            --bg-sidebar: #111111;
-            --bg-input: #222222;
-            --primary: #00f0ff; 
-            --primary-dim: rgba(0, 240, 255, 0.15);
-            --accent: #00ff9d; 
-            --danger: #ff477e; 
-            --gold: #ffd700;   
-            --event: #bd00ff;
-            --global: #9d00ff;
-            --text-main: #f0f0f0;
-            --text-muted: #888888;
-            --border: #333333;
-            --font-stack: 'Segoe UI', 'Roboto', sans-serif;
-            --radius-card: 20px;
-            --radius-btn: 50px;
+            --bg-core: #0a0a0a; --bg-panel: #161616; --bg-sidebar: #111111; --bg-input: #222222;
+            --primary: #00f0ff; --primary-dim: rgba(0, 240, 255, 0.15); --accent: #00ff9d; --danger: #ff477e;
+            --gold: #ffd700; --event: #bd00ff; --global: #9d00ff; --text-main: #f0f0f0; --text-muted: #888888;
+            --border: #333333; --font-stack: 'Segoe UI', 'Roboto', sans-serif; --radius-card: 20px; --radius-btn: 50px;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-core); color: var(--text-main); font-family: var(--font-stack); height: 100vh; overflow: hidden; display: flex; }
 
-        body {
-            background-color: var(--bg-core);
-            color: var(--text-main);
-            font-family: var(--font-stack);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-        }
-
-        /* --- SIDEBAR --- */
-        .app-sidebar {
-            width: 340px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
-            display: flex; flex-direction: column; padding: 1.5rem; flex-shrink: 0; overflow-y: auto;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; height: 100vh;
-        }
+        /* ... (CSS Sidebar, Content, Calendar, Grids mantidos idênticos a v10.2) ... */
+        .app-sidebar { width: 340px; background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 1.5rem; flex-shrink: 0; overflow-y: auto; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000; height: 100vh; }
         .sidebar-close-btn { display: none; margin-bottom: 1rem; color: var(--text-muted); background: transparent; border: none; font-size: 1.5rem; cursor: pointer; text-align: right; }
-
-        /* --- CONTENT --- */
         .app-content { flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         .content-container { width: 100%; max-width: 900px; padding-bottom: 100px; }
-
-        /* --- HEADER & TABS --- */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .mobile-toggle-btn { display: none; background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); width: 40px; height: 40px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
         h1 { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; }
         .logo-icon-header { width: 36px; height: 36px; margin-right: 12px; color: var(--primary); }
         h1 span { color: var(--primary); font-weight: 300; margin-left: 5px; }
-
         .tab-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; overflow-x: auto; }
         .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0.5rem; cursor: pointer; font-size: 0.85rem; font-weight: 700; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; text-transform: uppercase; }
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-
-        /* --- CALENDAR --- */
         .calendar-container { margin-bottom: 2rem; }
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .month-label { font-size: 1rem; font-weight: bold; color: white; }
@@ -76,8 +44,6 @@
         .day-cell.selected { background: var(--primary); color: var(--bg-core) !important; font-weight: bold; box-shadow: 0 0 15px var(--primary-dim); border-color: var(--primary); }
         .dot-hist { position: absolute; bottom: 3px; width: 3px; height: 3px; background: var(--accent); border-radius: 50%; left: 50%; transform: translateX(-50%); }
         .dot-event { position: absolute; top: 3px; right: 3px; width: 3px; height: 3px; background: var(--event); border-radius: 50%; }
-
-        /* --- SIDEBAR AGENDA --- */
         .sidebar-agenda { border-top: 1px solid var(--border); padding-top: 1.5rem; flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .sidebar-agenda-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .agenda-title { font-size: 0.9rem; font-weight: 700; color: var(--event); letter-spacing: 1px; text-transform: uppercase; }
@@ -89,8 +55,6 @@
         .side-event-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
         .btn-del-item { position: absolute; bottom: 0.5rem; right: 0.5rem; background: none; border: none; color: #444; cursor: pointer; font-size: 0.8rem; transition: color 0.2s; }
         .btn-del-item:hover { color: var(--danger); }
-
-        /* --- GRIDS & CARDS --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
@@ -99,8 +63,6 @@
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: 0%; border-radius: 10px; transition: width 0.5s ease; }
         .progress-fill.complete { background: var(--accent); }
         .stats { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; }
-
-        /* --- DASHBOARD --- */
         .dashboard-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .dash-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .dash-value { font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
@@ -110,8 +72,6 @@
         .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; animation: progress 1s ease-out forwards; }
         @keyframes progress { 0% { stroke-dasharray: 0 100; } }
         .percentage { fill: #fff; font-family: var(--font-stack); font-weight: bold; font-size: 0.8em; text-anchor: middle; }
-
-        /* --- FINANCE --- */
         .finance-view { display: none; animation: fadeIn 0.3s; }
         .finance-view.active { display: block; }
         .fin-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
@@ -129,14 +89,11 @@
         .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; } .fin-date { font-size: 0.75rem; color: var(--text-muted); } .fin-amount { font-weight: 700; font-size: 1rem; }
         .fin-del-btn { background: none; border: none; color: #555; cursor: pointer; font-size: 1.1rem; margin-left: 1rem; transition: color 0.2s; }
         .fin-del-btn:hover { color: var(--danger); }
-
         .fin-chart-container { margin-bottom: 2rem; background: var(--bg-panel); border-radius: var(--radius-card); padding: 1.5rem; border: 1px solid var(--border); }
         .chart-row { margin-bottom: 0.8rem; }
         .chart-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-main); font-weight: 600; }
         .chart-bar-bg { width: 100%; height: 8px; background: var(--bg-input); border-radius: 4px; overflow: hidden; }
         .chart-bar-fill { height: 100%; background: var(--danger); border-radius: 4px; transition: width 0.5s; }
-
-        /* --- CURRENCY VIEW --- */
         .currency-view { display: none; animation: fadeIn 0.3s; }
         .currency-view.active { display: block; }
         .currency-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 500px; margin: 0 auto; text-align: center; margin-bottom: 2rem; }
@@ -148,12 +105,8 @@
         .wallet-item { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
         .wallet-label { color: var(--global); font-weight: bold; font-size: 0.9rem; }
         .wallet-input { background: var(--bg-input); border: 1px solid var(--border); color: white; padding: 0.5rem; border-radius: 8px; font-size: 1rem; width: 100%; }
-        
-        /* NOVO: Botão Add to Wallet */
         .btn-add-wallet { display: none; margin-top: 1rem; background: var(--global); color: white; width: 100%; padding: 0.8rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; animation: fadeIn 0.5s; }
         .btn-add-wallet:hover { opacity: 0.9; }
-
-        /* --- SUGGESTIONS --- */
         .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
         .suggestions-container.active { display: block; }
         .sug-section-title { font-size: 0.9rem; color: var(--text-muted); margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -161,22 +114,16 @@
         .sug-card { aspect-ratio: 1; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 1rem; text-align: center; transition: all 0.2s; }
         .sug-card:hover { border-color: var(--primary); transform: translateY(-3px); }
         .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- INPUTS & CONTROLS --- */
         .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .input-fraction { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem; font-size: 1rem; }
         .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
         .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
-
         .day-selector { display: flex; gap: 5px; justify-content: space-between; margin-bottom: 1rem; }
         .day-checkbox { display: none; }
         .day-label { width: 35px; height: 35px; border-radius: 50%; background: var(--bg-input); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
         .day-checkbox:checked + .day-label { background: var(--primary); color: var(--bg-core); border-color: var(--primary); font-weight: bold; }
-
-        /* --- MOBILE --- */
         @media (max-width: 850px) {
             .mobile-toggle-btn { display: flex; } .sidebar-close-btn { display: block; } h1 span { display: none; } h1 { font-size: 1.2rem; }
             .app-sidebar { position: fixed; top: 0; left: 0; width: 85%; height: 100vh; transform: translateX(-100%); box-shadow: 10px 0 50px rgba(0,0,0,0.5); border-right: none; }
@@ -188,133 +135,185 @@
             .sug-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .fin-summary { grid-template-columns: 1fr 1fr; }
         }
-
-        /* --- MODAL --- */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 1rem; }
         .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 2rem; width: 100%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .form-control { width: 100%; padding: 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 1rem; margin-bottom: 1rem; }
         select.form-control { appearance: none; }
+
+        /* --- LOGIN SCREEN (NOVO) --- */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-core); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        .login-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 3rem; border-radius: 30px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 0 50px rgba(0,240,255,0.1); }
+        .btn-login-google { background: white; color: #333; width: 100%; padding: 1rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 2rem; transition: transform 0.2s; }
+        .btn-login-google:hover { transform: scale(1.02); }
+        .login-footer { margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
-    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="nexus.toggleSidebar()"></div>
-
-    <aside class="app-sidebar" id="app-sidebar">
-        <button class="sidebar-close-btn" onclick="nexus.toggleSidebar()">✕</button>
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <button class="month-nav" onclick="nexus.changeMonth(-1)">❮</button>
-                <span class="month-label" id="month-label">...</span>
-                <button class="month-nav" onclick="nexus.changeMonth(1)">❯</button>
-            </div>
-            <div class="calendar-grid">
-                <div style="color:var(--text-muted);font-size:0.7rem;text-align:center">D</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">T</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div>
-                <div id="calendar-days" style="display: contents;"></div>
-            </div>
-        </div>
-        <div class="sidebar-agenda">
-            <div class="sidebar-agenda-header">
-                <div class="agenda-title">📅 Eventos</div>
-                <button class="btn-mini-add" onclick="nexus.openEventModal()" title="Novo Evento">+</button>
-            </div>
-            <div id="sidebar-event-list" class="sidebar-event-list"></div>
-        </div>
-        <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center;">
-            <button class="btn" style="width: 100%" onclick="nexus.selectDate(new Date())">VOLTAR PARA HOJE</button>
-        </div>
-    </aside>
-
-    <main class="app-content">
-        <div class="content-container">
-            <header>
-                <div class="header-left">
-                    <button class="mobile-toggle-btn" onclick="nexus.toggleSidebar()">📅</button>
-                    <h1>
-                        <svg class="logo-icon-header" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text></svg>
-                        Nexus <span>Life OS</span>
-                    </h1>
-                </div>
-                <button class="btn btn-lang" id="lang-btn" onclick="nexus.toggleLang()">EN</button>
-            </header>
-
-            <nav class="tab-nav">
-                <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">PROTOCOLOS</button>
-                <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR</button>
-                <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
-                <button class="tab-btn" id="tab-currency" onclick="nexus.switchTab('currency')">CÂMBIO</button>
-            </nav>
-
-            <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
+    <div id="login-screen">
+        <div class="login-card">
+            <svg style="width:64px;height:64px;color:var(--primary);margin-bottom:1rem" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text></svg>
+            <h1 style="justify-content:center; margin-bottom:0.5rem">Nexus Life OS</h1>
+            <p style="color:var(--text-muted)">Sincronização em Nuvem</p>
             
-            <div id="protocol-view">
-                <div id="protocol-grid"></div>
-                <section id="dashboard" class="dashboard-section" style="display: none;"></section>
-            </div>
-
-            <div id="finance-view" class="finance-view"></div>
-            
-            <div id="currency-view" class="currency-view">
-                <div class="currency-card">
-                    <h2 style="color:var(--primary)">Conversor de Moedas</h2>
-                    <div class="curr-input-group">
-                        <label class="curr-label">Valor em Reais (BRL)</label>
-                        <input type="number" id="brl-input" class="form-control" placeholder="0,00" style="font-size:1.2rem; font-weight:bold;">
-                    </div>
-                    <div class="curr-input-group">
-                        <label class="curr-label">Converter para</label>
-                        <select id="target-currency" class="form-control" style="font-size:1rem;">
-                            <option value="USD">Dólar Americano (USD)</option>
-                            <option value="EUR">Euro (EUR)</option>
-                            <option value="GBP">Libra Esterlina (GBP)</option>
-                            <option value="BTC">Bitcoin (BTC)</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-add" style="width:100%; padding:1rem; font-size:1.1rem" onclick="nexus.convertCurrency()">CONVERTER AGORA</button>
-                    <div>
-                        <div id="conversion-result" class="curr-result">0.00</div>
-                        <div id="curr-rate-info" class="curr-rate-info">Taxa atualizada via API</div>
-                    </div>
-                    <button id="btn-add-wallet" class="btn-add-wallet" onclick="nexus.addToWallet()">📥 ADICIONAR À CARTEIRA</button>
-                </div>
-
-                <h2 style="color:var(--text-muted); margin-bottom:1rem; text-transform:uppercase; font-size:0.9rem; letter-spacing:1px; font-weight:700">Minhas Reservas Internacionais</h2>
-                <div class="wallet-grid">
-                    <div class="wallet-item">
-                        <div class="wallet-label">USD (Dólar)</div>
-                        <input type="number" class="wallet-input" id="wallet-usd" placeholder="0.00" onchange="nexus.updateWallet('USD', this.value)">
-                    </div>
-                    <div class="wallet-item">
-                        <div class="wallet-label">EUR (Euro)</div>
-                        <input type="number" class="wallet-input" id="wallet-eur" placeholder="0.00" onchange="nexus.updateWallet('EUR', this.value)">
-                    </div>
-                    <div class="wallet-item">
-                        <div class="wallet-label">GBP (Libra)</div>
-                        <input type="number" class="wallet-input" id="wallet-gbp" placeholder="0.00" onchange="nexus.updateWallet('GBP', this.value)">
-                    </div>
-                    <div class="wallet-item">
-                        <div class="wallet-label">BTC (Bitcoin)</div>
-                        <input type="number" class="wallet-input" id="wallet-btc" placeholder="0.0000" onchange="nexus.updateWallet('BTC', this.value)">
-                    </div>
-                </div>
-            </div>
-
-            <div id="suggestions-view" class="suggestions-container"></div>
-
-            <div id="fab-container" style="text-align: center; margin-top: 2rem;">
-                <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.handleFabClick()">+ ADICIONAR</button>
-            </div>
+            <button class="btn-login-google" onclick="nexus.loginGoogle()">
+                <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                Entrar com Google
+            </button>
+            <div id="login-status" style="margin-top:1rem;color:var(--primary);font-size:0.8rem"></div>
         </div>
-    </main>
+    </div>
+
+    <div id="app-container" style="display:none; width:100%; height:100%; display:flex;">
+        <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="nexus.toggleSidebar()"></div>
+
+        <aside class="app-sidebar" id="app-sidebar">
+            <button class="sidebar-close-btn" onclick="nexus.toggleSidebar()">✕</button>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button class="month-nav" onclick="nexus.changeMonth(-1)">❮</button>
+                    <span class="month-label" id="month-label">...</span>
+                    <button class="month-nav" onclick="nexus.changeMonth(1)">❯</button>
+                </div>
+                <div class="calendar-grid">
+                    <div style="color:var(--text-muted);font-size:0.7rem;text-align:center">D</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">T</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">Q</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div><div style="color:var(--text-muted);font-size:0.7rem;text-align:center">S</div>
+                    <div id="calendar-days" style="display: contents;"></div>
+                </div>
+            </div>
+            <div class="sidebar-agenda">
+                <div class="sidebar-agenda-header">
+                    <div class="agenda-title">📅 Eventos</div>
+                    <button class="btn-mini-add" onclick="nexus.openEventModal()" title="Novo Evento">+</button>
+                </div>
+                <div id="sidebar-event-list" class="sidebar-event-list"></div>
+            </div>
+            <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center;">
+                <button class="btn" style="width: 100%" onclick="nexus.selectDate(new Date())">VOLTAR PARA HOJE</button>
+                <button class="btn" style="width: 100%; margin-top:10px; border-color:var(--danger); color:var(--danger)" onclick="nexus.logout()">SAIR</button>
+            </div>
+        </aside>
+
+        <main class="app-content">
+            <div class="content-container">
+                <header>
+                    <div class="header-left">
+                        <button class="mobile-toggle-btn" onclick="nexus.toggleSidebar()">📅</button>
+                        <h1>
+                            <svg class="logo-icon-header" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text></svg>
+                            Nexus <span>Life OS</span>
+                        </h1>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center">
+                        <span id="user-display" style="font-size:0.8rem; color:var(--text-muted)"></span>
+                        <button class="btn btn-lang" id="lang-btn" onclick="nexus.toggleLang()">EN</button>
+                    </div>
+                </header>
+
+                <nav class="tab-nav">
+                    <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">PROTOCOLOS</button>
+                    <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR</button>
+                    <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
+                    <button class="tab-btn" id="tab-currency" onclick="nexus.switchTab('currency')">CÂMBIO</button>
+                </nav>
+
+                <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
+                
+                <div id="protocol-view">
+                    <div id="protocol-grid"></div>
+                    <section id="dashboard" class="dashboard-section" style="display: none;"></section>
+                </div>
+
+                <div id="finance-view" class="finance-view"></div>
+                
+                <div id="currency-view" class="currency-view">
+                    <div class="currency-card">
+                        <h2 style="color:var(--primary)">Conversor de Moedas</h2>
+                        <div class="curr-input-group">
+                            <label class="curr-label">Valor em Reais (BRL)</label>
+                            <input type="number" id="brl-input" class="form-control" placeholder="0,00" style="font-size:1.2rem; font-weight:bold;">
+                        </div>
+                        <div class="curr-input-group">
+                            <label class="curr-label">Converter para</label>
+                            <select id="target-currency" class="form-control" style="font-size:1rem;">
+                                <option value="USD">Dólar Americano (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                                <option value="GBP">Libra Esterlina (GBP)</option>
+                                <option value="BTC">Bitcoin (BTC)</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-add" style="width:100%; padding:1rem; font-size:1.1rem" onclick="nexus.convertCurrency()">CONVERTER AGORA</button>
+                        <div>
+                            <div id="conversion-result" class="curr-result">0.00</div>
+                            <div id="curr-rate-info" class="curr-rate-info">Taxa atualizada via API</div>
+                        </div>
+                        <button id="btn-add-wallet" class="btn-add-wallet" onclick="nexus.addToWallet()">📥 ADICIONAR À CARTEIRA</button>
+                    </div>
+
+                    <h2 style="color:var(--text-muted); margin-bottom:1rem; text-transform:uppercase; font-size:0.9rem; letter-spacing:1px; font-weight:700">Minhas Reservas Internacionais</h2>
+                    <div class="wallet-grid">
+                        <div class="wallet-item">
+                            <div class="wallet-label">USD (Dólar)</div>
+                            <input type="number" class="wallet-input" id="wallet-usd" placeholder="0.00" onchange="nexus.updateWallet('USD', this.value)">
+                        </div>
+                        <div class="wallet-item">
+                            <div class="wallet-label">EUR (Euro)</div>
+                            <input type="number" class="wallet-input" id="wallet-eur" placeholder="0.00" onchange="nexus.updateWallet('EUR', this.value)">
+                        </div>
+                        <div class="wallet-item">
+                            <div class="wallet-label">GBP (Libra)</div>
+                            <input type="number" class="wallet-input" id="wallet-gbp" placeholder="0.00" onchange="nexus.updateWallet('GBP', this.value)">
+                        </div>
+                        <div class="wallet-item">
+                            <div class="wallet-label">BTC (Bitcoin)</div>
+                            <input type="number" class="wallet-input" id="wallet-btc" placeholder="0.0000" onchange="nexus.updateWallet('BTC', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="suggestions-view" class="suggestions-container"></div>
+
+                <div id="fab-container" style="text-align: center; margin-top: 2rem;">
+                    <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.handleFabClick()">+ ADICIONAR</button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <div id="modal-overlay"></div>
 
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
 /**
- * NEXUS CORE v10.2 (Auto Add to Wallet)
+ * NEXUS CORE v11.0 (Cloud Sync Edition)
  */
 
-const UNIT_SYSTEM = {
+// --- CONFIGURAÇÃO DO FIREBASE (VOCÊ PRECISA PREENCHER ISTO) ---
+const firebaseConfig = {
+    apiKey: "SUA_API_KEY_AQUI",
+    authDomain: "SEU_PROJETO.firebaseapp.com",
+    projectId: "SEU_PROJETO_ID",
+    storageBucket: "SEU_PROJETO.appspot.com",
+    messagingSenderId: "NUMERO",
+    appId: "ID_APP"
+};
+
+// Inicializa Firebase se configurado
+let auth, db, provider;
+try {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    provider = new firebase.auth.GoogleAuthProvider();
+    console.log("Firebase conectado.");
+} catch(e) {
+    console.error("Erro Firebase (Provavelmente chaves vazias):", e);
+    document.getElementById('login-status').innerText = "⚠️ Erro: Chaves do Firebase não configuradas no código.";
+}
+
+const UNIT_SYSTEM = { /* ... (Mesmo de v10.2) ... */
     groups: {
         time: { label: 'Tempo', units: { 'min': 1, 'h': 60, 'd': 1440 } }, 
         volume: { label: 'Volume', units: { 'ml': 1, 'L': 1000 } }, 
@@ -325,7 +324,7 @@ const UNIT_SYSTEM = {
     }
 };
 
-const SUGGESTIONS_DB = [
+const SUGGESTIONS_DB = [ /* ... (Mesmo de v10.2) ... */ 
     { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3, unit: 'L', cycle: 'daily' },
     { type: 'boost', icon: '💪', name_pt: 'Treino Força', name_en: 'Strength Train', target: 1, unit: 'x', cycle: 'daily' },
     { type: 'boost', icon: '🏃', name_pt: 'Cardio', name_en: 'Cardio', target: 30, unit: 'min', cycle: 'daily' },
@@ -335,7 +334,7 @@ const SUGGESTIONS_DB = [
     { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' }
 ];
 
-const DICTIONARY = {
+const DICTIONARY = { /* ... (Mesmo de v10.2) ... */
     pt: {
         tabs: { protocols: "PROTOCOLOS", finance: "FINANÇAS", explore: "EXPLORAR", currency: "CÂMBIO" },
         dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
@@ -358,13 +357,15 @@ const DICTIONARY = {
 
 class NexusOS {
     constructor() {
+        this.user = null; // Usuário logado
         this.lang = localStorage.getItem('nexus_lang') || 'pt'; 
-        this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
-        this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
-        this.finance = JSON.parse(localStorage.getItem('nexus_finance')) || []; 
-        this.agenda = JSON.parse(localStorage.getItem('nexus_agenda')) || []; 
-        this.foreign = JSON.parse(localStorage.getItem('nexus_foreign')) || { USD:0, EUR:0, GBP:0, BTC:0 }; 
-        this.lastConversion = null; // Stores last conversion result
+        // Dados iniciais vazios, serão carregados da nuvem
+        this.protocols = [];
+        this.history = {}; 
+        this.finance = []; 
+        this.agenda = []; 
+        this.foreign = { USD:0, EUR:0, GBP:0, BTC:0 }; 
+        this.lastConversion = null;
 
         this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
         this.currentTab = 'protocols';
@@ -374,8 +375,78 @@ class NexusOS {
         this.currView = document.getElementById('currency-view');
         this.sugView = document.getElementById('suggestions-view');
         this.sidebarList = document.getElementById('sidebar-event-list');
-        this.modalOverlay = document.getElementById('modal-overlay');
-        this.init();
+        
+        this.checkAuthState(); // Verifica login ao iniciar
+    }
+
+    checkAuthState() {
+        if(!auth) return;
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.user = user;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+                document.getElementById('app-container').style.opacity = '1'; // Show app
+                document.getElementById('user-display').innerText = user.email.split('@')[0];
+                this.loadFromCloud(); // CARREGA DA NUVEM
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+            }
+        });
+    }
+
+    loginGoogle() {
+        if(!auth) return alert("Firebase não configurado.");
+        auth.signInWithPopup(provider).catch((error) => {
+            alert("Erro no login: " + error.message);
+        });
+    }
+
+    logout() {
+        auth.signOut();
+        location.reload();
+    }
+
+    async loadFromCloud() {
+        // Tenta baixar do Firestore. Se não existir, usa padrão.
+        const docRef = db.collection('users').doc(this.user.uid);
+        const doc = await docRef.get();
+        
+        if (doc.exists) {
+            const data = doc.data();
+            this.protocols = data.protocols || [];
+            this.history = data.history || {};
+            this.finance = data.finance || [];
+            this.agenda = data.agenda || [];
+            this.foreign = data.foreign || { USD:0, EUR:0, GBP:0, BTC:0 };
+            console.log("Dados carregados da nuvem!");
+        } else {
+            console.log("Novo usuário, criando banco de dados...");
+            this.save(); // Salva estrutura inicial vazia
+        }
+
+        this.init(); // Inicia interface
+    }
+
+    // SOBRESCREVENDO O SAVE PARA USAR NUVEM
+    save() {
+        if(!this.user) return;
+        
+        const dataToSave = {
+            protocols: this.protocols,
+            history: this.history,
+            finance: this.finance,
+            agenda: this.agenda,
+            foreign: this.foreign,
+            lastUpdate: new Date().toISOString()
+        };
+
+        db.collection('users').doc(this.user.uid).set(dataToSave)
+            .then(() => console.log("Sincronizado na nuvem."))
+            .catch((e) => console.error("Erro ao salvar:", e));
+            
+        this.render(); // Atualiza UI localmente rápido
     }
 
     init() {
@@ -388,18 +459,15 @@ class NexusOS {
         this.loadWalletInputs();
     }
 
+    // --- FUNÇÕES MANTIDAS (LÓGICA DE UI) ---
     switchTab(tab) {
         this.currentTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         const btn = document.getElementById(`tab-${tab}`);
         if(btn) btn.classList.add('active');
-        
         document.getElementById('protocol-view').style.display = tab === 'protocols' ? 'block' : 'none';
-        this.finView.classList.remove('active'); 
-        this.sugView.classList.remove('active');
-        this.currView.classList.remove('active');
+        this.finView.classList.remove('active'); this.sugView.classList.remove('active'); this.currView.classList.remove('active');
         document.getElementById('fab-container').style.display = 'block';
-
         if(tab === 'protocols') this.render();
         else if(tab === 'finance') { this.finView.classList.add('active'); this.renderFinance(); }
         else if(tab === 'currency') { this.currView.classList.add('active'); document.getElementById('fab-container').style.display = 'none'; }
@@ -435,7 +503,7 @@ class NexusOS {
         if (!this.history[dateKey]) this.history[dateKey] = [];
         if (!this.history[dateKey].find(h => h.id === p.id)) {
             this.history[dateKey].push({...p}); 
-            localStorage.setItem('nexus_history', JSON.stringify(this.history));
+            this.save(); // Save to cloud
         }
     }
 
@@ -463,7 +531,6 @@ class NexusOS {
         const viewKey = this.formatDateKey(this.selectedDate);
         const isToday = viewKey === todayKey;
         const isFuture = viewKey > todayKey; 
-        
         document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
         const dayOfWeek = this.selectedDate.getDay(); 
@@ -496,8 +563,7 @@ class NexusOS {
                     unitSelectorHTML += `</select>`;
                 } else unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`;
                 const inputArea = isToday ? `<div class="input-action-row"><input type="number" class="input-fraction" id="input-${p.id}" placeholder="0" onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')">${unitSelectorHTML}<button class="btn" onclick="nexus.handleInput('${p.id}')">+</button></div>` : '';
-                const card = document.createElement('div'); 
-                card.className = `card ${!isToday?'read-only':''}`; 
+                const card = document.createElement('div'); card.className = `card ${!isToday?'read-only':''}`; 
                 card.innerHTML = `<div style="display:flex;justify-content:space-between"><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}</div><div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span><span>${pct.toFixed(0)}%</span></div><div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>${inputArea}`;
                 this.grid.appendChild(card);
             });
@@ -529,7 +595,6 @@ class NexusOS {
              foreignTotalBRL += (this.foreign.EUR || 0) * rates.EUR;
              foreignTotalBRL += (this.foreign.GBP || 0) * rates.GBP;
              foreignTotalBRL += (this.foreign.BTC || 0) * rates.BTC;
-
         } catch(e) {}
 
         const totalGlobalNetWorth = bal + inv + foreignTotalBRL;
@@ -559,7 +624,6 @@ class NexusOS {
             });
             chartHTML += `</div>`;
         }
-
         let listHTML = '';
         dailyTransactions.forEach(t => {
              const val = parseFloat(t.amount);
@@ -568,10 +632,8 @@ class NexusOS {
              const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
              listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${t.time || ''}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}<button class="fin-del-btn" onclick="nexus.deleteTransaction(${t.id})">✕</button></div></div>`;
         });
-
         const isToday = viewKey === this.formatDateKey(this.today);
         const dateLabel = isToday ? "HOJE" : viewKey;
-
         this.finView.innerHTML = `
             <div class="fin-summary">
                 <div class="fin-card global-net"><div class="fin-label">${this.t('fin.net')}</div><div class="fin-val">${totalGlobalNetWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
@@ -590,8 +652,7 @@ class NexusOS {
     deleteTransaction(id) {
         if(confirm('Excluir esta transação?')) {
             this.finance = this.finance.filter(t => t.id !== id);
-            localStorage.setItem('nexus_finance', JSON.stringify(this.finance));
-            this.renderFinance();
+            this.save(); this.renderFinance();
         }
     }
 
@@ -601,9 +662,7 @@ class NexusOS {
         const resDiv = document.getElementById('conversion-result');
         const infoDiv = document.getElementById('curr-rate-info');
         const btnAdd = document.getElementById('btn-add-wallet');
-        
-        btnAdd.style.display = 'none'; // Hide initially
-        
+        btnAdd.style.display = 'none'; 
         if(!brl) return;
         resDiv.innerText = "Carregando...";
         try {
@@ -614,12 +673,9 @@ class NexusOS {
                 const converted = brl * rate;
                 resDiv.innerText = `${target} ${converted.toFixed(2)}`;
                 infoDiv.innerText = `Taxa: 1 BRL = ${rate} ${target}`;
-                
-                // Store last conversion and show button
                 this.lastConversion = { target, amount: converted };
                 btnAdd.innerText = `📥 ADICIONAR ${converted.toFixed(2)} ${target} ÀS RESERVAS`;
                 btnAdd.style.display = 'block';
-                
             } else resDiv.innerText = "Erro";
         } catch (e) { resDiv.innerText = "Offline"; }
     }
@@ -627,21 +683,13 @@ class NexusOS {
     addToWallet() {
         if(!this.lastConversion) return;
         const { target, amount } = this.lastConversion;
-        
-        // Add to existing balance
         const current = this.foreign[target] || 0;
         this.updateWallet(target, current + amount);
-        
-        // Refresh inputs to show new total
         this.loadWalletInputs();
-        
-        // Hide button
         document.getElementById('btn-add-wallet').style.display = 'none';
-        
         alert(`Sucesso! ${amount.toFixed(2)} ${target} adicionados à sua carteira.`);
     }
 
-    // Load/Save Wallet
     loadWalletInputs() {
         if(document.getElementById('wallet-usd')) {
             document.getElementById('wallet-usd').value = (this.foreign.USD || 0).toFixed(2);
@@ -652,9 +700,10 @@ class NexusOS {
     }
     updateWallet(curr, val) {
         this.foreign[curr] = parseFloat(val) || 0;
-        localStorage.setItem('nexus_foreign', JSON.stringify(this.foreign));
+        this.save(); // Salva na nuvem
     }
 
+    // --- UTILS ---
     renderSuggestions() {
         this.sugView.innerHTML = '';
         const renderSection = (type, titleKey) => {
@@ -725,8 +774,7 @@ class NexusOS {
         if(!desc || !amount) return;
         const timeStr = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
         this.finance.push({ id: Date.now(), desc, amount, type, date: new Date().toISOString(), time: timeStr });
-        localStorage.setItem('nexus_finance', JSON.stringify(this.finance));
-        this.closeModal(); this.renderFinance();
+        this.save(); this.closeModal(); this.renderFinance();
     }
     
     addEvent() {
@@ -736,18 +784,14 @@ class NexusOS {
         const time = document.getElementById('e-time').value;
         if(!title || !date) return;
         this.agenda.push({ id: Date.now().toString(36), title, desc, date, time });
-        localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda));
-        this.closeModal(); 
-        this.renderCalendar(); 
-        this.renderSidebarAgenda();
+        this.save(); this.closeModal(); this.renderCalendar(); this.renderSidebarAgenda();
     }
 
     t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
     toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderFinance(); this.renderSuggestions(); this.renderSidebarAgenda(); this.renderCalendar(); }
     updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-finance').innerText = this.t('tabs.finance'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); document.getElementById('tab-currency').innerText = this.t('tabs.currency'); }
-    save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
     deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
-    deleteEvent(id) { if(confirm('Del?')) { this.agenda = this.agenda.filter(e=>e.id!==id); localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda)); this.renderCalendar(); this.renderSidebarAgenda(); } }
+    deleteEvent(id) { if(confirm('Del?')) { this.agenda = this.agenda.filter(e=>e.id!==id); this.save(); this.renderCalendar(); this.renderSidebarAgenda(); } }
     toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('active'); document.getElementById('sidebar-backdrop').classList.toggle('active'); }
     closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
     openEventModal() { 
