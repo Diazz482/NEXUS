@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v7.0</title>
+    <title>NEXUS LIFE OS v8.0 (Ultimate)</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -45,48 +45,13 @@
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2000;
         }
-
         .sidebar-close-btn { display: none; margin-bottom: 1rem; color: var(--text-muted); background: transparent; border: none; font-size: 1.5rem; cursor: pointer; text-align: right; }
 
         /* --- CONTENT AREA --- */
-        .app-content {
-            flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative;
-        }
-        .content-container { width: 100%; max-width: 800px; padding-bottom: 80px; }
+        .app-content { flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative; }
+        .content-container { width: 100%; max-width: 800px; padding-bottom: 100px; }
 
-        /* --- DASHBOARD (New Feature) --- */
-        .dashboard-section {
-            margin-top: 3rem;
-            border-top: 1px solid var(--border);
-            padding-top: 2rem;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .dash-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-card);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .dash-value { font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
-        .dash-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        
-        /* Circular Chart CSS */
-        .circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 250px; }
-        .circle-bg { fill: none; stroke: var(--bg-input); stroke-width: 3.8; }
-        .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; animation: progress 1s ease-out forwards; }
-        @keyframes progress { 0% { stroke-dasharray: 0 100; } }
-        .percentage { fill: #fff; font-family: var(--font-stack); font-weight: bold; font-size: 0.5em; text-anchor: middle; }
-
-        /* --- HEADER & UI --- */
+        /* --- HEADER & TABS --- */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .mobile-toggle-btn { display: none; background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); width: 40px; height: 40px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
@@ -97,9 +62,10 @@
 
         .tab-nav { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; overflow-x: auto; }
         .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0; cursor: pointer; font-size: 0.95rem; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+        .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* --- PROTOCOL CARDS --- */
+        /* --- PROTOCOLS GRID --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
@@ -112,20 +78,42 @@
         /* --- SMART INPUTS --- */
         .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .input-fraction { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem; font-size: 1rem; }
-        .unit-selector-mini {
-            background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px;
-            padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px;
-        }
-        .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; }
+        .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
+        .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
 
-        /* --- CALENDAR --- */
+        /* --- DASHBOARD (New Feature) --- */
+        .dashboard-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; animation: fadeIn 0.5s; }
+        .dash-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .dash-value { font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
+        .dash-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 100px; }
+        .circle-bg { fill: none; stroke: var(--bg-input); stroke-width: 3.8; }
+        .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; animation: progress 1s ease-out forwards; }
+        @keyframes progress { 0% { stroke-dasharray: 0 100; } }
+        .percentage { fill: #fff; font-family: var(--font-stack); font-weight: bold; font-size: 0.8em; text-anchor: middle; }
+
+        /* --- SUGGESTIONS GRID --- */
+        .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
+        .suggestions-container.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sug-section-title { font-size: 0.9rem; color: var(--text-muted); margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .sug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+        .sug-card { aspect-ratio: 1; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 1rem; text-align: center; transition: all 0.2s; }
+        .sug-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .sug-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
+        .sug-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* --- CALENDAR STYLES --- */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .month-label { font-size: 1.1rem; font-weight: bold; color: white; }
         .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 2rem; }
-        .day-cell { aspect-ratio: 1; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; border-radius: 12px; cursor: pointer; color: var(--text-muted); }
-        .day-cell.today { border-color: var(--primary); color: var(--primary); border: 1px solid var(--primary); }
+        .day-cell { aspect-ratio: 1; display: flex; justify-content: center; align-items: center; font-size: 0.9rem; border-radius: 12px; cursor: pointer; color: var(--text-muted); border: 1px solid transparent; }
+        .day-cell:hover { background: var(--bg-input); color: white; }
+        .day-cell.today { border-color: var(--primary); color: var(--primary); font-weight: bold; }
+        .day-cell.selected { background: var(--primary); color: var(--bg-core) !important; font-weight: bold; box-shadow: 0 0 15px var(--primary-dim); border-color: var(--primary); }
         .day-cell.has-data { position: relative; }
         .day-cell.has-data::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
 
@@ -140,11 +128,12 @@
             .sidebar-backdrop.active { display: block; }
             .dashboard-section { grid-template-columns: 1fr; }
             .app-content { padding: 1.5rem 1rem; }
+            .sug-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
         }
 
         /* --- MODAL --- */
         #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 1rem; }
-        .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 2rem; width: 100%; max-width: 420px; }
+        .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 2rem; width: 100%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .form-control { width: 100%; padding: 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 1rem; margin-bottom: 1rem; }
         select.form-control { appearance: none; }
     </style>
@@ -179,19 +168,22 @@
                         Nexus <span>Life OS</span>
                     </h1>
                 </div>
-                <button class="btn" style="padding:0.5rem" onclick="nexus.toggleLang()">EN/PT</button>
+                <button class="btn btn-lang" id="lang-btn" onclick="nexus.toggleLang()">EN</button>
             </header>
 
             <nav class="tab-nav">
-                <button class="tab-btn active" id="tab-protocols">MEUS PROTOCOLOS</button>
+                <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">MEUS PROTOCOLOS</button>
+                <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR SUGESTÕES</button>
             </nav>
 
-            <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem">...</h3>
+            <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
             
             <div id="protocol-grid"></div>
 
             <section id="dashboard" class="dashboard-section" style="display: none;">
                 </section>
+
+            <div id="suggestions-view" class="suggestions-container"></div>
 
             <div id="fab-container" style="text-align: center; margin-top: 2rem;">
                 <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.openModal()">+ CRIAR NOVO</button>
@@ -203,18 +195,49 @@
 
 <script>
 /**
- * NEXUS CORE v7.0 (Units & Analytics)
+ * NEXUS CORE v8.0 (Ultimate Integration)
  */
 
-// SISTEMA DE MEDIDAS E CONVERSÃO
+// SISTEMA DE MEDIDAS (Para conversão automática)
 const UNIT_SYSTEM = {
     groups: {
-        time: { label: 'Tempo', units: { 'h': 1, 'min': 60 } }, // Base: Horas. 1h = 1h, 1h = 60min
-        volume: { label: 'Volume', units: { 'L': 1, 'ml': 1000 } }, // Base: Litros
-        distance: { label: 'Distância', units: { 'km': 1, 'm': 1000 } }, // Base: KM
-        weight: { label: 'Peso', units: { 'kg': 1, 'g': 1000 } }, // Base: KG
-        money: { label: 'Finanças', units: { 'R$': 1, '$': 1, '€': 1 } },
-        generic: { label: 'Geral', units: { 'x': 1, 'pgs': 1, 'caps': 1 } }
+        time: { label: 'Tempo', units: { 'h': 1, 'min': 60 } }, 
+        volume: { label: 'Volume', units: { 'L': 1, 'ml': 1000 } },
+        distance: { label: 'Distância', units: { 'km': 1, 'm': 1000 } },
+        weight: { label: 'Peso', units: { 'kg': 1, 'g': 1000 } },
+        money: { label: 'Finanças', units: { 'R$': 1, 'USD': 1, 'EUR': 1 } },
+        generic: { label: 'Contagem', units: { 'x': 1, 'pgs': 1, 'unid': 1 } }
+    }
+};
+
+const SUGGESTIONS_DB = [
+    { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3, unit: 'L', cycle: 'daily' },
+    { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 30, unit: 'min', cycle: 'daily' },
+    { type: 'boost', icon: '💪', name_pt: 'Treino', name_en: 'Workout', target: 1, unit: 'x', cycle: 'daily' },
+    { type: 'boost', icon: '🧘', name_pt: 'Meditação', name_en: 'Meditation', target: 15, unit: 'min', cycle: 'daily' },
+    { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' },
+    { type: 'detox', icon: '🍬', name_pt: 'Zero Açúcar', name_en: 'No Sugar', target: 1, unit: 'dia', cycle: 'daily' },
+    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' }
+];
+
+const DICTIONARY = {
+    pt: {
+        tabs: { protocols: "MEUS PROTOCOLOS", explore: "EXPLORAR SUGESTÕES" },
+        sections: { boost: "🚀 BOOST (Bons Hábitos)", detox: "⛔ DETOX (Reduzir)" },
+        emptyTitle: "SISTEMA OCIOSO", emptyDesc: "Sem protocolos ativos.",
+        emptyHist: "SEM DADOS", emptyHistDesc: "Nenhum registro.",
+        cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
+        dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
+        btnCancel: "Cancelar", btnConfirm: "Confirmar"
+    },
+    en: {
+        tabs: { protocols: "MY PROTOCOLS", explore: "EXPLORE SUGGESTIONS" },
+        sections: { boost: "🚀 BOOST (Good Habits)", detox: "⛔ DETOX (Reduce)" },
+        emptyTitle: "SYSTEM IDLE", emptyDesc: "No active protocols.",
+        emptyHist: "NO DATA", emptyHistDesc: "No records.",
+        cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
+        dash: { perf: "PERFORMANCE", streak: "STREAK DAYS", acts: "ACTIONS TODAY" },
+        btnCancel: "Cancel", btnConfirm: "Confirm"
     }
 };
 
@@ -224,13 +247,41 @@ class NexusOS {
         this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
         this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
         this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
+        this.currentTab = 'protocols';
+        
+        this.grid = document.getElementById('protocol-grid');
+        this.sugView = document.getElementById('suggestions-view');
+        this.modalOverlay = document.getElementById('modal-overlay');
+        
         this.init();
     }
 
     init() {
         this.checkResets();
         this.renderCalendar();
+        this.updateTexts();
         this.render();
+        this.renderSuggestions();
+    }
+
+    // --- NAVIGATION ---
+    switchTab(tab) {
+        this.currentTab = tab;
+        document.getElementById('tab-protocols').className = `tab-btn ${tab === 'protocols' ? 'active' : ''}`;
+        document.getElementById('tab-suggestions').className = `tab-btn ${tab === 'suggestions' ? 'active' : ''}`;
+        
+        if (tab === 'protocols') {
+            this.grid.style.display = 'grid';
+            document.getElementById('dashboard').style.display = this.protocols.length > 0 ? 'grid' : 'none';
+            this.sugView.classList.remove('active');
+            document.getElementById('fab-container').style.display = 'block';
+            this.render(); 
+        } else {
+            this.grid.style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            this.sugView.classList.add('active');
+            document.getElementById('fab-container').style.display = 'none';
+        }
     }
 
     // --- CORE LOGIC ---
@@ -241,8 +292,10 @@ class NexusOS {
         this.protocols = this.protocols.map(p => {
             const last = new Date(p.lastReset || 0);
             let reset = false;
-            // Simple logic for brevity
             if (p.cycle === 'daily' && todayKey !== this.formatDateKey(last)) reset = true;
+            else if (p.cycle === 'weekly' && last < this.getMonday(now)) reset = true;
+            else if (p.cycle === 'monthly' && now.getMonth() !== last.getMonth()) reset = true;
+            
             if (reset) { 
                 if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
                 p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; 
@@ -261,83 +314,23 @@ class NexusOS {
         }
     }
 
-    // --- SMART UNIT CONVERSION ---
-    // Retorna a lista de unidades compatíveis com a unidade alvo
+    getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
+
+    // --- UNIT LOGIC ---
     getCompatibleUnits(targetUnit) {
         for (const groupName in UNIT_SYSTEM.groups) {
             const group = UNIT_SYSTEM.groups[groupName];
             if (group.units[targetUnit]) return Object.keys(group.units);
         }
-        return [targetUnit]; // Se não achar grupo, retorna ela mesma
+        return [targetUnit];
     }
 
-    convertValue(amount, fromUnit, toUnit) {
-        // Encontra o grupo
-        let group = null;
-        for (const g in UNIT_SYSTEM.groups) {
-            if (UNIT_SYSTEM.groups[g].units[fromUnit] && UNIT_SYSTEM.groups[g].units[toUnit]) {
-                group = UNIT_SYSTEM.groups[g];
-                break;
-            }
-        }
-        if (!group) return parseFloat(amount); // Sem conversão possível
-
-        // Regra de 3: 
-        // Se 1 Base = X FromUnit
-        // Se 1 Base = Y ToUnit
-        // Valor Base = Amount / FromFactor
-        // Valor Final = Valor Base * ToFactor ?? Não.
-        // Vamos simplificar: Converter tudo para a unidade MENOR (ex: ml, min) ou BASE?
-        // Usaremos fator relativo a BASE 1.
-        // Ex: Base = Hora. h=1, min=60.
-        // Input: 30 min -> Target: h.
-        // 30 / 60 = 0.5. Correto.
-        // Input: 0.5 h -> Target: min.
-        // 0.5 * 60 / 1 = 30.
-        
-        const fromFactor = group.units[fromUnit];
-        const toFactor = group.units[toUnit];
-        
-        // Conversão: (Amount / FromFactor) * ToFactor ??? 
-        // Não. Se h=1 e min=60.
-        // Quero converter 30min para h.
-        // 30 / 60 = 0.5. (Amount / FromFactor) * ToFactor (1) = 0.5.
-        // Quero converter 1h para min.
-        // 1 / 1 * 60 = 60.
-        // Quero converter 1000m para km (km=1, m=1000).
-        // 1000 / 1000 * 1 = 1.
-        
-        // CORREÇÃO LÓGICA:
-        // Os fatores no objeto são "Quantos deste cabem em 1 Base".
-        return (parseFloat(amount) / fromFactor) * toFactor; 
-        
-        // Espera, se eu tenho HORA como base (1) e MINUTO (60).
-        // O input é 30 MINUTOS. Quero somar na meta que está em HORAS.
-        // Valor = 30 / 60 = 0.5.
-        // Então a fórmula é: amount / factor_of_input_unit * factor_of_target_unit
-        // Se meta é MINUTOS (base seria min? não, base fixa).
-        
-        // SIMPLIFICAÇÃO: O sistema armazena o valor na unidade que o usuário definiu como "Unidade da Meta".
-        // Se a Meta é em Litros (L). Factor L = 1. Factor ml = 1000.
-        // Input: 500 ml.
-        // Conta: 500 / 1000 = 0.5. Soma 0.5 na meta.
-        
-        return (parseFloat(amount) / fromFactor) * toFactor; // Não, essa logica inverteu.
-        
-        // Correto: Valor Normalizado = Amount / FatorDaUnidadeInput.
-        // Valor Convertido = Valor Normalizado * FatorDaUnidadeTarget.
-        // Teste: 500ml (fator 1000) -> 1 L (fator 1).
-        // 500 / 1000 * 1 = 0.5. CERTO.
-        // Teste: 0.5 L (fator 1) -> ml (fator 1000).
-        // 0.5 / 1 * 1000 = 500. CERTO.
-    }
-
-    // --- UI RENDER ---
+    // --- RENDER ---
     render() {
-        const grid = document.getElementById('protocol-grid');
-        const dashboard = document.getElementById('dashboard');
-        grid.innerHTML = '';
-        
+        // Se estiver na aba sugestões, não renderiza o grid principal
+        if(this.currentTab === 'suggestions') return;
+
+        this.grid.innerHTML = '';
         const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
         const viewKey = this.formatDateKey(this.selectedDate);
         
@@ -346,26 +339,22 @@ class NexusOS {
         document.getElementById('fab-container').style.display = isToday ? 'block' : 'none';
 
         const data = isToday ? this.protocols : (this.history[viewKey] || []);
-        
-        // DASHBOARD LOGIC
-        let totalPct = 0;
-        let activeCount = 0;
-        
+        let totalPct = 0; let activeCount = 0;
+
         if (data.length === 0) {
-            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>Sem Dados</h3></div>`;
-            dashboard.style.display = 'none';
+            this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${isToday?this.t('emptyTitle'):this.t('emptyHist')}</h3><p>${isToday?this.t('emptyDesc'):this.t('emptyHistDesc')}</p></div>`;
+            document.getElementById('dashboard').style.display = 'none';
         } else {
-            dashboard.style.display = 'grid'; // Show Dashboard
+            if(isToday) document.getElementById('dashboard').style.display = 'grid';
+            else document.getElementById('dashboard').style.display = 'none'; // No dashboard for past dates yet
             
             data.forEach(p => {
                 const pct = Math.min((p.current / p.target) * 100, 100);
-                totalPct += pct;
-                activeCount++;
-                
+                totalPct += pct; activeCount++;
                 const isComp = p.current >= p.target;
                 const icon = this.getIcon(p.name);
                 
-                // Dropdown de Unidades (Mini)
+                // Conversor Dropdown Logic
                 const compatibleUnits = this.getCompatibleUnits(p.unit);
                 let unitSelectorHTML = '';
                 if(isToday && compatibleUnits.length > 1) {
@@ -378,17 +367,16 @@ class NexusOS {
 
                 const inputArea = isToday ? `
                     <div class="input-action-row">
-                        <input type="number" class="input-fraction" id="input-${p.id}" placeholder="0">
+                        <input type="number" class="input-fraction" id="input-${p.id}" placeholder="0" onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')">
                         ${unitSelectorHTML}
                         <button class="btn" onclick="nexus.handleInput('${p.id}')">+</button>
                     </div>` : '';
 
-                const card = document.createElement('div'); 
-                card.className = `card`;
+                const card = document.createElement('div'); card.className = `card ${!isToday?'read-only':''}`;
                 card.innerHTML = `
                     <div style="display:flex;justify-content:space-between">
                         <div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>
-                        ${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}
+                        ${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer;font-size:1.2rem" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}
                     </div>
                     <div class="stats">
                         <span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span>
@@ -397,21 +385,17 @@ class NexusOS {
                     <div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>
                     ${inputArea}
                 `;
-                grid.appendChild(card);
+                this.grid.appendChild(card);
             });
             
-            this.renderDashboard(totalPct, activeCount);
+            if(isToday) this.renderDashboard(totalPct, activeCount);
         }
     }
 
     renderDashboard(totalPct, count) {
         const avg = count > 0 ? Math.round(totalPct / count) : 0;
         const dash = document.getElementById('dashboard');
-        
-        // Calculate Streak (Simulated simple logic)
-        const streak = this.calculateStreak();
-        
-        // Color for chart
+        const streak = Object.keys(this.history).length; // Simples
         const chartColor = avg === 100 ? 'var(--accent)' : 'var(--primary)';
 
         dash.innerHTML = `
@@ -421,26 +405,27 @@ class NexusOS {
                     <path class="circle" stroke-dasharray="${avg}, 100" stroke="${chartColor}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                     <text x="18" y="20.35" class="percentage">${avg}%</text>
                 </svg>
-                <div class="dash-label" style="margin-top:10px">PERFORMANCE</div>
+                <div class="dash-label" style="margin-top:10px">${this.t('dash.perf')}</div>
             </div>
-            <div class="dash-card">
-                <div class="dash-value" style="color:var(--accent)">${streak}</div>
-                <div class="dash-label">DIAS SEGUIDOS</div>
-            </div>
-            <div class="dash-card">
-                <div class="dash-value">${count}</div>
-                <div class="dash-label">ATIVIDADES</div>
-            </div>
+            <div class="dash-card"><div class="dash-value" style="color:var(--accent)">${streak}</div><div class="dash-label">${this.t('dash.streak')}</div></div>
+            <div class="dash-card"><div class="dash-value">${count}</div><div class="dash-label">${this.t('dash.acts')}</div></div>
         `;
     }
 
-    calculateStreak() {
-        // Lógica simplificada de streak baseada no histórico
-        let streak = 0;
-        const keys = Object.keys(this.history).sort().reverse();
-        // Check yesterday, then day before...
-        // For simple demo, returns random number or 1 if history exists
-        return keys.length > 0 ? keys.length : 0; 
+    renderSuggestions() {
+        this.sugView.innerHTML = '';
+        const renderSection = (type, titleKey) => {
+            const items = SUGGESTIONS_DB.filter(s => s.type === type);
+            if(items.length === 0) return '';
+            let html = `<div class="sug-section-title">${this.t(titleKey)}</div><div class="sug-grid">`;
+            items.forEach(item => {
+                const name = this.lang === 'pt' ? item.name_pt : item.name_en;
+                html += `<div class="sug-card" onclick="nexus.openModal({name: '${name}', target: ${item.target}, unit: '${item.unit}', cycle: '${item.cycle}'})"><div class="sug-icon">${item.icon}</div><div class="sug-name">${name}</div><div class="sug-meta">${item.target} ${item.unit}</div></div>`;
+            });
+            return html + `</div>`;
+        };
+        this.sugView.innerHTML += renderSection('boost', 'sections.boost');
+        this.sugView.innerHTML += renderSection('detox', 'sections.detox');
     }
 
     handleInput(id) {
@@ -450,65 +435,55 @@ class NexusOS {
         if(!val) return;
 
         const p = this.protocols.find(x => x.id === id);
-        
-        // Conversão Lógica
         let finalValue = val;
+        
         if(unitSel && unitSel.value !== p.unit) {
-            // Se input unit != target unit, converter
-            // Precisamos dos fatores.
             let group = null;
-            for(const g in UNIT_SYSTEM.groups) {
-                if(UNIT_SYSTEM.groups[g].units[p.unit]) group = UNIT_SYSTEM.groups[g];
-            }
+            for(const g in UNIT_SYSTEM.groups) if(UNIT_SYSTEM.groups[g].units[p.unit]) group = UNIT_SYSTEM.groups[g];
             if(group) {
                 const inputFactor = group.units[unitSel.value]; // ex: ml = 1000
                 const targetFactor = group.units[p.unit]; // ex: L = 1
-                
-                // Formula: (Input / InputFactor) * TargetFactor
-                // Ex: 500 / 1000 * 1 = 0.5
                 finalValue = (val / inputFactor) * targetFactor;
-                
-                // Arredondar para evitar 0.300000004
                 finalValue = Math.round(finalValue * 100) / 100;
             }
         }
-
         p.current = Math.round((p.current + finalValue) * 100) / 100;
         this.save();
         input.value = '';
     }
 
-    // --- MODAL & CREATION ---
-    openModal() {
-        // Gera Options para o Select de Unidades (Agrupado)
+    // --- MODAL ---
+    openModal(pre={}) {
         let optionsHTML = '';
         for(const key in UNIT_SYSTEM.groups) {
             const g = UNIT_SYSTEM.groups[key];
             optionsHTML += `<optgroup label="${g.label}">`;
-            for(const u in g.units) optionsHTML += `<option value="${u}">${u}</option>`;
+            for(const u in g.units) optionsHTML += `<option value="${u}" ${pre.unit===u?'selected':''}>${u}</option>`;
             optionsHTML += `</optgroup>`;
         }
-
+        
         const html = `
             <div class="modal">
                 <h2 style="color:var(--primary);margin-bottom:1.5rem">Novo Protocolo</h2>
-                <input type="text" id="p-name" class="form-control" placeholder="Nome (ex: Beber Água)">
+                <input type="text" id="p-name" class="form-control" placeholder="Nome" value="${pre.name||''}">
                 <div style="display:flex;gap:1rem">
-                    <input type="number" id="p-target" class="form-control" placeholder="Meta (ex: 3)">
+                    <input type="number" id="p-target" class="form-control" placeholder="Meta" value="${pre.target||''}">
                     <select id="p-unit" class="form-control">${optionsHTML}</select>
                 </div>
                 <select id="p-cycle" class="form-control">
-                    <option value="daily">Diário</option>
-                    <option value="weekly">Semanal</option>
-                    <option value="monthly">Mensal</option>
+                    <option value="daily" ${pre.cycle==='daily'?'selected':''}>${this.t('cycles.daily')}</option>
+                    <option value="weekly" ${pre.cycle==='weekly'?'selected':''}>${this.t('cycles.weekly')}</option>
+                    <option value="monthly" ${pre.cycle==='monthly'?'selected':''}>${this.t('cycles.monthly')}</option>
+                    <option value="infinite" ${pre.cycle==='infinite'?'selected':''}>${this.t('cycles.infinite')}</option>
                 </select>
-                <div style="text-align:right">
-                    <button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">Cancelar</button>
-                    <button class="btn btn-add" onclick="nexus.createProtocol()">Criar</button>
+                <div style="text-align:right;margin-top:1rem">
+                    <button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button>
+                    <button class="btn btn-add" onclick="nexus.createProtocol()">${this.t('btnConfirm')}</button>
                 </div>
             </div>`;
         document.getElementById('modal-overlay').innerHTML = html;
         document.getElementById('modal-overlay').style.display = 'flex';
+        if(pre.name) setTimeout(()=>document.getElementById('p-target').focus(),100);
     }
 
     createProtocol() {
@@ -518,22 +493,42 @@ class NexusOS {
         const cycle = document.getElementById('p-cycle').value;
         if(!name || !target) return;
         this.protocols.push({id:Date.now().toString(36), name, target, unit, cycle, current:0, lastReset:new Date().toISOString()});
-        this.closeModal(); this.save();
+        this.closeModal(); this.save(); this.switchTab('protocols');
     }
 
     // --- HELPERS ---
+    t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
+    toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderSuggestions(); this.renderCalendar(); }
+    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); }
     save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
-    deleteProtocol(id) { if(confirm('Excluir?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
+    deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
     toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('active'); document.getElementById('sidebar-backdrop').classList.toggle('active'); }
     closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-    getIcon(name) { const n=name.toLowerCase(); const i={'água':'💧','ler':'📚','treino':'💪','sono':'💤','dinheiro':'💰','code':'💻'}; for(let k in i)if(n.includes(k))return i[k]; return '⚡'; }
-    renderCalendar() { /* Simplificado para manter tamanho */ const c = document.getElementById('calendar-days'); c.innerHTML=''; for(let i=1;i<=30;i++){const d=document.createElement('div');d.className=`day-cell ${i===this.today.getDate()?'today':''}`;d.innerText=i;c.appendChild(d);} }
-    toggleLang() { /* Stub */ }
-    changeMonth() { /* Stub */ }
-    selectDate(d) { this.selectedDate = d; this.render(); if(window.innerWidth<=850)this.toggleSidebar(); }
+    getIcon(name) { const n=name.toLowerCase(); const i={'água':'💧','ler':'📚','treino':'💪','sono':'💤','dinheiro':'💰','code':'💻','açúcar':'🍬'}; for(let k in i)if(n.includes(k))return i[k]; return '⚡'; }
+    
+    // Calendar Utils
+    renderCalendar() {
+        const c = document.getElementById('calendar-days'); const ml = document.getElementById('month-label');
+        c.innerHTML=''; 
+        const year = this.calendarViewDate.getFullYear(); const month = this.calendarViewDate.getMonth();
+        const mNames = this.lang==='pt'?["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]:["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+        ml.innerText = mNames[month] + " " + year;
+        const first = new Date(year,month,1).getDay(); const days = new Date(year,month+1,0).getDate();
+        for(let i=0;i<first;i++)c.innerHTML+=`<div></div>`;
+        for(let i=1;i<=days;i++){
+            const d=new Date(year,month,i); const k=this.formatDateKey(d);
+            const isT=this.formatDateKey(this.today)===k; const isS=this.formatDateKey(this.selectedDate)===k; const has=this.history[k];
+            const div=document.createElement('div'); div.className=`day-cell ${isT?'today':''} ${isS?'selected':''} ${has?'has-data':''}`; div.innerText=i;
+            div.onclick=()=>this.selectDate(d);
+            c.appendChild(div);
+        }
+    }
+    changeMonth(d) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth()+d); this.renderCalendar(); }
+    selectDate(d) { this.selectedDate=d; this.switchTab('protocols'); this.renderCalendar(); this.render(); if(window.innerWidth<=850) this.toggleSidebar(); }
 }
 
 document.addEventListener('DOMContentLoaded', () => { window.nexus = new NexusOS(); });
+document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });
 </script>
 </body>
 </html>
