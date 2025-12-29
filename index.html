@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v11.1</title>
+    <title>NEXUS LIFE OS v11.2 - Full Access</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -61,7 +61,7 @@
         .btn-del-item { position: absolute; bottom: 0.5rem; right: 0.5rem; background: none; border: none; color: #444; cursor: pointer; font-size: 0.8rem; transition: color 0.2s; }
         .btn-del-item:hover { color: var(--danger); }
 
-        /* --- GRIDS --- */
+        /* --- GRIDS & CARDS --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
@@ -80,7 +80,7 @@
         @keyframes progress { 0% { stroke-dasharray: 0 100; } }
         .percentage { fill: #fff; font-family: var(--font-stack); font-weight: bold; font-size: 0.8em; text-anchor: middle; }
 
-        /* --- FINANCES --- */
+        /* --- FINANCE --- */
         .finance-view { display: none; animation: fadeIn 0.3s; }
         .finance-view.active { display: block; }
         .fin-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
@@ -98,8 +98,6 @@
         .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; } .fin-date { font-size: 0.75rem; color: var(--text-muted); } .fin-amount { font-weight: 700; font-size: 1rem; }
         .fin-del-btn { background: none; border: none; color: #555; cursor: pointer; font-size: 1.1rem; margin-left: 1rem; transition: color 0.2s; }
         .fin-del-btn:hover { color: var(--danger); }
-        
-        /* CHART FIX */
         .fin-chart-container { margin-bottom: 2rem; background: var(--bg-panel); border-radius: var(--radius-card); padding: 1.5rem; border: 1px solid var(--border); display:block; }
         .chart-row { margin-bottom: 0.8rem; }
         .chart-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-main); font-weight: 600; }
@@ -136,7 +134,6 @@
         .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
         .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
-        
         .day-selector { display: flex; gap: 5px; justify-content: space-between; margin-bottom: 1rem; }
         .day-checkbox { display: none; }
         .day-label { width: 35px; height: 35px; border-radius: 50%; background: var(--bg-input); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
@@ -159,11 +156,14 @@
         .form-control { width: 100%; padding: 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 1rem; margin-bottom: 1rem; }
         select.form-control { appearance: none; }
 
-        /* Login */
+        /* Login Reformulado */
         #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-core); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
         .login-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 3rem; border-radius: 30px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 0 50px rgba(0,240,255,0.1); }
-        .btn-login-google { background: white; color: #333; width: 100%; padding: 1rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 2rem; transition: transform 0.2s; }
-        .btn-login-google:hover { transform: scale(1.02); }
+        .btn-login-google { background: white; color: #333; width: 100%; padding: 1rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 1rem; transition: transform 0.2s; }
+        .btn-login-action { background: var(--primary); color: var(--bg-core); width: 100%; padding: 1rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: transform 0.2s; }
+        .btn-login-secondary { background: transparent; color: var(--text-muted); width: 100%; padding: 0.5rem; border: none; cursor: pointer; margin-top: 0.5rem; text-decoration: underline; }
+        .divider { margin: 1.5rem 0; border-bottom: 1px solid var(--border); position: relative; }
+        .divider span { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--bg-panel); padding: 0 10px; color: var(--text-muted); font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -172,10 +172,18 @@
         <div class="login-card">
             <svg style="width:64px;height:64px;color:var(--primary);margin-bottom:1rem" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text></svg>
             <h1 style="justify-content:center; margin-bottom:0.5rem">Nexus Life OS</h1>
-            <p style="color:var(--text-muted)">Sincronização em Nuvem</p>
+            
+            <input type="email" id="login-email" class="form-control" placeholder="E-mail" style="margin-bottom:0.5rem">
+            <input type="password" id="login-pass" class="form-control" placeholder="Senha">
+            
+            <button class="btn-login-action" onclick="nexus.loginEmail()">ENTRAR</button>
+            <button class="btn-login-secondary" onclick="nexus.registerEmail()">Não tem conta? Cadastrar</button>
+
+            <div class="divider"><span>ou</span></div>
+
             <button class="btn-login-google" onclick="nexus.loginGoogle()">
                 <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                Entrar com Google
+                Google
             </button>
             <div id="login-status" style="margin-top:1rem;color:var(--primary);font-size:0.8rem"></div>
         </div>
@@ -304,7 +312,7 @@
 
 <script>
 /**
- * NEXUS CORE v11.1 (Wealth Fix & Chart Stability)
+ * NEXUS CORE v11.2 (Full Login: Google + Email/Pass)
  */
 
 // --- CONFIGURAÇÃO DO FIREBASE (PREENCHA AQUI) ---
@@ -371,8 +379,26 @@ class NexusOS {
             }
         });
     }
-    loginGoogle() { if(auth) auth.signInWithPopup(provider); }
+
+    // --- NOVOS MÉTODOS DE LOGIN ---
+    loginGoogle() { if(auth) auth.signInWithPopup(provider).catch(e => alert(e.message)); }
+    
+    loginEmail() {
+        const e = document.getElementById('login-email').value;
+        const p = document.getElementById('login-pass').value;
+        if(!e || !p) return alert("Preencha email e senha.");
+        auth.signInWithEmailAndPassword(e, p).catch(err => alert("Erro: " + err.message));
+    }
+
+    registerEmail() {
+        const e = document.getElementById('login-email').value;
+        const p = document.getElementById('login-pass').value;
+        if(!e || !p) return alert("Preencha email e senha para criar conta.");
+        auth.createUserWithEmailAndPassword(e, p).catch(err => alert("Erro ao criar: " + err.message));
+    }
+
     logout() { auth.signOut(); location.reload(); }
+
     async loadFromCloud() {
         const doc = await db.collection('users').doc(this.user.uid).get();
         if (doc.exists) {
@@ -395,44 +421,27 @@ class NexusOS {
 
     renderFinance() {
         let bal = 0, inv = 0, inc = 0, exp = 0;
-        
-        // CORREÇÃO 1: Lógica Contábil Ajustada
-        // "Inv" agora é tratado como Ativo, somando ao total sem subtrair do saldo (para simplificar acompanhamento de patrimônio)
         this.finance.forEach(t => {
             const val = parseFloat(t.amount);
             if(t.type === 'in') { bal += val; inc += val; }
             else if(t.type === 'out') { bal -= val; exp += val; }
-            else if(t.type === 'inv') { 
-                inv += val; // Apenas soma ao montante investido, não tira do caixa (Saldo = Disponível)
-            }
+            else if(t.type === 'inv') { inv += val; }
         });
-
-        // Calculo Moeda Estrangeira (Mock para não travar renderização se API falhar)
         const rates = { USD: 5.0, EUR: 5.5, GBP: 6.3, BTC: 350000 }; 
-        // Em produção, a API atualizaria isso, mas para o gráfico não sumir, usamos padrão ou cache
         let foreignTotalBRL = 0;
         foreignTotalBRL += (this.foreign.USD || 0) * rates.USD;
         foreignTotalBRL += (this.foreign.EUR || 0) * rates.EUR;
         foreignTotalBRL += (this.foreign.GBP || 0) * rates.GBP;
         foreignTotalBRL += (this.foreign.BTC || 0) * rates.BTC;
-
-        // Tenta atualizar taxas reais em background sem travar UI
         this.fetchRatesBackground();
-
         const totalGlobalNetWorth = bal + inv + foreignTotalBRL;
-
-        // Filtros de Data
         const viewKey = this.formatDateKey(this.selectedDate);
         const dailyTransactions = this.finance.filter(t => this.formatDateKey(t.date) === viewKey).reverse();
-        
-        // CORREÇÃO 2: Gráfico Mensal Robusto
         const currentMonthKey = viewKey.substring(0, 7); 
         const monthlyExpenses = {};
         let totalMonthlyExpense = 0;
-        
         this.finance.forEach(t => {
             const tDateKey = this.formatDateKey(t.date);
-            // Garante que só pega saídas do mês atual
             if(tDateKey.startsWith(currentMonthKey) && t.type === 'out') {
                 const cat = (t.desc || 'Outros').toUpperCase();
                 if(!monthlyExpenses[cat]) monthlyExpenses[cat] = 0;
@@ -440,9 +449,7 @@ class NexusOS {
                 totalMonthlyExpense += parseFloat(t.amount);
             }
         });
-
         const sortedExpenses = Object.entries(monthlyExpenses).sort((a,b) => b[1] - a[1]).slice(0, 5);
-        
         let chartHTML = '';
         if(sortedExpenses.length > 0) {
             chartHTML = `<div class="fin-chart-container"><div class="chart-header" style="margin-bottom:1rem">${this.t('chartTitle')}</div>`;
@@ -451,11 +458,7 @@ class NexusOS {
                 chartHTML += `<div class="chart-row"><div class="chart-header"><span>${name}</span><span>${amount.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</span></div><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${pct}%"></div></div></div>`;
             });
             chartHTML += `</div>`;
-        } else {
-            // Mostra placeholder se não houver dados, para o usuário saber que a função existe
-            chartHTML = `<div class="fin-chart-container" style="text-align:center; color:var(--text-muted); font-size:0.8rem">Sem despesas registradas neste mês (${currentMonthKey}).</div>`;
-        }
-
+        } else { chartHTML = `<div class="fin-chart-container" style="text-align:center; color:var(--text-muted); font-size:0.8rem">Sem despesas registradas neste mês (${currentMonthKey}).</div>`; }
         let listHTML = '';
         dailyTransactions.forEach(t => {
              const val = parseFloat(t.amount);
@@ -464,7 +467,6 @@ class NexusOS {
              const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
              listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${t.time || ''}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}<button class="fin-del-btn" onclick="nexus.deleteTransaction(${t.id})">✕</button></div></div>`;
         });
-
         this.finView.innerHTML = `
             <div class="fin-summary">
                 <div class="fin-card global-net"><div class="fin-label">${this.t('fin.net')}</div><div class="fin-val">${totalGlobalNetWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
@@ -480,16 +482,9 @@ class NexusOS {
         `;
     }
 
-    async fetchRatesBackground() {
-        // Atualiza taxas silenciosamente
-        try {
-            const res = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
-            const data = await res.json();
-            // Lógica para atualizar valores se necessário, mas não re-renderiza tudo para evitar loop
-        } catch(e) {}
-    }
+    async fetchRatesBackground() { try { const res = await fetch('https://api.exchangerate-api.com/v4/latest/BRL'); const data = await res.json(); } catch(e) {} }
 
-    // --- (Restante das funções mantidas iguais a v11.0) ---
+    // --- MANUTENÇÃO DAS FUNÇÕES ANTERIORES ---
     switchTab(tab) { this.currentTab = tab; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(`tab-${tab}`).classList.add('active'); document.getElementById('protocol-view').style.display = tab === 'protocols' ? 'block' : 'none'; this.finView.classList.remove('active'); this.sugView.classList.remove('active'); this.currView.classList.remove('active'); document.getElementById('fab-container').style.display = 'block'; if(tab === 'protocols') this.render(); else if(tab === 'finance') { this.finView.classList.add('active'); this.renderFinance(); } else if(tab === 'currency') { this.currView.classList.add('active'); document.getElementById('fab-container').style.display = 'none'; } else if(tab === 'suggestions') { this.sugView.classList.add('active'); document.getElementById('fab-container').style.display = 'none'; } }
     handleFabClick() { if(this.currentTab === 'protocols') this.openProtocolModal(); else if(this.currentTab === 'finance') this.openFinanceModal(); }
     formatDateKey(date) { const d = new Date(date); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
