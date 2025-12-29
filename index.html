@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v8.0 (Ultimate)</title>
+    <title>NEXUS LIFE OS v9.0</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -15,8 +15,9 @@
             --bg-input: #222222;
             --primary: #00f0ff;
             --primary-dim: rgba(0, 240, 255, 0.15);
-            --accent: #00ff9d;
-            --danger: #ff477e;
+            --accent: #00ff9d; /* Verde (Entradas) */
+            --danger: #ff477e; /* Vermelho (Saídas) */
+            --warning: #ffb86c;
             --text-main: #f0f0f0;
             --text-muted: #888888;
             --border: #333333;
@@ -36,18 +37,15 @@
             display: flex;
         }
 
-        /* --- SIDEBAR (Calendário Off-Canvas) --- */
+        /* --- SIDEBAR --- */
         .app-sidebar {
-            width: 320px;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
+            width: 320px; background: var(--bg-sidebar); border-right: 1px solid var(--border);
             display: flex; flex-direction: column; padding: 2rem 1.5rem; flex-shrink: 0; overflow-y: auto;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 2000;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2000;
         }
         .sidebar-close-btn { display: none; margin-bottom: 1rem; color: var(--text-muted); background: transparent; border: none; font-size: 1.5rem; cursor: pointer; text-align: right; }
 
-        /* --- CONTENT AREA --- */
+        /* --- CONTENT --- */
         .app-content { flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative; }
         .content-container { width: 100%; max-width: 800px; padding-bottom: 100px; }
 
@@ -60,12 +58,12 @@
         .logo-icon-header { width: 36px; height: 36px; margin-right: 12px; color: var(--primary); }
         h1 span { color: var(--primary); font-weight: 300; margin-left: 5px; }
 
-        .tab-nav { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; overflow-x: auto; }
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0; cursor: pointer; font-size: 0.95rem; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+        .tab-nav { display: flex; gap: 1.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; overflow-x: auto; }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0; cursor: pointer; font-size: 0.9rem; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* --- PROTOCOLS GRID --- */
+        /* --- GRIDS & CARDS --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
@@ -75,25 +73,46 @@
         .progress-fill.complete { background: var(--accent); }
         .stats { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; }
 
-        /* --- SMART INPUTS --- */
+        /* --- INPUTS --- */
         .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
         .input-fraction { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem; font-size: 1rem; }
         .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
         .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
 
-        /* --- DASHBOARD (New Feature) --- */
-        .dashboard-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; animation: fadeIn 0.5s; }
+        /* --- DASHBOARD PROTOCOLS --- */
+        .dashboard-section { margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
         .dash-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .dash-value { font-size: 1.8rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
-        .dash-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .dash-value { font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
+        .dash-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
         .circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 100px; }
         .circle-bg { fill: none; stroke: var(--bg-input); stroke-width: 3.8; }
         .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; animation: progress 1s ease-out forwards; }
         @keyframes progress { 0% { stroke-dasharray: 0 100; } }
         .percentage { fill: #fff; font-family: var(--font-stack); font-weight: bold; font-size: 0.8em; text-anchor: middle; }
 
-        /* --- SUGGESTIONS GRID --- */
+        /* --- FINANCE MODULE STYLES --- */
+        .finance-view { display: none; animation: fadeIn 0.3s; }
+        .finance-view.active { display: block; }
+
+        .fin-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .fin-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.2rem; display: flex; flex-direction: column; }
+        .fin-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+        .fin-val { font-size: 1.4rem; font-weight: 700; color: white; }
+        .fin-val.pos { color: var(--accent); }
+        .fin-val.neg { color: var(--danger); }
+        .fin-val.inv { color: var(--primary); }
+
+        .fin-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .fin-item { background: var(--bg-input); border-radius: 12px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid transparent; }
+        .fin-item.income { border-left-color: var(--accent); }
+        .fin-item.expense { border-left-color: var(--danger); }
+        .fin-item.invest { border-left-color: var(--primary); }
+        .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
+        .fin-date { font-size: 0.75rem; color: var(--text-muted); }
+        .fin-amount { font-weight: 700; font-size: 1rem; }
+
+        /* --- SUGGESTIONS --- */
         .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
         .suggestions-container.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -102,10 +121,8 @@
         .sug-card { aspect-ratio: 1; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 1rem; text-align: center; transition: all 0.2s; }
         .sug-card:hover { border-color: var(--primary); transform: translateY(-3px); }
         .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
-        .sug-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
-        .sug-meta { font-size: 0.75rem; color: var(--text-muted); }
-
-        /* --- CALENDAR STYLES --- */
+        
+        /* --- CALENDAR --- */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .month-label { font-size: 1.1rem; font-weight: bold; color: white; }
         .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
@@ -172,21 +189,26 @@
             </header>
 
             <nav class="tab-nav">
-                <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">MEUS PROTOCOLOS</button>
-                <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR SUGESTÕES</button>
+                <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">PROTOCOLOS</button>
+                <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
+                <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR</button>
             </nav>
 
             <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
             
-            <div id="protocol-grid"></div>
+            <div id="protocol-view">
+                <div id="protocol-grid"></div>
+                <section id="dashboard" class="dashboard-section" style="display: none;">
+                    </section>
+            </div>
 
-            <section id="dashboard" class="dashboard-section" style="display: none;">
-                </section>
+            <div id="finance-view" class="finance-view">
+                </div>
 
             <div id="suggestions-view" class="suggestions-container"></div>
 
             <div id="fab-container" style="text-align: center; margin-top: 2rem;">
-                <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.openModal()">+ CRIAR NOVO</button>
+                <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.handleFabClick()">+ ADICIONAR</button>
             </div>
         </div>
     </main>
@@ -195,48 +217,45 @@
 
 <script>
 /**
- * NEXUS CORE v8.0 (Ultimate Integration)
+ * NEXUS CORE v9.0 (Finance + Time Units)
  */
 
-// SISTEMA DE MEDIDAS (Para conversão automática)
+// SISTEMA DE MEDIDAS (Baseados em Multiplicadores para Base 1)
 const UNIT_SYSTEM = {
     groups: {
-        time: { label: 'Tempo', units: { 'h': 1, 'min': 60 } }, 
-        volume: { label: 'Volume', units: { 'L': 1, 'ml': 1000 } },
-        distance: { label: 'Distância', units: { 'km': 1, 'm': 1000 } },
-        weight: { label: 'Peso', units: { 'kg': 1, 'g': 1000 } },
-        money: { label: 'Finanças', units: { 'R$': 1, 'USD': 1, 'EUR': 1 } },
-        generic: { label: 'Contagem', units: { 'x': 1, 'pgs': 1, 'unid': 1 } }
+        time: { label: 'Tempo', units: { 'min': 1, 'h': 60, 'd': 1440 } }, // Base: Minuto. 1h=60min. 1d=1440min.
+        volume: { label: 'Volume', units: { 'ml': 1, 'L': 1000 } }, // Base: ml.
+        distance: { label: 'Distância', units: { 'm': 1, 'km': 1000 } }, // Base: metro.
+        weight: { label: 'Peso', units: { 'g': 1, 'kg': 1000 } },
+        money: { label: 'Moeda', units: { 'R$': 1, 'USD': 1 } },
+        generic: { label: 'Geral', units: { 'x': 1, 'pág': 1, 'caps': 1 } }
     }
 };
 
 const SUGGESTIONS_DB = [
     { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3, unit: 'L', cycle: 'daily' },
     { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 30, unit: 'min', cycle: 'daily' },
+    { type: 'boost', icon: '🚫', name_pt: 'Sem Açúcar', name_en: 'No Sugar', target: 30, unit: 'd', cycle: 'infinite' },
     { type: 'boost', icon: '💪', name_pt: 'Treino', name_en: 'Workout', target: 1, unit: 'x', cycle: 'daily' },
     { type: 'boost', icon: '🧘', name_pt: 'Meditação', name_en: 'Meditation', target: 15, unit: 'min', cycle: 'daily' },
-    { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' },
-    { type: 'detox', icon: '🍬', name_pt: 'Zero Açúcar', name_en: 'No Sugar', target: 1, unit: 'dia', cycle: 'daily' },
     { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' }
 ];
 
 const DICTIONARY = {
     pt: {
-        tabs: { protocols: "MEUS PROTOCOLOS", explore: "EXPLORAR SUGESTÕES" },
-        sections: { boost: "🚀 BOOST (Bons Hábitos)", detox: "⛔ DETOX (Reduzir)" },
-        emptyTitle: "SISTEMA OCIOSO", emptyDesc: "Sem protocolos ativos.",
-        emptyHist: "SEM DADOS", emptyHistDesc: "Nenhum registro.",
-        cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
+        tabs: { protocols: "PROTOCOLOS", finance: "FINANÇAS", explore: "EXPLORAR" },
         dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
+        fin: { bal: "SALDO ATUAL", in: "ENTRADAS", out: "SAÍDAS", inv: "INVESTIDO", desc: "Descrição", val: "Valor" },
+        cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
+        empty: "Sem dados.",
         btnCancel: "Cancelar", btnConfirm: "Confirmar"
     },
     en: {
-        tabs: { protocols: "MY PROTOCOLS", explore: "EXPLORE SUGGESTIONS" },
-        sections: { boost: "🚀 BOOST (Good Habits)", detox: "⛔ DETOX (Reduce)" },
-        emptyTitle: "SYSTEM IDLE", emptyDesc: "No active protocols.",
-        emptyHist: "NO DATA", emptyHistDesc: "No records.",
+        tabs: { protocols: "PROTOCOLS", finance: "FINANCE", explore: "EXPLORE" },
+        dash: { perf: "PERFORMANCE", streak: "STREAK", acts: "ACTIONS" },
+        fin: { bal: "CURRENT BALANCE", in: "INCOME", out: "EXPENSES", inv: "INVESTED", desc: "Description", val: "Amount" },
         cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
-        dash: { perf: "PERFORMANCE", streak: "STREAK DAYS", acts: "ACTIONS TODAY" },
+        empty: "No data.",
         btnCancel: "Cancel", btnConfirm: "Confirm"
     }
 };
@@ -246,10 +265,13 @@ class NexusOS {
         this.lang = localStorage.getItem('nexus_lang') || 'pt'; 
         this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
         this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
+        this.finance = JSON.parse(localStorage.getItem('nexus_finance')) || []; // [{id, type, amount, desc, date}]
+        
         this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
         this.currentTab = 'protocols';
         
         this.grid = document.getElementById('protocol-grid');
+        this.finView = document.getElementById('finance-view');
         this.sugView = document.getElementById('suggestions-view');
         this.modalOverlay = document.getElementById('modal-overlay');
         
@@ -264,24 +286,25 @@ class NexusOS {
         this.renderSuggestions();
     }
 
-    // --- NAVIGATION ---
     switchTab(tab) {
         this.currentTab = tab;
-        document.getElementById('tab-protocols').className = `tab-btn ${tab === 'protocols' ? 'active' : ''}`;
-        document.getElementById('tab-suggestions').className = `tab-btn ${tab === 'suggestions' ? 'active' : ''}`;
+        // UI Updates
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`tab-${tab}`).classList.add('active');
         
-        if (tab === 'protocols') {
-            this.grid.style.display = 'grid';
-            document.getElementById('dashboard').style.display = this.protocols.length > 0 ? 'grid' : 'none';
-            this.sugView.classList.remove('active');
-            document.getElementById('fab-container').style.display = 'block';
-            this.render(); 
-        } else {
-            this.grid.style.display = 'none';
-            document.getElementById('dashboard').style.display = 'none';
-            this.sugView.classList.add('active');
-            document.getElementById('fab-container').style.display = 'none';
-        }
+        document.getElementById('protocol-view').style.display = tab === 'protocols' ? 'block' : 'none';
+        this.finView.classList.remove('active');
+        this.sugView.classList.remove('active');
+        document.getElementById('fab-container').style.display = 'block';
+
+        if(tab === 'protocols') this.render();
+        else if(tab === 'finance') { this.finView.classList.add('active'); this.renderFinance(); }
+        else if(tab === 'suggestions') { this.sugView.classList.add('active'); document.getElementById('fab-container').style.display = 'none'; }
+    }
+
+    handleFabClick() {
+        if(this.currentTab === 'protocols') this.openProtocolModal();
+        else if(this.currentTab === 'finance') this.openFinanceModal();
     }
 
     // --- CORE LOGIC ---
@@ -295,7 +318,6 @@ class NexusOS {
             if (p.cycle === 'daily' && todayKey !== this.formatDateKey(last)) reset = true;
             else if (p.cycle === 'weekly' && last < this.getMonday(now)) reset = true;
             else if (p.cycle === 'monthly' && now.getMonth() !== last.getMonth()) reset = true;
-            
             if (reset) { 
                 if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
                 p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; 
@@ -316,54 +338,40 @@ class NexusOS {
 
     getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
 
-    // --- UNIT LOGIC ---
-    getCompatibleUnits(targetUnit) {
-        for (const groupName in UNIT_SYSTEM.groups) {
-            const group = UNIT_SYSTEM.groups[groupName];
-            if (group.units[targetUnit]) return Object.keys(group.units);
-        }
-        return [targetUnit];
-    }
-
-    // --- RENDER ---
+    // --- RENDER PROTOCOLS ---
     render() {
-        // Se estiver na aba sugestões, não renderiza o grid principal
-        if(this.currentTab === 'suggestions') return;
-
+        if(this.currentTab !== 'protocols') return;
         this.grid.innerHTML = '';
         const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
         const viewKey = this.formatDateKey(this.selectedDate);
         
-        document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
+        document.getElementById('view-date-label').innerText = isToday ? '' : `Data: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
-        document.getElementById('fab-container').style.display = isToday ? 'block' : 'none';
-
+        
         const data = isToday ? this.protocols : (this.history[viewKey] || []);
         let totalPct = 0; let activeCount = 0;
 
         if (data.length === 0) {
-            this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${isToday?this.t('emptyTitle'):this.t('emptyHist')}</h3><p>${isToday?this.t('emptyDesc'):this.t('emptyHistDesc')}</p></div>`;
+            this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${this.t('empty')}</h3></div>`;
             document.getElementById('dashboard').style.display = 'none';
         } else {
             if(isToday) document.getElementById('dashboard').style.display = 'grid';
-            else document.getElementById('dashboard').style.display = 'none'; // No dashboard for past dates yet
-            
+            else document.getElementById('dashboard').style.display = 'none';
+
             data.forEach(p => {
                 const pct = Math.min((p.current / p.target) * 100, 100);
                 totalPct += pct; activeCount++;
                 const isComp = p.current >= p.target;
                 const icon = this.getIcon(p.name);
                 
-                // Conversor Dropdown Logic
+                // Unidade Inteligente
                 const compatibleUnits = this.getCompatibleUnits(p.unit);
                 let unitSelectorHTML = '';
                 if(isToday && compatibleUnits.length > 1) {
                     unitSelectorHTML = `<select id="unit-sel-${p.id}" class="unit-selector-mini">`;
                     compatibleUnits.forEach(u => unitSelectorHTML += `<option value="${u}" ${u===p.unit?'selected':''}>${u}</option>`);
                     unitSelectorHTML += `</select>`;
-                } else {
-                    unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`;
-                }
+                } else { unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`; }
 
                 const inputArea = isToday ? `
                     <div class="input-action-row">
@@ -376,18 +384,14 @@ class NexusOS {
                 card.innerHTML = `
                     <div style="display:flex;justify-content:space-between">
                         <div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>
-                        ${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer;font-size:1.2rem" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}
+                        ${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}
                     </div>
-                    <div class="stats">
-                        <span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span>
-                        <span>${pct.toFixed(0)}%</span>
-                    </div>
+                    <div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span><span>${pct.toFixed(0)}%</span></div>
                     <div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>
                     ${inputArea}
                 `;
                 this.grid.appendChild(card);
             });
-            
             if(isToday) this.renderDashboard(totalPct, activeCount);
         }
     }
@@ -395,7 +399,7 @@ class NexusOS {
     renderDashboard(totalPct, count) {
         const avg = count > 0 ? Math.round(totalPct / count) : 0;
         const dash = document.getElementById('dashboard');
-        const streak = Object.keys(this.history).length; // Simples
+        const streak = Object.keys(this.history).length; 
         const chartColor = avg === 100 ? 'var(--accent)' : 'var(--primary)';
 
         dash.innerHTML = `
@@ -412,6 +416,54 @@ class NexusOS {
         `;
     }
 
+    // --- RENDER FINANCE ---
+    renderFinance() {
+        let bal = 0, inc = 0, exp = 0, inv = 0;
+        let listHTML = '';
+        
+        // Process Transactions (Last first)
+        const sorted = [...this.finance].reverse();
+        sorted.forEach(t => {
+            const val = parseFloat(t.amount);
+            if(t.type === 'in') { bal += val; inc += val; }
+            else if(t.type === 'out') { bal -= val; exp += val; }
+            else if(t.type === 'inv') { bal -= val; inv += val; } // Investimento sai do caixa mas vira patrimônio
+
+            const typeClass = t.type === 'in' ? 'income' : (t.type === 'out' ? 'expense' : 'invest');
+            const sign = t.type === 'in' ? '+' : '-';
+            const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
+            
+            listHTML += `
+                <div class="fin-item ${typeClass}">
+                    <div><div class="fin-desc">${t.desc}</div><div class="fin-date">${new Date(t.date).toLocaleDateString()}</div></div>
+                    <div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div>
+                </div>`;
+        });
+
+        this.finView.innerHTML = `
+            <div class="fin-summary">
+                <div class="fin-card"><div class="fin-label">${this.t('fin.bal')}</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.in')}</div><div class="fin-val pos">${inc.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.out')}</div><div class="fin-val neg">${exp.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.inv')}</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+            </div>
+            <div class="fin-list">${listHTML || '<div style="text-align:center;color:#666;padding:2rem">Nenhuma transação.</div>'}</div>
+        `;
+    }
+
+    addTransaction() {
+        const desc = document.getElementById('f-desc').value;
+        const amount = parseFloat(document.getElementById('f-amount').value);
+        const type = document.getElementById('f-type').value;
+        if(!desc || !amount) return;
+        
+        this.finance.push({ id: Date.now(), desc, amount, type, date: new Date().toISOString() });
+        localStorage.setItem('nexus_finance', JSON.stringify(this.finance));
+        this.closeModal();
+        this.renderFinance();
+    }
+
+    // --- RENDER SUGGESTIONS ---
     renderSuggestions() {
         this.sugView.innerHTML = '';
         const renderSection = (type, titleKey) => {
@@ -420,12 +472,21 @@ class NexusOS {
             let html = `<div class="sug-section-title">${this.t(titleKey)}</div><div class="sug-grid">`;
             items.forEach(item => {
                 const name = this.lang === 'pt' ? item.name_pt : item.name_en;
-                html += `<div class="sug-card" onclick="nexus.openModal({name: '${name}', target: ${item.target}, unit: '${item.unit}', cycle: '${item.cycle}'})"><div class="sug-icon">${item.icon}</div><div class="sug-name">${name}</div><div class="sug-meta">${item.target} ${item.unit}</div></div>`;
+                html += `<div class="sug-card" onclick="nexus.openProtocolModal({name: '${name}', target: ${item.target}, unit: '${item.unit}', cycle: '${item.cycle}'})"><div class="sug-icon">${item.icon}</div><div class="sug-name">${name}</div><div class="sug-meta">${item.target} ${item.unit}</div></div>`;
             });
             return html + `</div>`;
         };
         this.sugView.innerHTML += renderSection('boost', 'sections.boost');
         this.sugView.innerHTML += renderSection('detox', 'sections.detox');
+    }
+
+    // --- INPUT HANDLING ---
+    getCompatibleUnits(targetUnit) {
+        for (const groupName in UNIT_SYSTEM.groups) {
+            const group = UNIT_SYSTEM.groups[groupName];
+            if (group.units[targetUnit]) return Object.keys(group.units);
+        }
+        return [targetUnit];
     }
 
     handleInput(id) {
@@ -441,9 +502,13 @@ class NexusOS {
             let group = null;
             for(const g in UNIT_SYSTEM.groups) if(UNIT_SYSTEM.groups[g].units[p.unit]) group = UNIT_SYSTEM.groups[g];
             if(group) {
-                const inputFactor = group.units[unitSel.value]; // ex: ml = 1000
-                const targetFactor = group.units[p.unit]; // ex: L = 1
-                finalValue = (val / inputFactor) * targetFactor;
+                // Lógica de Multiplicador para Base
+                const inputMult = group.units[unitSel.value]; // ex: d = 1440
+                const targetMult = group.units[p.unit]; // ex: h = 60
+                
+                // (Valor * MultiplicadorInput) / MultiplicadorTarget
+                // 1 Dia para Horas -> (1 * 1440) / 60 = 24.
+                finalValue = (val * inputMult) / targetMult;
                 finalValue = Math.round(finalValue * 100) / 100;
             }
         }
@@ -452,8 +517,8 @@ class NexusOS {
         input.value = '';
     }
 
-    // --- MODAL ---
-    openModal(pre={}) {
+    // --- MODALS ---
+    openProtocolModal(pre={}) {
         let optionsHTML = '';
         for(const key in UNIT_SYSTEM.groups) {
             const g = UNIT_SYSTEM.groups[key];
@@ -486,6 +551,27 @@ class NexusOS {
         if(pre.name) setTimeout(()=>document.getElementById('p-target').focus(),100);
     }
 
+    openFinanceModal() {
+        const html = `
+            <div class="modal">
+                <h2 style="color:var(--accent);margin-bottom:1.5rem">Transação Financeira</h2>
+                <input type="text" id="f-desc" class="form-control" placeholder="${this.t('fin.desc')} (ex: Salário, Mercado)">
+                <input type="number" id="f-amount" class="form-control" placeholder="${this.t('fin.val')} (R$)">
+                <select id="f-type" class="form-control">
+                    <option value="in">Entrada (+)</option>
+                    <option value="out">Saída (-)</option>
+                    <option value="inv">Investimento (Invest)</option>
+                </select>
+                <div style="text-align:right;margin-top:1rem">
+                    <button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button>
+                    <button class="btn btn-add" onclick="nexus.addTransaction()">${this.t('btnConfirm')}</button>
+                </div>
+            </div>`;
+        document.getElementById('modal-overlay').innerHTML = html;
+        document.getElementById('modal-overlay').style.display = 'flex';
+        setTimeout(()=>document.getElementById('f-desc').focus(),100);
+    }
+
     createProtocol() {
         const name = document.getElementById('p-name').value;
         const target = parseFloat(document.getElementById('p-target').value);
@@ -493,20 +579,19 @@ class NexusOS {
         const cycle = document.getElementById('p-cycle').value;
         if(!name || !target) return;
         this.protocols.push({id:Date.now().toString(36), name, target, unit, cycle, current:0, lastReset:new Date().toISOString()});
-        this.closeModal(); this.save(); this.switchTab('protocols');
+        this.closeModal(); this.save(); 
     }
 
     // --- HELPERS ---
     t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
-    toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderSuggestions(); this.renderCalendar(); }
-    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); }
+    toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderFinance(); this.renderSuggestions(); this.renderCalendar(); }
+    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-finance').innerText = this.t('tabs.finance'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); }
     save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
     deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
     toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('active'); document.getElementById('sidebar-backdrop').classList.toggle('active'); }
     closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
     getIcon(name) { const n=name.toLowerCase(); const i={'água':'💧','ler':'📚','treino':'💪','sono':'💤','dinheiro':'💰','code':'💻','açúcar':'🍬'}; for(let k in i)if(n.includes(k))return i[k]; return '⚡'; }
     
-    // Calendar Utils
     renderCalendar() {
         const c = document.getElementById('calendar-days'); const ml = document.getElementById('month-label');
         c.innerHTML=''; 
