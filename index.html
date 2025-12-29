@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v9.5</title>
+    <title>NEXUS LIFE OS v9.6</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -138,6 +138,13 @@
         .fin-item.income { border-left-color: var(--accent); } .fin-item.expense { border-left-color: var(--danger); } .fin-item.invest { border-left-color: var(--primary); }
         .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; } .fin-date { font-size: 0.75rem; color: var(--text-muted); } .fin-amount { font-weight: 700; font-size: 1rem; }
 
+        /* NOVO: FINANCE CHART */
+        .fin-chart-container { margin-bottom: 2rem; background: var(--bg-panel); border-radius: var(--radius-card); padding: 1.5rem; border: 1px solid var(--border); }
+        .chart-row { margin-bottom: 0.8rem; }
+        .chart-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-main); font-weight: 600; }
+        .chart-bar-bg { width: 100%; height: 8px; background: var(--bg-input); border-radius: 4px; overflow: hidden; }
+        .chart-bar-fill { height: 100%; background: var(--danger); border-radius: 4px; transition: width 0.5s; }
+
         /* --- SUGGESTIONS --- */
         .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
         .suggestions-container.active { display: block; }
@@ -156,7 +163,6 @@
         .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
 
-        /* Day Selector in Modal */
         .day-selector { display: flex; gap: 5px; justify-content: space-between; margin-bottom: 1rem; }
         .day-checkbox { display: none; }
         .day-label { width: 35px; height: 35px; border-radius: 50%; background: var(--bg-input); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
@@ -253,7 +259,7 @@
 
 <script>
 /**
- * NEXUS CORE v9.5 (Future Protocols & Full Finance)
+ * NEXUS CORE v9.6 (Finance Chart & Fixes)
  */
 
 const UNIT_SYSTEM = {
@@ -285,7 +291,7 @@ const DICTIONARY = {
         agenda: { title: "AGENDA DO DIA", upcoming: "PRÓXIMOS EVENTOS", desc: "Descrição", name: "Título" },
         cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
         empty: "Sem dados.", emptyFin: "Sem movimentações.", btnCancel: "Cancelar", btnConfirm: "Confirmar",
-        noEvents: "Sem eventos."
+        noEvents: "Sem eventos.", chartTitle: "DESPESAS DO MÊS"
     },
     en: {
         tabs: { protocols: "PROTOCOLS", finance: "FINANCE", explore: "EXPLORE" },
@@ -294,7 +300,7 @@ const DICTIONARY = {
         agenda: { title: "TODAY'S AGENDA", upcoming: "UPCOMING", desc: "Description", name: "Title" },
         cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
         empty: "No data.", emptyFin: "No transactions.", btnCancel: "Cancel", btnConfirm: "Confirm",
-        noEvents: "No events."
+        noEvents: "No events.", chartTitle: "MONTHLY EXPENSES"
     }
 };
 
@@ -391,32 +397,21 @@ class NexusOS {
         this.sidebarList.innerHTML = html;
     }
 
-    // --- RENDER PROTOCOLS (Future & Past Logic) ---
     render() {
         if(this.currentTab !== 'protocols') return;
         this.grid.innerHTML = '';
-        
         const todayKey = this.formatDateKey(this.today);
         const viewKey = this.formatDateKey(this.selectedDate);
         const isToday = viewKey === todayKey;
-        const isFuture = viewKey > todayKey; // Checa se é futuro
+        const isFuture = viewKey > todayKey; 
         
         document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
-
         const dayOfWeek = this.selectedDate.getDay(); 
-        
-        // CORREÇÃO: Se for futuro ou hoje, usa os protocolos base (templates). Se for passado, usa histórico.
         let rawData = [];
-        if (isToday) {
-            rawData = this.protocols;
-        } else if (isFuture) {
-            // No futuro, mostramos o que "deve" ser feito, com progresso 0 para visualização
-            rawData = this.protocols.map(p => ({...p, current: 0})); 
-        } else {
-            // No passado, mostramos o que foi feito
-            rawData = this.history[viewKey] || [];
-        }
+        if (isToday) rawData = this.protocols;
+        else if (isFuture) rawData = this.protocols.map(p => ({...p, current: 0})); 
+        else rawData = this.history[viewKey] || [];
         
         const data = rawData.filter(p => {
             if (!p.days || p.days.length === 0) return true; 
@@ -427,18 +422,13 @@ class NexusOS {
             this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${this.t('empty')}</h3></div>`;
             document.getElementById('dashboard').style.display = 'none';
         } else {
-            // Mostra Dashboard se for Hoje ou Futuro (Previsão) ou Passado com dados
             document.getElementById('dashboard').style.display = 'grid';
-
             let totalPct = 0; let activeCount = 0;
-
             data.forEach(p => {
                 const pct = Math.min((p.current / p.target) * 100, 100);
                 totalPct += pct; activeCount++;
                 const isComp = p.current >= p.target;
                 const icon = this.getIcon(p.name);
-                
-                // Inputs só aparecem se for HOJE
                 const compatibleUnits = this.getCompatibleUnits(p.unit);
                 let unitSelectorHTML = '';
                 if(isToday && compatibleUnits.length > 1) {
@@ -446,12 +436,9 @@ class NexusOS {
                     compatibleUnits.forEach(u => unitSelectorHTML += `<option value="${u}" ${u===p.unit?'selected':''}>${u}</option>`);
                     unitSelectorHTML += `</select>`;
                 } else unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`;
-                
                 const inputArea = isToday ? `<div class="input-action-row"><input type="number" class="input-fraction" id="input-${p.id}" placeholder="0" onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')">${unitSelectorHTML}<button class="btn" onclick="nexus.handleInput('${p.id}')">+</button></div>` : '';
-                
                 const card = document.createElement('div'); 
-                card.className = `card ${!isToday?'read-only':''}`; // Read-only se não for hoje
-                
+                card.className = `card ${!isToday?'read-only':''}`; 
                 card.innerHTML = `<div style="display:flex;justify-content:space-between"><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}</div><div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span><span>${pct.toFixed(0)}%</span></div><div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>${inputArea}`;
                 this.grid.appendChild(card);
             });
@@ -460,6 +447,7 @@ class NexusOS {
     }
 
     renderFinance() {
+        // 1. Totais Globais
         let bal = 0, inv = 0, inc = 0, exp = 0;
         this.finance.forEach(t => {
             const val = parseFloat(t.amount);
@@ -469,9 +457,43 @@ class NexusOS {
         });
         const netWorth = bal + inv;
 
+        // 2. Transações do Dia (Filtragem Corrigida)
         const viewKey = this.formatDateKey(this.selectedDate);
-        const dailyTransactions = this.finance.filter(t => t.date.startsWith(viewKey)).reverse();
+        // Normaliza a data da transação para YYYY-MM-DD local e compara
+        const dailyTransactions = this.finance.filter(t => {
+            return this.formatDateKey(t.date) === viewKey;
+        }).reverse();
         
+        // 3. Gráfico de Despesas do Mês
+        const currentMonthKey = viewKey.substring(0, 7); // "202X-MM"
+        const monthlyExpenses = {};
+        let totalMonthlyExpense = 0;
+        this.finance.forEach(t => {
+            const tDateKey = this.formatDateKey(t.date);
+            if(tDateKey.startsWith(currentMonthKey) && t.type === 'out') {
+                const cat = t.desc.toUpperCase();
+                if(!monthlyExpenses[cat]) monthlyExpenses[cat] = 0;
+                monthlyExpenses[cat] += parseFloat(t.amount);
+                totalMonthlyExpense += parseFloat(t.amount);
+            }
+        });
+        
+        // Ordenar Top Despesas
+        const sortedExpenses = Object.entries(monthlyExpenses).sort((a,b) => b[1] - a[1]).slice(0, 5);
+        let chartHTML = '';
+        if(sortedExpenses.length > 0) {
+            chartHTML = `<div class="fin-chart-container"><div class="chart-header" style="margin-bottom:1rem">${this.t('chartTitle')}</div>`;
+            sortedExpenses.forEach(([name, amount]) => {
+                const pct = (amount / totalMonthlyExpense) * 100;
+                chartHTML += `
+                    <div class="chart-row">
+                        <div class="chart-header"><span>${name}</span><span>${amount.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</span></div>
+                        <div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${pct}%"></div></div>
+                    </div>`;
+            });
+            chartHTML += `</div>`;
+        }
+
         let listHTML = '';
         dailyTransactions.forEach(t => {
              const val = parseFloat(t.amount);
@@ -481,6 +503,9 @@ class NexusOS {
              listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${t.time || ''}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>`;
         });
 
+        const isToday = viewKey === this.formatDateKey(this.today);
+        const dateLabel = isToday ? "HOJE" : viewKey;
+
         this.finView.innerHTML = `
             <div class="fin-summary">
                 <div class="fin-card patrimony"><div class="fin-label">${this.t('fin.net')}</div><div class="fin-val">${netWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
@@ -489,7 +514,8 @@ class NexusOS {
                 <div class="fin-card"><div class="fin-label">${this.t('fin.out')}</div><div class="fin-val neg">${exp.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
                 <div class="fin-card"><div class="fin-label">${this.t('fin.inv')}</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
             </div>
-            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); font-size:0.9rem; font-weight:bold;">Transações do Dia</div>
+            ${chartHTML}
+            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); font-size:0.9rem; font-weight:bold;">Transações de ${dateLabel}</div>
             <div class="fin-list">${listHTML || `<div style="text-align:center;color:#666;padding:2rem">${this.t('emptyFin')}</div>`}</div>
         `;
     }
