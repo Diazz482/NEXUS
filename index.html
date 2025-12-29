@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v9.2</title>
+    <title>NEXUS LIFE OS v9.3</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -13,12 +13,12 @@
             --bg-panel: #161616;
             --bg-sidebar: #111111;
             --bg-input: #222222;
-            --primary: #00f0ff; /* Ciano (Tech) */
+            --primary: #00f0ff; 
             --primary-dim: rgba(0, 240, 255, 0.15);
-            --accent: #00ff9d; /* Verde (Entradas/Histórico) */
-            --danger: #ff477e; /* Vermelho (Saídas) */
-            --gold: #ffd700;   /* Patrimônio */
-            --event: #bd00ff;  /* Roxo (Agenda/Eventos) */
+            --accent: #00ff9d; 
+            --danger: #ff477e; 
+            --gold: #ffd700;   
+            --event: #bd00ff;
             --text-main: #f0f0f0;
             --text-muted: #888888;
             --border: #333333;
@@ -54,7 +54,6 @@
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
         .header-left { display: flex; align-items: center; gap: 1rem; }
         .mobile-toggle-btn { display: none; background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); width: 40px; height: 40px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; }
-        
         h1 { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; }
         .logo-icon-header { width: 36px; height: 36px; margin-right: 12px; color: var(--primary); }
         h1 span { color: var(--primary); font-weight: 300; margin-left: 5px; }
@@ -64,31 +63,7 @@
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* --- AGENDA HERO (TODAY) --- */
-        .agenda-hero {
-            background: linear-gradient(135deg, rgba(189, 0, 255, 0.1), rgba(10, 10, 10, 0));
-            border: 1px solid var(--event);
-            border-radius: var(--radius-card);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            animation: fadeIn 0.5s;
-        }
-        .hero-title { color: var(--event); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-        
-        /* --- AGENDA ITEMS --- */
-        .agenda-list { display: flex; flex-direction: column; gap: 0.8rem; }
-        .event-card {
-            background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px;
-            padding: 1rem; display: flex; gap: 1rem; align-items: center;
-            border-left: 4px solid var(--event);
-        }
-        .event-time { font-family: monospace; font-size: 1.1rem; color: var(--text-main); font-weight: 700; min-width: 60px; }
-        .event-details { flex: 1; }
-        .event-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; }
-        .event-desc { font-size: 0.8rem; color: var(--text-muted); }
-        .event-date-badge { font-size: 0.7rem; background: var(--bg-input); padding: 2px 6px; border-radius: 4px; color: var(--text-muted); margin-left: auto; }
-
-        /* --- PROTOCOL CARDS --- */
+        /* --- GRIDS & CARDS --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.2rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
@@ -118,26 +93,13 @@
         .fin-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
         .fin-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700; }
         .fin-val { font-size: 1.2rem; font-weight: 700; color: white; white-space: nowrap; }
-        .fin-val.pos { color: var(--accent); }
-        .fin-val.neg { color: var(--danger); }
-        .fin-val.inv { color: var(--primary); }
+        .fin-val.pos { color: var(--accent); } .fin-val.neg { color: var(--danger); } .fin-val.inv { color: var(--primary); }
         .fin-list { display: flex; flex-direction: column; gap: 0.8rem; }
         .fin-item { background: var(--bg-input); border-radius: 12px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid transparent; }
-        .fin-item.income { border-left-color: var(--accent); }
-        .fin-item.expense { border-left-color: var(--danger); }
-        .fin-item.invest { border-left-color: var(--primary); }
-        .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
-        .fin-date { font-size: 0.75rem; color: var(--text-muted); }
-        .fin-amount { font-weight: 700; font-size: 1rem; }
+        .fin-item.income { border-left-color: var(--accent); } .fin-item.expense { border-left-color: var(--danger); } .fin-item.invest { border-left-color: var(--primary); }
+        .fin-desc { font-weight: 600; color: var(--text-main); font-size: 0.95rem; } .fin-date { font-size: 0.75rem; color: var(--text-muted); } .fin-amount { font-weight: 700; font-size: 1rem; }
 
-        /* --- INPUTS & BUTTONS --- */
-        .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-        .input-fraction { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem; font-size: 1rem; }
-        .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
-        .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
-
-        /* --- SUGGESTIONS & CALENDAR --- */
+        /* --- SUGGESTIONS --- */
         .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
         .suggestions-container.active { display: block; }
         .sug-section-title { font-size: 0.9rem; color: var(--text-muted); margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
@@ -146,8 +108,30 @@
         .sug-card:hover { border-color: var(--primary); transform: translateY(-3px); }
         .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
         
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- AGENDA & HERO --- */
+        .agenda-view { display: none; } .agenda-view.active { display: block; animation: fadeIn 0.3s; }
+        .agenda-hero { background: linear-gradient(135deg, rgba(189, 0, 255, 0.1), rgba(10, 10, 10, 0)); border: 1px solid var(--event); border-radius: var(--radius-card); padding: 1.5rem; margin-bottom: 2rem; animation: fadeIn 0.5s; }
+        .hero-title { color: var(--event); font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .agenda-list { display: flex; flex-direction: column; gap: 0.8rem; }
+        .event-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; gap: 1rem; align-items: center; border-left: 4px solid var(--event); }
+        .event-time { font-family: monospace; font-size: 1.1rem; color: var(--text-main); font-weight: 700; min-width: 60px; }
+        .event-details { flex: 1; } .event-title { font-weight: 600; font-size: 1rem; margin-bottom: 0.2rem; } .event-desc { font-size: 0.8rem; color: var(--text-muted); }
+        .event-date-badge { font-size: 0.7rem; background: var(--bg-input); padding: 2px 6px; border-radius: 4px; color: var(--text-muted); margin-left: auto; }
 
+        /* --- INPUTS & CONTROLS --- */
+        .input-action-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+        .input-fraction { flex: 1; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem; font-size: 1rem; }
+        .unit-selector-mini { background: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border); border-radius: 12px; padding: 0 0.5rem; font-size: 0.8rem; font-weight: bold; cursor: pointer; width: 70px; }
+        .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
+
+        /* Day Selector in Modal */
+        .day-selector { display: flex; gap: 5px; justify-content: space-between; margin-bottom: 1rem; }
+        .day-checkbox { display: none; }
+        .day-label { width: 35px; height: 35px; border-radius: 50%; background: var(--bg-input); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; color: var(--text-muted); transition: all 0.2s; }
+        .day-checkbox:checked + .day-label { background: var(--primary); color: var(--bg-core); border-color: var(--primary); font-weight: bold; }
+
+        /* --- CALENDAR --- */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .month-label { font-size: 1.1rem; font-weight: bold; color: white; }
         .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; }
@@ -156,19 +140,12 @@
         .day-cell:hover { background: var(--bg-input); color: white; }
         .day-cell.today { border-color: var(--primary); color: var(--primary); font-weight: bold; }
         .day-cell.selected { background: var(--primary); color: var(--bg-core) !important; font-weight: bold; box-shadow: 0 0 15px var(--primary-dim); border-color: var(--primary); }
-        /* Pontinhos */
         .dot-hist { position: absolute; bottom: 4px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; left: 50%; transform: translateX(-50%); }
         .dot-event { position: absolute; top: 4px; right: 4px; width: 4px; height: 4px; background: var(--event); border-radius: 50%; }
 
-        /* --- AGENDA VIEW --- */
-        .agenda-view { display: none; }
-        .agenda-view.active { display: block; animation: fadeIn 0.3s; }
-
         /* --- MOBILE --- */
         @media (max-width: 850px) {
-            .mobile-toggle-btn { display: flex; }
-            .sidebar-close-btn { display: block; }
-            h1 span { display: none; } h1 { font-size: 1.2rem; }
+            .mobile-toggle-btn { display: flex; } .sidebar-close-btn { display: block; } h1 span { display: none; } h1 { font-size: 1.2rem; }
             .app-sidebar { position: fixed; top: 0; left: 0; width: 85%; height: 100vh; transform: translateX(-100%); box-shadow: 10px 0 50px rgba(0,0,0,0.5); }
             .app-sidebar.active { transform: translateX(0); }
             .sidebar-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1900; display: none; }
@@ -222,26 +199,20 @@
             <nav class="tab-nav">
                 <button class="tab-btn active" id="tab-protocols" onclick="nexus.switchTab('protocols')">PROTOCOLOS</button>
                 <button class="tab-btn" id="tab-agenda" onclick="nexus.switchTab('agenda')">AGENDA</button>
-                <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
                 <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR</button>
+                <button class="tab-btn" id="tab-finance" onclick="nexus.switchTab('finance')">FINANÇAS</button>
             </nav>
 
             <h3 id="view-date-label" style="display:none; color:var(--primary); margin-bottom:1rem; border:1px solid var(--primary); padding:5px 10px; border-radius:8px; width:fit-content">...</h3>
             
             <div id="protocol-view">
                 <div id="today-agenda-hero" class="agenda-hero" style="display: none;"></div>
-
                 <div id="protocol-grid"></div>
-                <section id="dashboard" class="dashboard-section" style="display: none;">
-                    </section>
+                <section id="dashboard" class="dashboard-section" style="display: none;"></section>
             </div>
 
-            <div id="agenda-view" class="agenda-view">
-                </div>
-
-            <div id="finance-view" class="finance-view">
-                </div>
-
+            <div id="agenda-view" class="agenda-view"></div>
+            <div id="finance-view" class="finance-view"></div>
             <div id="suggestions-view" class="suggestions-container"></div>
 
             <div id="fab-container" style="text-align: center; margin-top: 2rem;">
@@ -254,7 +225,7 @@
 
 <script>
 /**
- * NEXUS CORE v9.2 (Agenda & Executive Update)
+ * NEXUS CORE v9.3 (Precision Days & Local Finance)
  */
 
 const UNIT_SYSTEM = {
@@ -269,10 +240,26 @@ const UNIT_SYSTEM = {
 };
 
 const SUGGESTIONS_DB = [
+    // Boost - Saúde
     { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3, unit: 'L', cycle: 'daily' },
-    { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 30, unit: 'min', cycle: 'daily' },
-    { type: 'boost', icon: '🚫', name_pt: 'Sem Açúcar', name_en: 'No Sugar', target: 30, unit: 'd', cycle: 'infinite' },
-    { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' }
+    { type: 'boost', icon: '💪', name_pt: 'Treino Força', name_en: 'Strength Train', target: 1, unit: 'x', cycle: 'daily' },
+    { type: 'boost', icon: '🏃', name_pt: 'Cardio', name_en: 'Cardio', target: 30, unit: 'min', cycle: 'daily' },
+    { type: 'boost', icon: '😴', name_pt: 'Sono 8h', name_en: 'Sleep 8h', target: 8, unit: 'h', cycle: 'daily' },
+    { type: 'boost', icon: '🧘', name_pt: 'Meditação', name_en: 'Meditation', target: 15, unit: 'min', cycle: 'daily' },
+    { type: 'boost', icon: '🚿', name_pt: 'Banho Gelado', name_en: 'Cold Shower', target: 1, unit: 'x', cycle: 'daily' },
+    // Boost - Intelecto
+    { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 20, unit: 'pgs', cycle: 'daily' },
+    { type: 'boost', icon: '💻', name_pt: 'Estudo Código', name_en: 'Code Study', target: 1, unit: 'h', cycle: 'daily' },
+    { type: 'boost', icon: '✍️', name_pt: 'Diário', name_en: 'Journaling', target: 1, unit: 'x', cycle: 'daily' },
+    // Boost - Financeiro
+    { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' },
+    { type: 'boost', icon: '🚫', name_pt: 'Dia Zero Gastos', name_en: 'No Spend Day', target: 1, unit: 'd', cycle: 'daily' },
+    // Detox
+    { type: 'detox', icon: '🍬', name_pt: 'Zero Açúcar', name_en: 'No Sugar', target: 1, unit: 'd', cycle: 'daily' },
+    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' },
+    { type: 'detox', icon: '🎮', name_pt: 'Jogos', name_en: 'Gaming', target: 1, unit: 'h', cycle: 'daily' },
+    { type: 'detox', icon: '🍺', name_pt: 'Sem Álcool', name_en: 'No Alcohol', target: 1, unit: 'd', cycle: 'daily' },
+    { type: 'detox', icon: '🚬', name_pt: 'Sem Fumar', name_en: 'No Smoking', target: 1, unit: 'd', cycle: 'daily' }
 ];
 
 const DICTIONARY = {
@@ -280,17 +267,17 @@ const DICTIONARY = {
         tabs: { protocols: "PROTOCOLOS", agenda: "AGENDA", finance: "FINANÇAS", explore: "EXPLORAR" },
         dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
         fin: { net: "PATRIMÔNIO TOTAL", bal: "SALDO DISPONÍVEL", in: "ENTRADAS", out: "SAÍDAS", inv: "INVESTIDO", desc: "Descrição", val: "Valor" },
-        agenda: { title: "AGENDA DO DIA", upcoming: "PRÓXIMOS EVENTOS", desc: "Descrição do evento", name: "Título (ex: Reunião)" },
+        agenda: { title: "AGENDA DO DIA", upcoming: "PRÓXIMOS EVENTOS", desc: "Descrição", name: "Título" },
         cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
-        empty: "Sem dados.", btnCancel: "Cancelar", btnConfirm: "Confirmar"
+        empty: "Sem dados.", emptyFin: "Sem movimentações nesta data.", btnCancel: "Cancelar", btnConfirm: "Confirmar"
     },
     en: {
         tabs: { protocols: "PROTOCOLS", agenda: "AGENDA", finance: "FINANCE", explore: "EXPLORE" },
         dash: { perf: "PERFORMANCE", streak: "STREAK", acts: "ACTIONS" },
         fin: { net: "NET WORTH", bal: "AVAILABLE CASH", in: "INCOME", out: "EXPENSES", inv: "INVESTED", desc: "Description", val: "Amount" },
-        agenda: { title: "TODAY'S AGENDA", upcoming: "UPCOMING EVENTS", desc: "Event details", name: "Title (e.g. Meeting)" },
+        agenda: { title: "TODAY'S AGENDA", upcoming: "UPCOMING", desc: "Description", name: "Title" },
         cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
-        empty: "No data.", btnCancel: "Cancel", btnConfirm: "Confirm"
+        empty: "No data.", emptyFin: "No transactions on this date.", btnCancel: "Cancel", btnConfirm: "Confirm"
     }
 };
 
@@ -300,8 +287,7 @@ class NexusOS {
         this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
         this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
         this.finance = JSON.parse(localStorage.getItem('nexus_finance')) || []; 
-        this.agenda = JSON.parse(localStorage.getItem('nexus_agenda')) || []; // [{id, title, desc, date, time}]
-
+        this.agenda = JSON.parse(localStorage.getItem('nexus_agenda')) || []; 
         this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
         this.currentTab = 'protocols';
         
@@ -310,7 +296,6 @@ class NexusOS {
         this.agendaView = document.getElementById('agenda-view');
         this.sugView = document.getElementById('suggestions-view');
         this.modalOverlay = document.getElementById('modal-overlay');
-        
         this.init();
     }
 
@@ -322,13 +307,9 @@ class NexusOS {
         this.currentTab = tab;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(`tab-${tab}`).classList.add('active');
-        
         document.getElementById('protocol-view').style.display = tab === 'protocols' ? 'block' : 'none';
-        this.finView.classList.remove('active'); 
-        this.agendaView.classList.remove('active');
-        this.sugView.classList.remove('active');
+        this.finView.classList.remove('active'); this.agendaView.classList.remove('active'); this.sugView.classList.remove('active');
         document.getElementById('fab-container').style.display = 'block';
-
         if(tab === 'protocols') this.render();
         else if(tab === 'agenda') { this.agendaView.classList.add('active'); this.renderAgenda(); }
         else if(tab === 'finance') { this.finView.classList.add('active'); this.renderFinance(); }
@@ -350,6 +331,18 @@ class NexusOS {
             if (p.cycle === 'daily' && todayKey !== this.formatDateKey(last)) reset = true;
             else if (p.cycle === 'weekly' && last < this.getMonday(now)) reset = true;
             else if (p.cycle === 'monthly' && now.getMonth() !== last.getMonth()) reset = true;
+            
+            // Se for infinito, não reseta o valor, mas atualiza o lastReset para não bugar o calendário
+            if (p.cycle === 'infinite') {
+                if(todayKey !== this.formatDateKey(last)) {
+                     // Salva snapshot para ontem
+                     if(p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
+                     p.lastReset = now.toISOString(); 
+                     hasChanges = true; 
+                }
+                return p;
+            }
+
             if (reset) { 
                 if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p);
                 p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; 
@@ -363,46 +356,47 @@ class NexusOS {
     archiveHistory(dateKey, p) {
         if (!this.history[dateKey]) this.history[dateKey] = [];
         if (!this.history[dateKey].find(h => h.id === p.id)) {
-            this.history[dateKey].push({...p}); localStorage.setItem('nexus_history', JSON.stringify(this.history));
+            this.history[dateKey].push({...p}); 
+            localStorage.setItem('nexus_history', JSON.stringify(this.history));
         }
     }
 
     getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
 
-    // --- RENDER MAIN (Protocols + Today's Agenda Hero) ---
+    // --- RENDER PROTOCOLS (Com filtro de Dias) ---
     render() {
         if(this.currentTab !== 'protocols') return;
         this.grid.innerHTML = '';
         const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
         const viewKey = this.formatDateKey(this.selectedDate);
         
-        document.getElementById('view-date-label').innerText = isToday ? '' : `Data: ${viewKey}`;
+        document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
-        
-        // RENDER AGENDA HERO (Se for hoje ou data selecionada)
+
         const dayEvents = this.agenda.filter(e => e.date === viewKey).sort((a,b) => a.time.localeCompare(b.time));
         const hero = document.getElementById('today-agenda-hero');
-        
         if (dayEvents.length > 0) {
             hero.style.display = 'block';
             let html = `<div class="hero-title">📅 ${this.t('agenda.title')}</div><div class="agenda-list">`;
             dayEvents.forEach(e => {
-                html += `
-                    <div class="event-card">
-                        <div class="event-time">${e.time}</div>
-                        <div class="event-details">
-                            <div class="event-title">${e.title}</div>
-                            <div class="event-desc">${e.desc}</div>
-                        </div>
-                        ${isToday ? `<button style="background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="nexus.deleteEvent('${e.id}')">✕</button>`:''}
-                    </div>`;
+                html += `<div class="event-card"><div class="event-time">${e.time}</div><div class="event-details"><div class="event-title">${e.title}</div><div class="event-desc">${e.desc}</div></div>${isToday ? `<button style="background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="nexus.deleteEvent('${e.id}')">✕</button>`:''}</div>`;
             });
             hero.innerHTML = html + `</div>`;
-        } else {
-            hero.style.display = 'none';
-        }
+        } else hero.style.display = 'none';
 
-        const data = isToday ? this.protocols : (this.history[viewKey] || []);
+        // Filter Logic:
+        // 1. Data Source (Today vs History)
+        // 2. Specific Days Filter (Does this protocol exist on this specific day?)
+        const dayOfWeek = this.selectedDate.getDay(); // 0=Sun, 6=Sat
+        
+        const rawData = isToday ? this.protocols : (this.history[viewKey] || []);
+        
+        // Aplica filtro de dias específicos
+        const data = rawData.filter(p => {
+            if (!p.days || p.days.length === 0) return true; // Todos os dias
+            return p.days.includes(dayOfWeek); // Apenas dias selecionados
+        });
+
         let totalPct = 0; let activeCount = 0;
 
         if (data.length === 0 && dayEvents.length === 0) {
@@ -423,7 +417,8 @@ class NexusOS {
                     unitSelectorHTML = `<select id="unit-sel-${p.id}" class="unit-selector-mini">`;
                     compatibleUnits.forEach(u => unitSelectorHTML += `<option value="${u}" ${u===p.unit?'selected':''}>${u}</option>`);
                     unitSelectorHTML += `</select>`;
-                } else { unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`; }
+                } else unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`;
+                
                 const inputArea = isToday ? `<div class="input-action-row"><input type="number" class="input-fraction" id="input-${p.id}" placeholder="0" onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')">${unitSelectorHTML}<button class="btn" onclick="nexus.handleInput('${p.id}')">+</button></div>` : '';
                 const card = document.createElement('div'); card.className = `card ${!isToday?'read-only':''}`;
                 card.innerHTML = `<div style="display:flex;justify-content:space-between"><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}</div><div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span><span>${pct.toFixed(0)}%</span></div><div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>${inputArea}`;
@@ -433,128 +428,70 @@ class NexusOS {
         }
     }
 
+    // --- RENDER FINANCE (Hybrid Logic) ---
+    renderFinance() {
+        // Parte 1: Totais Globais (Sempre Atuais)
+        let bal = 0, inv = 0;
+        this.finance.forEach(t => {
+            const val = parseFloat(t.amount);
+            if(t.type === 'in') bal += val;
+            else if(t.type === 'out') bal -= val;
+            else if(t.type === 'inv') { bal -= val; inv += val; }
+        });
+        const netWorth = bal + inv;
+
+        // Parte 2: Lista de Transações (Filtrada pela Data Selecionada)
+        const viewKey = this.formatDateKey(this.selectedDate);
+        const dailyTransactions = this.finance.filter(t => t.date.startsWith(viewKey)).reverse();
+        
+        let incDay = 0, expDay = 0;
+        let listHTML = '';
+        
+        dailyTransactions.forEach(t => {
+             const val = parseFloat(t.amount);
+             if(t.type === 'in') incDay += val;
+             else if(t.type === 'out') expDay += val;
+             
+             const typeClass = t.type === 'in' ? 'income' : (t.type === 'out' ? 'expense' : 'invest');
+             const sign = t.type === 'in' ? '+' : '-';
+             const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
+             listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${t.time || ''}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>`;
+        });
+
+        const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
+        const dateLabel = isToday ? "HOJE" : viewKey;
+
+        this.finView.innerHTML = `
+            <div class="fin-summary">
+                <div class="fin-card patrimony"><div class="fin-label">${this.t('fin.net')} (TOTAL)</div><div class="fin-val">${netWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.bal')} (CAIXA)</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.inv')} (ACUMULADO)</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+            </div>
+            
+            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center">
+                <span style="font-size:0.9rem; font-weight:bold; color:var(--text-main)">Transações de ${dateLabel}</span>
+                <span style="font-size:0.8rem; color:var(--text-muted)">Entrada: +${incDay} | Saída: -${expDay}</span>
+            </div>
+
+            <div class="fin-list">${listHTML || `<div style="text-align:center;color:#666;padding:2rem">${this.t('emptyFin')}</div>`}</div>
+        `;
+    }
+
+    // --- RENDER AGENDA & SUGGESTIONS ---
     renderAgenda() {
-        // Ordenar eventos futuros
         const sorted = this.agenda.sort((a,b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
         const upcoming = sorted.filter(e => e.date >= this.formatDateKey(this.today));
-
         let html = `<div style="margin-bottom:1.5rem; color:var(--text-muted)">${this.t('agenda.upcoming')}</div>`;
         if (upcoming.length === 0) html += `<div style="text-align:center;color:#666">Nenhum evento futuro.</div>`;
         else {
             html += `<div class="agenda-list">`;
             upcoming.forEach(e => {
-                const dateObj = new Date(e.date + 'T12:00:00'); // Safe date
-                html += `
-                    <div class="event-card">
-                         <div class="event-time">${e.time}</div>
-                         <div class="event-details">
-                             <div class="event-title">${e.title}</div>
-                             <div class="event-desc">${e.desc}</div>
-                         </div>
-                         <div class="event-date-badge">${dateObj.getDate()}/${dateObj.getMonth()+1}</div>
-                         <button style="background:none;border:none;color:var(--text-muted);cursor:pointer;margin-left:10px" onclick="nexus.deleteEvent('${e.id}')">✕</button>
-                    </div>
-                `;
+                const dateObj = new Date(e.date + 'T12:00:00');
+                html += `<div class="event-card"><div class="event-time">${e.time}</div><div class="event-details"><div class="event-title">${e.title}</div><div class="event-desc">${e.desc}</div></div><div class="event-date-badge">${dateObj.getDate()}/${dateObj.getMonth()+1}</div><button style="background:none;border:none;color:var(--text-muted);cursor:pointer;margin-left:10px" onclick="nexus.deleteEvent('${e.id}')">✕</button></div>`;
             });
             html += `</div>`;
         }
         this.agendaView.innerHTML = html;
-    }
-
-    addEvent() {
-        const title = document.getElementById('e-title').value;
-        const desc = document.getElementById('e-desc').value;
-        const date = document.getElementById('e-date').value;
-        const time = document.getElementById('e-time').value;
-
-        if(!title || !date) return;
-        
-        this.agenda.push({ id: Date.now().toString(36), title, desc, date, time });
-        localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda));
-        this.closeModal();
-        
-        // Refresh views
-        this.renderCalendar();
-        this.renderAgenda();
-        if(this.currentTab === 'protocols') this.render(); // Update hero if added for today
-    }
-
-    deleteEvent(id) {
-        if(confirm('Remover evento?')) {
-            this.agenda = this.agenda.filter(e => e.id !== id);
-            localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda));
-            this.renderCalendar();
-            this.renderAgenda();
-            this.render();
-        }
-    }
-
-    // --- MODALS ---
-    openEventModal() {
-        const todayStr = this.formatDateKey(new Date());
-        const html = `
-            <div class="modal">
-                <h2 style="color:var(--event);margin-bottom:1.5rem">Novo Evento</h2>
-                <input type="text" id="e-title" class="form-control" placeholder="${this.t('agenda.name')}">
-                <input type="text" id="e-desc" class="form-control" placeholder="${this.t('agenda.desc')}">
-                <div style="display:flex;gap:1rem">
-                    <input type="date" id="e-date" class="form-control" value="${todayStr}">
-                    <input type="time" id="e-time" class="form-control" value="09:00">
-                </div>
-                <div style="text-align:right;margin-top:1rem">
-                    <button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button>
-                    <button class="btn btn-add" style="background:var(--event)" onclick="nexus.addEvent()">${this.t('btnConfirm')}</button>
-                </div>
-            </div>`;
-        document.getElementById('modal-overlay').innerHTML = html;
-        document.getElementById('modal-overlay').style.display = 'flex';
-        setTimeout(()=>document.getElementById('e-title').focus(),100);
-    }
-
-    // (Outros métodos renderFinance, renderDashboard... mantidos iguais à v9.1)
-    renderDashboard(totalPct, count) {
-        const avg = count > 0 ? Math.round(totalPct / count) : 0;
-        const dash = document.getElementById('dashboard');
-        const streak = Object.keys(this.history).length; 
-        const chartColor = avg === 100 ? 'var(--accent)' : 'var(--primary)';
-        dash.innerHTML = `<div class="dash-card"><svg viewBox="0 0 36 36" class="circular-chart"><path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><path class="circle" stroke-dasharray="${avg}, 100" stroke="${chartColor}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" /><text x="18" y="20.35" class="percentage">${avg}%</text></svg><div class="dash-label" style="margin-top:10px">${this.t('dash.perf')}</div></div><div class="dash-card"><div class="dash-value" style="color:var(--accent)">${streak}</div><div class="dash-label">${this.t('dash.streak')}</div></div><div class="dash-card"><div class="dash-value">${count}</div><div class="dash-label">${this.t('dash.acts')}</div></div>`;
-    }
-
-    renderFinance() {
-        let bal = 0, inc = 0, exp = 0, inv = 0;
-        let listHTML = '';
-        const sorted = [...this.finance].reverse();
-        sorted.forEach(t => {
-            const val = parseFloat(t.amount);
-            if(t.type === 'in') { bal += val; inc += val; }
-            else if(t.type === 'out') { bal -= val; exp += val; }
-            else if(t.type === 'inv') { bal -= val; inv += val; } 
-            const typeClass = t.type === 'in' ? 'income' : (t.type === 'out' ? 'expense' : 'invest');
-            const sign = t.type === 'in' ? '+' : '-';
-            const color = t.type === 'in' ? 'var(--accent)' : (t.type === 'out' ? 'var(--danger)' : 'var(--primary)');
-            listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${new Date(t.date).toLocaleDateString()}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>`;
-        });
-        const netWorth = bal + inv;
-        this.finView.innerHTML = `
-            <div class="fin-summary">
-                <div class="fin-card patrimony"><div class="fin-label">${this.t('fin.net')}</div><div class="fin-val">${netWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.bal')}</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.inv')}</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.in')}</div><div class="fin-val pos">${inc.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.out')}</div><div class="fin-val neg">${exp.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-            </div>
-            <div class="fin-list">${listHTML || '<div style="text-align:center;color:#666;padding:2rem">Nenhuma transação.</div>'}</div>
-        `;
-    }
-
-    addTransaction() {
-        const desc = document.getElementById('f-desc').value;
-        const amount = parseFloat(document.getElementById('f-amount').value);
-        const type = document.getElementById('f-type').value;
-        if(!desc || !amount) return;
-        this.finance.push({ id: Date.now(), desc, amount, type, date: new Date().toISOString() });
-        localStorage.setItem('nexus_finance', JSON.stringify(this.finance));
-        this.closeModal(); this.renderFinance();
     }
 
     renderSuggestions() {
@@ -573,27 +510,7 @@ class NexusOS {
         this.sugView.innerHTML += renderSection('detox', 'sections.detox');
     }
 
-    handleInput(id) {
-        const input = document.getElementById(`input-${id}`);
-        const unitSel = document.getElementById(`unit-sel-${id}`);
-        const val = parseFloat(input.value);
-        if(!val) return;
-        const p = this.protocols.find(x => x.id === id);
-        let finalValue = val;
-        if(unitSel && unitSel.value !== p.unit) {
-            let group = null;
-            for(const g in UNIT_SYSTEM.groups) if(UNIT_SYSTEM.groups[g].units[p.unit]) group = UNIT_SYSTEM.groups[g];
-            if(group) {
-                const inputMult = group.units[unitSel.value]; const targetMult = group.units[p.unit];
-                finalValue = (val * inputMult) / targetMult;
-                finalValue = Math.round(finalValue * 100) / 100;
-            }
-        }
-        p.current = Math.round((p.current + finalValue) * 100) / 100;
-        this.save(); input.value = '';
-    }
-
-    // --- MODALS ---
+    // --- MODALS WITH DAY SELECTOR ---
     openProtocolModal(pre={}) {
         let optionsHTML = '';
         for(const key in UNIT_SYSTEM.groups) {
@@ -602,70 +519,22 @@ class NexusOS {
             for(const u in g.units) optionsHTML += `<option value="${u}" ${pre.unit===u?'selected':''}>${u}</option>`;
             optionsHTML += `</optgroup>`;
         }
-        const html = `<div class="modal"><h2 style="color:var(--primary);margin-bottom:1.5rem">Novo Protocolo</h2><input type="text" id="p-name" class="form-control" placeholder="Nome" value="${pre.name||''}"><div style="display:flex;gap:1rem"><input type="number" id="p-target" class="form-control" placeholder="Meta" value="${pre.target||''}"><select id="p-unit" class="form-control">${optionsHTML}</select></div><select id="p-cycle" class="form-control"><option value="daily" ${pre.cycle==='daily'?'selected':''}>${this.t('cycles.daily')}</option><option value="weekly" ${pre.cycle==='weekly'?'selected':''}>${this.t('cycles.weekly')}</option><option value="monthly" ${pre.cycle==='monthly'?'selected':''}>${this.t('cycles.monthly')}</option><option value="infinite" ${pre.cycle==='infinite'?'selected':''}>${this.t('cycles.infinite')}</option></select><div style="text-align:right;margin-top:1rem"><button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button><button class="btn btn-add" onclick="nexus.createProtocol()">${this.t('btnConfirm')}</button></div></div>`;
-        document.getElementById('modal-overlay').innerHTML = html;
-        document.getElementById('modal-overlay').style.display = 'flex';
-        if(pre.name) setTimeout(()=>document.getElementById('p-target').focus(),100);
-    }
-    openFinanceModal() {
-        const html = `<div class="modal"><h2 style="color:var(--accent);margin-bottom:1.5rem">Transação Financeira</h2><input type="text" id="f-desc" class="form-control" placeholder="${this.t('fin.desc')} (ex: Salário)"><input type="number" id="f-amount" class="form-control" placeholder="${this.t('fin.val')} (R$)"><select id="f-type" class="form-control"><option value="in">Entrada (+)</option><option value="out">Saída (-)</option><option value="inv">Investimento (Invest)</option></select><div style="text-align:right;margin-top:1rem"><button class="btn" style="background:transparent;color:#666" onclick="nexus.closeModal()">${this.t('btnCancel')}</button><button class="btn btn-add" onclick="nexus.addTransaction()">${this.t('btnConfirm')}</button></div></div>`;
-        document.getElementById('modal-overlay').innerHTML = html;
-        document.getElementById('modal-overlay').style.display = 'flex';
-        setTimeout(()=>document.getElementById('f-desc').focus(),100);
-    }
-    createProtocol() {
-        const name = document.getElementById('p-name').value;
-        const target = parseFloat(document.getElementById('p-target').value);
-        const unit = document.getElementById('p-unit').value;
-        const cycle = document.getElementById('p-cycle').value;
-        if(!name || !target) return;
-        this.protocols.push({id:Date.now().toString(36), name, target, unit, cycle, current:0, lastReset:new Date().toISOString()});
-        this.closeModal(); this.save(); this.switchTab('protocols');
-    }
+        
+        // Checkboxes Dias da Semana
+        const daysHTML = `
+            <div class="day-selector">
+                ${['D','S','T','Q','Q','S','S'].map((d, i) => `
+                    <label>
+                        <input type="checkbox" class="day-checkbox" value="${i}" checked>
+                        <span class="day-label">${d}</span>
+                    </label>
+                `).join('')}
+            </div>
+        `;
 
-    t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
-    toggleLang() { this.lang=this.lang==='pt'?'en':'pt'; localStorage.setItem('nexus_lang',this.lang); this.updateTexts(); this.render(); this.renderFinance(); this.renderSuggestions(); this.renderAgenda(); this.renderCalendar(); }
-    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-finance').innerText = this.t('tabs.finance'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); document.getElementById('tab-agenda').innerText = this.t('tabs.agenda'); }
-    save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
-    deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
-    toggleSidebar() { document.getElementById('app-sidebar').classList.toggle('active'); document.getElementById('sidebar-backdrop').classList.toggle('active'); }
-    closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
-    getIcon(name) { const n=name.toLowerCase(); const i={'água':'💧','ler':'📚','treino':'💪','sono':'💤','dinheiro':'💰','code':'💻','açúcar':'🍬'}; for(let k in i)if(n.includes(k))return i[k]; return '⚡'; }
-    
-    renderCalendar() {
-        const c = document.getElementById('calendar-days'); const ml = document.getElementById('month-label'); c.innerHTML=''; 
-        const year = this.calendarViewDate.getFullYear(); const month = this.calendarViewDate.getMonth();
-        const mNames = this.lang==='pt'?["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]:["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-        ml.innerText = mNames[month] + " " + year;
-        const first = new Date(year,month,1).getDay(); const days = new Date(year,month+1,0).getDate();
-        for(let i=0;i<first;i++)c.innerHTML+=`<div></div>`;
-        for(let i=1;i<=days;i++){
-            const d=new Date(year,month,i); const k=this.formatDateKey(d);
-            const isT=this.formatDateKey(this.today)===k; const isS=this.formatDateKey(this.selectedDate)===k; 
-            const hasHist=this.history[k];
-            // Check Agenda
-            const hasEvent = this.agenda.some(e => e.date === k);
-
-            const div=document.createElement('div'); div.className=`day-cell ${isT?'today':''} ${isS?'selected':''} ${hasHist?'has-data':''}`; div.innerText=i;
-            if(hasEvent) div.innerHTML += `<div class="dot-event"></div>`;
-            if(hasHist) div.innerHTML += `<div class="dot-hist"></div>`;
-            
-            div.onclick=()=>this.selectDate(d);
-            c.appendChild(div);
-        }
-    }
-    changeMonth(d) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth()+d); this.renderCalendar(); }
-    selectDate(d) { 
-        this.selectedDate=d; 
-        this.switchTab('protocols'); // Volta pra home ao clicar
-        this.renderCalendar(); 
-        this.render(); 
-        if(window.innerWidth<=850) this.toggleSidebar(); 
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => { window.nexus = new NexusOS(); });
-document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });
-</script>
-</body>
-</html>
+        const html = `
+            <div class="modal">
+                <h2 style="color:var(--primary);margin-bottom:1.5rem">Novo Protocolo</h2>
+                <input type="text" id="p-name" class="form-control" placeholder="Nome" value="${pre.name||''}">
+                <div style="display:flex;gap:1rem">
+                    <input type="number" id="p-target" class="form-control" placeholder="Meta" value="${pre.target||''}">
