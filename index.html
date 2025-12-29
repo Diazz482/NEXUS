@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v9.4</title>
+    <title>NEXUS LIFE OS v9.5</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -91,7 +91,6 @@
         .btn-mini-add { background: var(--bg-input); color: var(--event); border: 1px solid var(--border); width: 24px; height: 24px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 1rem; }
         .sidebar-event-list { overflow-y: auto; flex: 1; padding-right: 5px; }
         
-        /* Sidebar Event Card */
         .side-event-card { 
             background: var(--bg-input); border-radius: 10px; padding: 0.8rem; margin-bottom: 0.8rem; 
             border-left: 3px solid var(--event); position: relative;
@@ -207,8 +206,7 @@
                 <div class="agenda-title">📅 Eventos</div>
                 <button class="btn-mini-add" onclick="nexus.openEventModal()" title="Novo Evento">+</button>
             </div>
-            <div id="sidebar-event-list" class="sidebar-event-list">
-                </div>
+            <div id="sidebar-event-list" class="sidebar-event-list"></div>
         </div>
 
         <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center;">
@@ -255,7 +253,7 @@
 
 <script>
 /**
- * NEXUS CORE v9.4 (Fix: Sidebar Agenda)
+ * NEXUS CORE v9.5 (Future Protocols & Full Finance)
  */
 
 const UNIT_SYSTEM = {
@@ -283,20 +281,20 @@ const DICTIONARY = {
     pt: {
         tabs: { protocols: "PROTOCOLOS", finance: "FINANÇAS", explore: "EXPLORAR" },
         dash: { perf: "PERFORMANCE", streak: "DIAS SEGUIDOS", acts: "AÇÕES HOJE" },
-        fin: { net: "PATRIMÔNIO TOTAL", bal: "SALDO DISPONÍVEL", in: "ENTRADAS", out: "SAÍDAS", inv: "INVESTIDO", desc: "Descrição", val: "Valor" },
+        fin: { net: "PATRIMÔNIO TOTAL", bal: "SALDO DISPONÍVEL", in: "TOTAL ENTRADAS", out: "TOTAL SAÍDAS", inv: "ACUMULADO", desc: "Descrição", val: "Valor" },
         agenda: { title: "AGENDA DO DIA", upcoming: "PRÓXIMOS EVENTOS", desc: "Descrição", name: "Título" },
         cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
-        empty: "Sem dados.", emptyFin: "Sem movimentações nesta data.", btnCancel: "Cancelar", btnConfirm: "Confirmar",
-        noEvents: "Sem eventos para esta data."
+        empty: "Sem dados.", emptyFin: "Sem movimentações.", btnCancel: "Cancelar", btnConfirm: "Confirmar",
+        noEvents: "Sem eventos."
     },
     en: {
         tabs: { protocols: "PROTOCOLS", finance: "FINANCE", explore: "EXPLORE" },
         dash: { perf: "PERFORMANCE", streak: "STREAK", acts: "ACTIONS" },
-        fin: { net: "NET WORTH", bal: "AVAILABLE CASH", in: "INCOME", out: "EXPENSES", inv: "INVESTED", desc: "Description", val: "Amount" },
+        fin: { net: "NET WORTH", bal: "AVAILABLE CASH", in: "TOTAL INCOME", out: "TOTAL EXPENSES", inv: "INVESTED", desc: "Description", val: "Amount" },
         agenda: { title: "TODAY'S AGENDA", upcoming: "UPCOMING", desc: "Description", name: "Title" },
         cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
-        empty: "No data.", emptyFin: "No transactions on this date.", btnCancel: "Cancel", btnConfirm: "Confirm",
-        noEvents: "No events for this date."
+        empty: "No data.", emptyFin: "No transactions.", btnCancel: "Cancel", btnConfirm: "Confirm",
+        noEvents: "No events."
     }
 };
 
@@ -324,7 +322,7 @@ class NexusOS {
         this.updateTexts(); 
         this.render(); 
         this.renderSuggestions();
-        this.renderSidebarAgenda(); // Initial Render
+        this.renderSidebarAgenda();
     }
 
     switchTab(tab) {
@@ -378,80 +376,69 @@ class NexusOS {
 
     getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
 
-    // --- RENDER SIDEBAR AGENDA (NEW) ---
     renderSidebarAgenda() {
         const viewKey = this.formatDateKey(this.selectedDate);
         const isToday = viewKey === this.formatDateKey(this.today);
-        
-        // Se for hoje, mostrar eventos de hoje e futuros próximos. Se for data futura, mostrar eventos daquela data.
-        let eventsToShow = [];
-        
-        if (isToday) {
-             // Mostra eventos de hoje
-             eventsToShow = this.agenda.filter(e => e.date === viewKey);
-             // E os próximos 3 eventos futuros
-             const future = this.agenda.filter(e => e.date > viewKey).sort((a,b) => a.date.localeCompare(b.date));
-             // Merge visualmente? Não, vamos focar no dia selecionado no calendário para manter a consistência UX.
-        } else {
-             eventsToShow = this.agenda.filter(e => e.date === viewKey);
-        }
-        
+        let eventsToShow = isToday ? this.agenda.filter(e => e.date === viewKey) : this.agenda.filter(e => e.date === viewKey);
         eventsToShow.sort((a,b) => a.time.localeCompare(b.time));
-
         let html = '';
-        if(eventsToShow.length === 0) {
-            html = `<div style="text-align:center; color:#555; font-size:0.8rem; padding:1rem;">${this.t('noEvents')}</div>`;
-        } else {
+        if(eventsToShow.length === 0) html = `<div style="text-align:center; color:#555; font-size:0.8rem; padding:1rem;">${this.t('noEvents')}</div>`;
+        else {
             eventsToShow.forEach(e => {
-                const dateParts = e.date.split('-');
-                const displayDate = `${dateParts[2]}/${dateParts[1]}`;
-                html += `
-                    <div class="side-event-card">
-                        <div class="side-event-time">${e.time}</div>
-                        <div class="side-event-title">${e.title}</div>
-                        <div class="side-event-desc">${e.desc}</div>
-                        ${!isToday && e.date !== viewKey ? `<div class="side-event-date">${displayDate}</div>` : ''}
-                        <button class="btn-del-event" onclick="nexus.deleteEvent('${e.id}')">Excluir</button>
-                    </div>
-                `;
+                html += `<div class="side-event-card"><div class="side-event-time">${e.time}</div><div class="side-event-title">${e.title}</div><div class="side-event-desc">${e.desc}</div><button class="btn-del-event" onclick="nexus.deleteEvent('${e.id}')">Excluir</button></div>`;
             });
         }
         this.sidebarList.innerHTML = html;
     }
 
-    // --- RENDER PROTOCOLS ---
+    // --- RENDER PROTOCOLS (Future & Past Logic) ---
     render() {
         if(this.currentTab !== 'protocols') return;
         this.grid.innerHTML = '';
-        const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
+        
+        const todayKey = this.formatDateKey(this.today);
         const viewKey = this.formatDateKey(this.selectedDate);
+        const isToday = viewKey === todayKey;
+        const isFuture = viewKey > todayKey; // Checa se é futuro
         
         document.getElementById('view-date-label').innerText = isToday ? '' : `Visualizando: ${viewKey}`;
         document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
 
         const dayOfWeek = this.selectedDate.getDay(); 
-        const rawData = isToday ? this.protocols : (this.history[viewKey] || []);
         
-        // Filter Days
+        // CORREÇÃO: Se for futuro ou hoje, usa os protocolos base (templates). Se for passado, usa histórico.
+        let rawData = [];
+        if (isToday) {
+            rawData = this.protocols;
+        } else if (isFuture) {
+            // No futuro, mostramos o que "deve" ser feito, com progresso 0 para visualização
+            rawData = this.protocols.map(p => ({...p, current: 0})); 
+        } else {
+            // No passado, mostramos o que foi feito
+            rawData = this.history[viewKey] || [];
+        }
+        
         const data = rawData.filter(p => {
             if (!p.days || p.days.length === 0) return true; 
             return p.days.includes(dayOfWeek); 
         });
 
-        let totalPct = 0; let activeCount = 0;
-
         if (data.length === 0) {
             this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${this.t('empty')}</h3></div>`;
             document.getElementById('dashboard').style.display = 'none';
         } else {
-            if(isToday && data.length > 0) document.getElementById('dashboard').style.display = 'grid';
-            else document.getElementById('dashboard').style.display = 'none';
+            // Mostra Dashboard se for Hoje ou Futuro (Previsão) ou Passado com dados
+            document.getElementById('dashboard').style.display = 'grid';
+
+            let totalPct = 0; let activeCount = 0;
 
             data.forEach(p => {
                 const pct = Math.min((p.current / p.target) * 100, 100);
                 totalPct += pct; activeCount++;
                 const isComp = p.current >= p.target;
                 const icon = this.getIcon(p.name);
+                
+                // Inputs só aparecem se for HOJE
                 const compatibleUnits = this.getCompatibleUnits(p.unit);
                 let unitSelectorHTML = '';
                 if(isToday && compatibleUnits.length > 1) {
@@ -461,20 +448,23 @@ class NexusOS {
                 } else unitSelectorHTML = `<span class="unit-selector-mini" style="border:none;padding-top:4px">${p.unit}</span>`;
                 
                 const inputArea = isToday ? `<div class="input-action-row"><input type="number" class="input-fraction" id="input-${p.id}" placeholder="0" onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')">${unitSelectorHTML}<button class="btn" onclick="nexus.handleInput('${p.id}')">+</button></div>` : '';
-                const card = document.createElement('div'); card.className = `card ${!isToday?'read-only':''}`;
+                
+                const card = document.createElement('div'); 
+                card.className = `card ${!isToday?'read-only':''}`; // Read-only se não for hoje
+                
                 card.innerHTML = `<div style="display:flex;justify-content:space-between"><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div>${isToday ? `<button style="background:none;border:none;color:#555;cursor:pointer" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : ''}</div><div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} / ${p.target} ${p.unit}</span><span>${pct.toFixed(0)}%</span></div><div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>${inputArea}`;
                 this.grid.appendChild(card);
             });
-            if(isToday && activeCount > 0) this.renderDashboard(totalPct, activeCount);
+            if(activeCount > 0) this.renderDashboard(totalPct, activeCount);
         }
     }
 
     renderFinance() {
-        let bal = 0, inv = 0;
+        let bal = 0, inv = 0, inc = 0, exp = 0;
         this.finance.forEach(t => {
             const val = parseFloat(t.amount);
-            if(t.type === 'in') bal += val;
-            else if(t.type === 'out') bal -= val;
+            if(t.type === 'in') { bal += val; inc += val; }
+            else if(t.type === 'out') { bal -= val; exp += val; }
             else if(t.type === 'inv') { bal -= val; inv += val; }
         });
         const netWorth = bal + inv;
@@ -491,16 +481,15 @@ class NexusOS {
              listHTML += `<div class="fin-item ${typeClass}"><div><div class="fin-desc">${t.desc}</div><div class="fin-date">${t.time || ''}</div></div><div class="fin-amount" style="color:${color}">${sign} ${val.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>`;
         });
 
-        const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
-        const dateLabel = isToday ? "HOJE" : viewKey;
-
         this.finView.innerHTML = `
             <div class="fin-summary">
-                <div class="fin-card patrimony"><div class="fin-label">${this.t('fin.net')} (TOTAL)</div><div class="fin-val">${netWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.bal')} (CAIXA)</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
-                <div class="fin-card"><div class="fin-label">${this.t('fin.inv')} (ACUMULADO)</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card patrimony"><div class="fin-label">${this.t('fin.net')}</div><div class="fin-val">${netWorth.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.bal')}</div><div class="fin-val">${bal.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.in')}</div><div class="fin-val pos">${inc.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.out')}</div><div class="fin-val neg">${exp.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
+                <div class="fin-card"><div class="fin-label">${this.t('fin.inv')}</div><div class="fin-val inv">${inv.toLocaleString('pt-BR', {style:'currency', currency:'BRL'})}</div></div>
             </div>
-            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); font-size:0.9rem; font-weight:bold;">Transações de ${dateLabel}</div>
+            <div style="margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); font-size:0.9rem; font-weight:bold;">Transações do Dia</div>
             <div class="fin-list">${listHTML || `<div style="text-align:center;color:#666;padding:2rem">${this.t('emptyFin')}</div>`}</div>
         `;
     }
@@ -521,7 +510,6 @@ class NexusOS {
         this.sugView.innerHTML += renderSection('detox', 'sections.detox');
     }
 
-    // --- MODALS ---
     openProtocolModal(pre={}) {
         let optionsHTML = '';
         for(const key in UNIT_SYSTEM.groups) {
@@ -530,9 +518,7 @@ class NexusOS {
             for(const u in g.units) optionsHTML += `<option value="${u}" ${pre.unit===u?'selected':''}>${u}</option>`;
             optionsHTML += `</optgroup>`;
         }
-        
         const daysHTML = `<div class="day-selector">${['D','S','T','Q','Q','S','S'].map((d, i) => `<label><input type="checkbox" class="day-checkbox" value="${i}" checked><span class="day-label">${d}</span></label>`).join('')}</div>`;
-
         const html = `
             <div class="modal">
                 <h2 style="color:var(--primary);margin-bottom:1.5rem">Novo Protocolo</h2>
@@ -592,7 +578,7 @@ class NexusOS {
         localStorage.setItem('nexus_agenda', JSON.stringify(this.agenda));
         this.closeModal(); 
         this.renderCalendar(); 
-        this.renderSidebarAgenda(); // Atualiza lateral
+        this.renderSidebarAgenda();
     }
 
     t(key) { return key.split('.').reduce((o,k)=>(o||{})[k], DICTIONARY[this.lang])||key; }
@@ -618,10 +604,10 @@ class NexusOS {
     changeMonth(d) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth()+d); this.renderCalendar(); }
     selectDate(d) { 
         this.selectedDate=d; 
-        this.switchTab('protocols'); // Volta para aba principal
+        this.switchTab('protocols'); 
         this.renderCalendar(); 
         this.render(); 
-        this.renderSidebarAgenda(); // Atualiza a lista lateral para o dia selecionado
+        this.renderSidebarAgenda(); 
         if(window.innerWidth<=850) this.toggleSidebar(); 
     }
 }
