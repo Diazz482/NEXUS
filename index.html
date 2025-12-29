@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v5.0</title>
+    <title>NEXUS LIFE OS v6.0</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -36,19 +36,25 @@
             display: flex;
         }
 
-        /* --- LAYOUT STRUCTURE --- */
+        /* --- SIDEBAR (Calendário) --- */
         .app-sidebar {
             width: 320px;
             background: var(--bg-sidebar);
             border-right: 1px solid var(--border);
             display: flex; flex-direction: column; padding: 2rem 1.5rem; flex-shrink: 0; overflow-y: auto;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 900;
         }
+
+        /* Botão de Fechar Sidebar (Só aparece no Mobile) */
+        .sidebar-close-btn { display: none; margin-bottom: 1rem; color: var(--text-muted); background: transparent; border: none; font-size: 1.5rem; cursor: pointer; text-align: right; }
+
         .app-content {
-            flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center;
+            flex: 1; padding: 2rem; overflow-y: auto; display: flex; flex-direction: column; align-items: center; position: relative;
         }
         .content-container { width: 100%; max-width: 800px; }
 
-        /* --- CALENDAR --- */
+        /* --- CALENDAR STYLES --- */
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
         .month-label { font-size: 1.1rem; font-weight: bold; color: white; }
         .month-nav { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem; padding: 0 10px; }
@@ -62,79 +68,106 @@
         .day-cell.has-data { position: relative; }
         .day-cell.has-data::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
 
-        /* --- HEADER & TABS --- */
+        /* --- HEADER --- */
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        
+        /* Botão Toggle Mobile (Hambúrguer/Calendário) */
+        .mobile-toggle-btn {
+            display: none; /* Desktop hidden */
+            background: var(--bg-input); border: 1px solid var(--border); color: var(--primary);
+            width: 40px; height: 40px; border-radius: 12px;
+            align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem;
+        }
+
         h1 { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; }
         .logo-icon-header { width: 36px; height: 36px; margin-right: 12px; color: var(--primary); }
         h1 span { color: var(--primary); font-weight: 300; margin-left: 5px; }
 
-        .tab-nav { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; }
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0; cursor: pointer; font-size: 0.95rem; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .tab-nav { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-left: 0.5rem; overflow-x: auto; }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 0.8rem 0; cursor: pointer; font-size: 0.95rem; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
         .tab-btn:hover { color: var(--text-main); }
         .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-        /* --- CARDS & GRID --- */
+        /* --- CARDS & UI --- */
         #protocol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; padding-bottom: 4rem; }
         .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-2px); border-color: #444; }
-        .card.read-only { opacity: 0.7; border-style: dashed; }
         .protocol-name { font-size: 1.15rem; font-weight: 600; color: white; display: flex; align-items: center; gap: 10px; }
         .protocol-icon { background: rgba(255,255,255,0.05); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
         .progress-container { width: 100%; height: 10px; background: var(--bg-core); border-radius: 10px; overflow: hidden; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: 0%; border-radius: 10px; transition: width 0.5s ease; }
         .progress-fill.complete { background: var(--accent); }
         .stats { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; }
-
-        /* --- SUGGESTIONS GRID (SQUARE) --- */
-        .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
-        .suggestions-container.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .sug-section-title { font-size: 0.9rem; color: var(--text-muted); margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .sug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
-        
-        .sug-card { 
-            aspect-ratio: 1; 
-            background: var(--bg-panel); 
-            border: 1px solid var(--border); 
-            border-radius: var(--radius-card); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            cursor: pointer; transition: all 0.2s; padding: 1rem; text-align: center;
-        }
-        .sug-card:hover { border-color: var(--primary); background: var(--bg-input); transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        
-        .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
-        .sug-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
-        .sug-meta { font-size: 0.75rem; color: var(--text-muted); }
-
-        /* --- CONTROLS --- */
         .btn { background: var(--bg-input); border: 1px solid var(--border); color: var(--primary); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: var(--radius-btn); font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn:hover { background: var(--primary); color: var(--bg-core); }
         .btn-add { background: var(--primary); color: var(--bg-core); border: none; }
         .input-fraction { background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; padding: 0.8rem 1rem; width: 100%; font-size: 1rem; }
         .input-action-row { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
 
-        /* --- MOBILE --- */
+        /* --- SUGGESTIONS --- */
+        .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
+        .suggestions-container.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .sug-section-title { font-size: 0.9rem; color: var(--text-muted); margin: 2rem 0 1rem 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .sug-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+        .sug-card { aspect-ratio: 1; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; padding: 1rem; text-align: center; }
+        .sug-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .sug-name { font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 0.2rem; }
+        .sug-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* --- MOBILE SPECIFICS (OFF-CANVAS) --- */
         @media (max-width: 850px) {
-            body { flex-direction: column; overflow-y: auto; }
-            .app-sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; }
-            .calendar-grid { gap: 4px; }
-            .app-content { overflow: visible; padding: 1.5rem 1rem; }
+            .mobile-toggle-btn { display: flex; }
+            .sidebar-close-btn { display: block; }
+            
+            /* Esconder Logo Texto no mobile para caber os botões */
+            h1 span { display: none; }
+            h1 { font-size: 1.2rem; }
+
+            .app-sidebar {
+                position: fixed;
+                top: 0; left: 0;
+                width: 85%; /* Gaveta ocupa 85% da tela */
+                height: 100vh;
+                transform: translateX(-100%); /* Escondido à esquerda */
+                box-shadow: 10px 0 50px rgba(0,0,0,0.5);
+                border-right: 1px solid var(--primary-dim);
+                z-index: 2000;
+            }
+
+            .app-sidebar.active {
+                transform: translateX(0); /* Desliza para dentro */
+            }
+
+            /* Backdrop Escuro */
+            .sidebar-backdrop {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.8);
+                backdrop-filter: blur(4px);
+                z-index: 1900;
+                display: none;
+                opacity: 0; transition: opacity 0.3s;
+            }
+            .sidebar-backdrop.active { display: block; opacity: 1; }
+
+            .app-content { padding: 1.5rem 1rem; }
             .sug-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
-            .sug-card { border-radius: 16px; }
-            .sug-icon { font-size: 2rem; }
+            .calendar-grid { gap: 6px; }
         }
 
         /* --- MODAL --- */
-        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 3000; padding: 1rem; }
         .modal { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 2rem; width: 100%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .form-group { margin-bottom: 1.2rem; }
-        .form-control { width: 100%; padding: 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 1rem; }
+        .form-control { width: 100%; padding: 0.9rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: white; font-size: 1rem; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
 
-    <aside class="app-sidebar">
+    <div id="sidebar-backdrop" class="sidebar-backdrop" onclick="nexus.toggleSidebar()"></div>
+
+    <aside class="app-sidebar" id="app-sidebar">
+        <button class="sidebar-close-btn" onclick="nexus.toggleSidebar()">✕</button>
+
         <div class="calendar-header">
             <button class="month-nav" onclick="nexus.changeMonth(-1)">❮</button>
             <span class="month-label" id="month-label">...</span>
@@ -152,13 +185,17 @@
     <main class="app-content">
         <div class="content-container">
             <header>
-                <h1>
-                    <svg class="logo-icon-header" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/>
-                        <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text>
-                    </svg>
-                    Nexus <span>Life OS</span>
-                </h1>
+                <div class="header-left">
+                    <button class="mobile-toggle-btn" onclick="nexus.toggleSidebar()">📅</button>
+                    
+                    <h1>
+                        <svg class="logo-icon-header" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="56" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="5"/>
+                            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="800" fill="currentColor" font-size="26" letter-spacing="-1">NS</text>
+                        </svg>
+                        Nexus <span>Life OS</span>
+                    </h1>
+                </div>
                 <button class="btn btn-lang" id="lang-btn" onclick="nexus.toggleLang()">EN</button>
             </header>
 
@@ -167,12 +204,11 @@
                 <button class="tab-btn" id="tab-suggestions" onclick="nexus.switchTab('suggestions')">EXPLORAR SUGESTÕES</button>
             </nav>
 
-            <h3 id="view-date-label" style="margin-bottom: 1rem; color: var(--primary); display:none">VISUALIZANDO PASSADO</h3>
+            <h3 id="view-date-label" style="margin-bottom: 1rem; color: var(--primary); display:none; font-size: 0.9rem; border: 1px solid var(--primary); padding: 5px 10px; border-radius: 8px; width: fit-content;">VISUALIZANDO PASSADO</h3>
             
             <div id="protocol-grid"></div>
 
-            <div id="suggestions-view" class="suggestions-container">
-                </div>
+            <div id="suggestions-view" class="suggestions-container"></div>
 
             <div id="fab-container" style="text-align: center; margin-top: 2rem;">
                 <button class="btn btn-add" style="padding: 0.8rem 2rem; font-size: 1rem;" onclick="nexus.openModal()">+ CRIAR PERSONALIZADO</button>
@@ -183,56 +219,38 @@
     <div id="modal-overlay"></div>
 
 <script>
-/**
- * NEXUS CORE ENGINE v5.0 (Tabs & Suggestions)
- */
+/** NEXUS CORE v6.0 (Mobile Sidebar Drawer) */
 const DICTIONARY = {
     pt: {
-        addBtn: "+ NOVO",
-        tabs: { protocols: "MEUS PROTOCOLOS", explore: "EXPLORAR SUGESTÕES" },
-        sections: { boost: "🚀 BOOST (Bons Hábitos)", detox: "⛔ DETOX (Maus Hábitos)" },
-        emptyTitle: "SISTEMA OCIOSO",
-        emptyDesc: "Você não tem protocolos ativos. Explore as sugestões!",
-        emptyHist: "SEM DADOS",
-        emptyHistDesc: "Nenhum registro encontrado.",
-        cycle: "CICLO",
-        cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
+        addBtn: "+ NOVO", tabs: { protocols: "MEUS PROTOCOLOS", explore: "SUGESTÕES" },
+        sections: { boost: "🚀 BOOST (Bons Hábitos)", detox: "⛔ DETOX (Reduzir)" },
+        emptyTitle: "SISTEMA OCIOSO", emptyDesc: "Sem protocolos ativos.",
+        emptyHist: "SEM DADOS", emptyHistDesc: "Nada registrado.",
+        cycle: "CICLO", cycles: { daily: "DIÁRIO", weekly: "SEMANAL", monthly: "MENSAL", infinite: "ACUMULATIVO" },
         btnSum: "SOMAR", btnCancel: "Cancelar", btnConfirm: "Confirmar",
-        modalTitle: "Configurar Protocolo",
-        lblNam: "Nome", phNam: "Ex: Leitura", lblTarget: "Meta", lblUnit: "Unidade", lblCycle: "Reset",
-        viewing: "HISTÓRICO DE:"
+        modalTitle: "Configurar", lblNam: "Nome", phNam: "Ex: Leitura", lblTarget: "Meta", lblUnit: "Unidade", lblCycle: "Reset",
+        viewing: "DATA:"
     },
     en: {
-        addBtn: "+ NEW",
-        tabs: { protocols: "MY PROTOCOLS", explore: "EXPLORE SUGGESTIONS" },
-        sections: { boost: "🚀 BOOST (Good Habits)", detox: "⛔ DETOX (Bad Habits)" },
-        emptyTitle: "SYSTEM IDLE",
-        emptyDesc: "No active protocols. Explore suggestions!",
-        emptyHist: "NO DATA",
-        emptyHistDesc: "No records found.",
-        cycle: "CYCLE",
-        cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
+        addBtn: "+ NEW", tabs: { protocols: "MY PROTOCOLS", explore: "SUGGESTIONS" },
+        sections: { boost: "🚀 BOOST (Good Habits)", detox: "⛔ DETOX (Reduce)" },
+        emptyTitle: "SYSTEM IDLE", emptyDesc: "No active protocols.",
+        emptyHist: "NO DATA", emptyHistDesc: "No records.",
+        cycle: "CYCLE", cycles: { daily: "DAILY", weekly: "WEEKLY", monthly: "MONTHLY", infinite: "ACCUMULATIVE" },
         btnSum: "ADD", btnCancel: "Cancel", btnConfirm: "Confirm",
-        modalTitle: "Configure Protocol",
-        lblNam: "Name", phNam: "Ex: Reading", lblTarget: "Target", lblUnit: "Unit", lblCycle: "Reset",
-        viewing: "HISTORY OF:"
+        modalTitle: "Configure", lblNam: "Name", phNam: "Ex: Reading", lblTarget: "Target", lblUnit: "Unit", lblCycle: "Reset",
+        viewing: "DATE:"
     }
 };
 
-// DATABASE DE SUGESTÕES
 const SUGGESTIONS_DB = [
     { type: 'boost', icon: '💧', name_pt: 'Beber Água', name_en: 'Drink Water', target: 3000, unit: 'ml', cycle: 'daily' },
     { type: 'boost', icon: '📚', name_pt: 'Leitura', name_en: 'Reading', target: 30, unit: 'min', cycle: 'daily' },
     { type: 'boost', icon: '💪', name_pt: 'Treino', name_en: 'Workout', target: 1, unit: 'vez', cycle: 'daily' },
     { type: 'boost', icon: '🧘', name_pt: 'Meditação', name_en: 'Meditation', target: 15, unit: 'min', cycle: 'daily' },
     { type: 'boost', icon: '💰', name_pt: 'Aporte', name_en: 'Investment', target: 500, unit: 'R$', cycle: 'monthly' },
-    { type: 'boost', icon: '👨‍💻', name_pt: 'Estudo Code', name_en: 'Code Study', target: 2, unit: 'hrs', cycle: 'daily' },
-    
-    // Maus Hábitos (Foco em redução ou controle)
     { type: 'detox', icon: '🍬', name_pt: 'Zero Açúcar', name_en: 'No Sugar', target: 1, unit: 'dia', cycle: 'daily' },
-    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min limit', cycle: 'daily' },
-    { type: 'detox', icon: '🚬', name_pt: 'Sem Fumar', name_en: 'No Smoking', target: 1, unit: 'dia', cycle: 'daily' },
-    { type: 'detox', icon: '🎮', name_pt: 'Menos Jogos', name_en: 'Less Gaming', target: 1, unit: 'hr limit', cycle: 'daily' }
+    { type: 'detox', icon: '📱', name_pt: 'Redes Sociais', name_en: 'Social Media', target: 30, unit: 'min', cycle: 'daily' }
 ];
 
 class NexusOS {
@@ -240,96 +258,63 @@ class NexusOS {
         this.lang = localStorage.getItem('nexus_lang') || 'pt'; 
         this.protocols = JSON.parse(localStorage.getItem('nexus_protocols')) || [];
         this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
-        
-        this.today = new Date();
-        this.selectedDate = new Date(); 
-        this.calendarViewDate = new Date();
-        
-        this.currentTab = 'protocols'; // protocols | suggestions
-
+        this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
+        this.currentTab = 'protocols';
         this.grid = document.getElementById('protocol-grid');
         this.sugView = document.getElementById('suggestions-view');
         this.modalOverlay = document.getElementById('modal-overlay');
-        
         this.init();
     }
 
     init() {
-        this.checkResets();
-        this.renderCalendar();
-        this.updateTexts();
-        this.render();
-        this.renderSuggestions();
+        this.checkResets(); this.renderCalendar(); this.updateTexts(); this.render(); this.renderSuggestions();
+    }
+
+    /* --- MOBILE SIDEBAR TOGGLE --- */
+    toggleSidebar() {
+        const sidebar = document.getElementById('app-sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+        sidebar.classList.toggle('active');
+        backdrop.classList.toggle('active');
     }
 
     switchTab(tab) {
         this.currentTab = tab;
-        
-        // Update UI Classes
         document.getElementById('tab-protocols').className = `tab-btn ${tab === 'protocols' ? 'active' : ''}`;
         document.getElementById('tab-suggestions').className = `tab-btn ${tab === 'suggestions' ? 'active' : ''}`;
-        
-        // Toggle Views
-        if (tab === 'protocols') {
-            this.grid.style.display = 'grid';
-            this.sugView.classList.remove('active');
-            document.getElementById('fab-container').style.display = 'block';
-            this.render(); // Refresh grid
-        } else {
-            this.grid.style.display = 'none';
-            this.sugView.classList.add('active');
-            document.getElementById('fab-container').style.display = 'none';
-        }
+        this.grid.style.display = tab === 'protocols' ? 'grid' : 'none';
+        tab === 'protocols' ? this.sugView.classList.remove('active') : this.sugView.classList.add('active');
+        document.getElementById('fab-container').style.display = tab === 'protocols' ? 'block' : 'none';
+        if(tab === 'protocols') this.render();
     }
 
     renderSuggestions() {
         this.sugView.innerHTML = '';
-        
         const renderSection = (type, titleKey) => {
             const items = SUGGESTIONS_DB.filter(s => s.type === type);
             if(items.length === 0) return '';
-            
             let html = `<div class="sug-section-title">${this.t(titleKey)}</div><div class="sug-grid">`;
             items.forEach(item => {
                 const name = this.lang === 'pt' ? item.name_pt : item.name_en;
-                html += `
-                    <div class="sug-card" onclick="nexus.openModal({name: '${name}', target: ${item.target}, unit: '${item.unit}', cycle: '${item.cycle}'})">
-                        <div class="sug-icon">${item.icon}</div>
-                        <div class="sug-name">${name}</div>
-                        <div class="sug-meta">${item.target} ${item.unit} / ${this.t('cycles.' + item.cycle)}</div>
-                    </div>
-                `;
+                html += `<div class="sug-card" onclick="nexus.openModal({name: '${name}', target: ${item.target}, unit: '${item.unit}', cycle: '${item.cycle}'})"><div class="sug-icon">${item.icon}</div><div class="sug-name">${name}</div><div class="sug-meta">${item.target} ${item.unit}</div></div>`;
             });
-            html += `</div>`;
-            return html;
+            return html + `</div>`;
         };
-
         this.sugView.innerHTML += renderSection('boost', 'sections.boost');
         this.sugView.innerHTML += renderSection('detox', 'sections.detox');
     }
 
-    // --- LOGIC: TIME & HISTORY ---
-    formatDateKey(date) {
-        const d = new Date(date);
-        return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    }
+    formatDateKey(date) { const d = new Date(date); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
 
     checkResets() {
-        const now = new Date();
-        const todayKey = this.formatDateKey(now);
-        let hasChanges = false;
+        const now = new Date(); const todayKey = this.formatDateKey(now); let hasChanges = false;
         this.protocols = this.protocols.map(p => {
-            const lastUpdate = new Date(p.lastReset || 0);
-            const lastUpdateKey = this.formatDateKey(lastUpdate);
-            let shouldReset = false;
-            if (p.cycle === 'daily' && todayKey !== lastUpdateKey) shouldReset = true;
-            else if (p.cycle === 'weekly' && lastUpdate < this.getMonday(now)) shouldReset = true;
-            else if (p.cycle === 'monthly' && now.getMonth() !== lastUpdate.getMonth()) shouldReset = true;
-
-            if (shouldReset) {
-                if (p.current > 0) this.archiveHistory(lastUpdateKey, p);
-                p.current = 0; p.lastReset = now.toISOString(); hasChanges = true;
-            }
+            const last = new Date(p.lastReset || 0);
+            let reset = false;
+            if (p.cycle === 'daily' && todayKey !== this.formatDateKey(last)) reset = true;
+            else if (p.cycle === 'weekly' && last < this.getMonday(now)) reset = true;
+            else if (p.cycle === 'monthly' && now.getMonth() !== last.getMonth()) reset = true;
+            if (reset) { if (p.current > 0) this.archiveHistory(this.formatDateKey(last), p); p.current = 0; p.lastReset = now.toISOString(); hasChanges = true; }
             if (!p.lastReset) { p.lastReset = now.toISOString(); hasChanges = true; }
             return p;
         });
@@ -338,177 +323,83 @@ class NexusOS {
 
     archiveHistory(dateKey, protocol) {
         if (!this.history[dateKey]) this.history[dateKey] = [];
-        const exists = this.history[dateKey].find(h => h.id === protocol.id);
-        if (!exists) {
-            this.history[dateKey].push({ ...protocol }); // Shallow copy
-            localStorage.setItem('nexus_history', JSON.stringify(this.history));
+        if (!this.history[dateKey].find(h => h.id === protocol.id)) {
+            this.history[dateKey].push({ ...protocol }); localStorage.setItem('nexus_history', JSON.stringify(this.history));
         }
     }
 
-    getMonday(d) {
-        d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-        const monday = new Date(d.setDate(diff)); monday.setHours(0,0,0,0); return monday;
-    }
+    getMonday(d) { d = new Date(d); const day = d.getDay(); const diff = d.getDate() - day + (day === 0 ? -6 : 1); const m = new Date(d.setDate(diff)); m.setHours(0,0,0,0); return m; }
 
-    // --- UI: CALENDAR ---
     renderCalendar() {
         const container = document.getElementById('calendar-days');
         const monthLabel = document.getElementById('month-label');
         container.innerHTML = '';
         const year = this.calendarViewDate.getFullYear(); const month = this.calendarViewDate.getMonth();
-        const monthNames = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
-        const monthNamesEn = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-        monthLabel.innerText = (this.lang === 'pt' ? monthNames[month] : monthNamesEn[month]) + " " + year;
-        
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
+        const months = this.lang === 'pt' ? ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"] : ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        monthLabel.innerText = months[month] + " " + year;
+        const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
         for (let i = 0; i < firstDay; i++) container.innerHTML += `<div></div>`;
         for (let i = 1; i <= daysInMonth; i++) {
-            const date = new Date(year, month, i);
-            const dateKey = this.formatDateKey(date);
-            const isToday = this.formatDateKey(this.today) === dateKey;
-            const isSelected = this.formatDateKey(this.selectedDate) === dateKey;
-            const hasData = this.history[dateKey] && this.history[dateKey].length > 0;
-            
-            const div = document.createElement('div');
-            div.className = `day-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${hasData ? 'has-data' : ''}`;
-            div.innerText = i;
+            const date = new Date(year, month, i); const key = this.formatDateKey(date);
+            const isToday = this.formatDateKey(this.today) === key; const isSel = this.formatDateKey(this.selectedDate) === key; const hasData = this.history[key] && this.history[key].length > 0;
+            const div = document.createElement('div'); div.className = `day-cell ${isToday?'today':''} ${isSel?'selected':''} ${hasData?'has-data':''}`; div.innerText = i;
             div.onclick = () => this.selectDate(date);
             container.appendChild(div);
         }
     }
 
     changeMonth(dir) { this.calendarViewDate.setMonth(this.calendarViewDate.getMonth() + dir); this.renderCalendar(); }
-    
     selectDate(date) { 
         this.selectedDate = date; 
-        this.switchTab('protocols'); // Force back to protocol view when selecting date
+        this.switchTab('protocols'); 
         this.renderCalendar(); 
-        this.render(); 
+        this.render();
+        // AUTO CLOSE SIDEBAR ON MOBILE
+        const sidebar = document.getElementById('app-sidebar');
+        if(window.innerWidth <= 850 && sidebar.classList.contains('active')) this.toggleSidebar();
     }
 
-    // --- UI: MAIN RENDER ---
     render() {
         this.grid.innerHTML = '';
-        const isTodayView = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
-        const viewKey = this.formatDateKey(this.selectedDate);
+        const isToday = this.formatDateKey(this.selectedDate) === this.formatDateKey(this.today);
+        const key = this.formatDateKey(this.selectedDate);
+        document.getElementById('view-date-label').style.display = isToday ? 'none' : 'block';
+        if(!isToday) document.getElementById('view-date-label').innerText = `${this.t('viewing')} ${key}`;
+        document.getElementById('fab-container').style.display = isToday ? 'block' : 'none';
         
-        document.getElementById('view-date-label').style.display = isTodayView ? 'none' : 'block';
-        if(!isTodayView) document.getElementById('view-date-label').innerText = `${this.t('viewing')} ${viewKey}`;
-        document.getElementById('fab-container').style.display = isTodayView ? 'block' : 'none';
-
-        const dataToShow = isTodayView ? this.protocols : (this.history[viewKey] || []);
-
-        if (dataToShow.length === 0) {
-            this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${isTodayView ? this.t('emptyTitle') : this.t('emptyHist')}</h3><p>${isTodayView ? this.t('emptyDesc') : this.t('emptyHistDesc')}</p></div>`;
-            return;
+        const data = isToday ? this.protocols : (this.history[key] || []);
+        if (data.length === 0) {
+            this.grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-muted);border:2px dashed var(--border);border-radius:20px"><h3>${isToday?this.t('emptyTitle'):this.t('emptyHist')}</h3><p>${isToday?this.t('emptyDesc'):this.t('emptyHistDesc')}</p></div>`; return;
         }
-
-        dataToShow.forEach(p => {
-            const percentage = Math.min((p.current / p.target) * 100, 100);
-            const isComplete = p.current >= p.target;
+        data.forEach(p => {
+            const pct = Math.min((p.current / p.target) * 100, 100);
+            const isComp = p.current >= p.target;
             const icon = this.getIcon(p.name);
-            const cycleLabel = this.t(`cycles.${p.cycle}`);
-            const deleteBtn = isTodayView ? `<button class="btn btn-danger" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : '';
-            const inputArea = isTodayView ? `
-                <div class="input-action-row">
-                    <input type="number" class="input-fraction" id="input-${p.id}" placeholder="..." onkeydown="if(event.key === 'Enter') nexus.handleInput('${p.id}')">
-                    <button class="btn" style="padding: 0 1.5rem" onclick="nexus.handleInput('${p.id}')">${this.t('btnSum')}</button>
-                </div>` : '';
-
-            const card = document.createElement('div');
-            card.className = `card ${!isTodayView ? 'read-only' : ''}`;
-            card.innerHTML = `
-                <div class="card-header">
-                    <div><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div><div class="protocol-meta">${cycleLabel}</div></div>
-                    ${deleteBtn}
-                </div>
-                <div class="stats"><span style="color: ${isComplete ? 'var(--accent)' : 'var(--text-main)'}">${p.current} <span style="color:var(--text-muted)">/ ${p.target} ${p.unit}</span></span><span>${percentage.toFixed(0)}%</span></div>
-                <div class="progress-container"><div class="progress-fill ${isComplete ? 'complete' : ''}" style="width: ${percentage}%"></div></div>
-                ${inputArea}
-            `;
+            const delBtn = isToday ? `<button class="btn" style="padding:4px 10px;font-size:12px;color:var(--danger);background:transparent;border:1px solid #333" onclick="nexus.deleteProtocol('${p.id}')">✕</button>` : '';
+            const inputArea = isToday ? `<div class="input-action-row"><input type="number" class="input-fraction" id="input-${p.id}" placeholder="..." onkeydown="if(event.key==='Enter')nexus.handleInput('${p.id}')"><button class="btn" onclick="nexus.handleInput('${p.id}')">${this.t('btnSum')}</button></div>` : '';
+            const card = document.createElement('div'); card.className = `card ${!isToday?'read-only':''}`;
+            card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="protocol-name"><span class="protocol-icon">${icon}</span> ${p.name}</div><div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px">${this.t('cycles.'+p.cycle)}</div></div>${delBtn}</div><div class="stats"><span style="color:${isComp?'var(--accent)':'var(--text-main)'}">${p.current} <span style="color:var(--text-muted)">/ ${p.target} ${p.unit}</span></span><span>${pct.toFixed(0)}%</span></div><div class="progress-container"><div class="progress-fill ${isComp?'complete':''}" style="width:${pct}%"></div></div>${inputArea}`;
             this.grid.appendChild(card);
         });
     }
 
-    // --- UTILS ---
-    t(key) { return key.split('.').reduce((obj, k) => (obj || {})[k], DICTIONARY[this.lang]) || key; }
-    toggleLang() { 
-        this.lang = this.lang === 'pt' ? 'en' : 'pt'; 
-        localStorage.setItem('nexus_lang', this.lang); 
-        this.updateTexts(); this.renderCalendar(); this.render(); this.renderSuggestions(); 
-    }
-    updateTexts() { 
-        document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); 
-        document.getElementById('tab-protocols').innerText = this.t('tabs.protocols');
-        document.getElementById('tab-suggestions').innerText = this.t('tabs.explore');
-    }
+    t(key) { return key.split('.').reduce((o, k) => (o || {})[k], DICTIONARY[this.lang]) || key; }
+    toggleLang() { this.lang = this.lang === 'pt' ? 'en' : 'pt'; localStorage.setItem('nexus_lang', this.lang); this.updateTexts(); this.renderCalendar(); this.render(); this.renderSuggestions(); }
+    updateTexts() { document.getElementById('lang-btn').innerText = this.lang.toUpperCase(); document.getElementById('tab-protocols').innerText = this.t('tabs.protocols'); document.getElementById('tab-suggestions').innerText = this.t('tabs.explore'); }
     save() { localStorage.setItem('nexus_protocols', JSON.stringify(this.protocols)); this.render(); }
-    getIcon(name) {
-        const n = name.toLowerCase();
-        const icons = { 'água': '💧', 'water': '💧', 'treino': '💪', 'gym': '💪', 'ler': '📚', 'read': '📚', 'code': '💻', 'money': '💰', 'açúcar': '🍬', 'sugar': '🍬', 'social': '📱', 'smoke': '🚬', 'fumar': '🚬' };
-        for (const key in icons) if (n.includes(key)) return icons[key];
-        return '⚡';
-    }
-    addProgress(id, amount) {
-        const value = parseFloat(amount);
-        if (isNaN(value) || value === 0) return;
-        this.protocols = this.protocols.map(p => { if (p.id === id) p.current = Math.round((p.current + value) * 100) / 100; return p; });
-        const todayKey = this.formatDateKey(new Date());
-        if(!this.history[todayKey]) { this.history[todayKey] = []; localStorage.setItem('nexus_history', JSON.stringify(this.history)); this.renderCalendar(); }
-        this.save();
-    }
-    
-    // --- MODAL & CREATION ---
-    createProtocol() {
-        const name = document.getElementById('p-name').value;
-        const target = parseFloat(document.getElementById('p-target').value);
-        const unit = document.getElementById('p-unit').value;
-        const cycle = document.getElementById('p-cycle').value;
-        if (!name || !target) return;
-        this.protocols.push({ id: Date.now().toString(36), name, target, unit, cycle, current: 0, lastReset: new Date().toISOString() });
-        this.closeModal(); this.save(); 
-        // Force switch to protocols tab to see new item
-        this.switchTab('protocols');
-    }
-    
-    deleteProtocol(id) { if(confirm('Del?')) { this.protocols = this.protocols.filter(p => p.id !== id); this.save(); } }
-    handleInput(id) { const i = document.getElementById(`input-${id}`); this.addProgress(id, i.value); i.value = ''; i.focus(); }
-    
-    openModal(prefill = null) {
-        this.modalOverlay.innerHTML = `
-            <div class="modal">
-                <h2 style="margin-bottom:1.5rem;color:var(--primary)">${this.t('modalTitle')}</h2>
-                <div class="form-group"><label>${this.t('lblNam')}</label><input type="text" id="p-name" class="form-control" placeholder="${this.t('phNam')}" value="${prefill ? prefill.name : ''}"></div>
-                <div class="input-action-row">
-                    <div class="form-group" style="flex:1"><label>${this.t('lblTarget')}</label><input type="number" id="p-target" class="form-control" value="${prefill ? prefill.target : ''}"></div>
-                    <div class="form-group" style="flex:1"><label>${this.t('lblUnit')}</label><input type="text" id="p-unit" class="form-control" value="${prefill ? prefill.unit : ''}"></div>
-                </div>
-                <div class="form-group"><label>${this.t('lblCycle')}</label><select id="p-cycle" class="form-control">
-                    <option value="daily" ${prefill?.cycle === 'daily' ? 'selected' : ''}>${this.t('cycles.daily')}</option>
-                    <option value="weekly" ${prefill?.cycle === 'weekly' ? 'selected' : ''}>${this.t('cycles.weekly')}</option>
-                    <option value="monthly" ${prefill?.cycle === 'monthly' ? 'selected' : ''}>${this.t('cycles.monthly')}</option>
-                    <option value="infinite" ${prefill?.cycle === 'infinite' ? 'selected' : ''}>${this.t('cycles.infinite')}</option>
-                </select></div>
-                <div style="display:flex;justify-content:flex-end;gap:1rem;margin-top:1.5rem">
-                    <button class="btn" style="background:transparent;border:none;color:var(--text-muted)" onclick="nexus.closeModal()">${this.t('btnCancel')}</button>
-                    <button class="btn btn-add" onclick="nexus.createProtocol()">${this.t('btnConfirm')}</button>
-                </div>
-            </div>`;
-        this.modalOverlay.style.display = 'flex'; 
-        // Focus name if empty, or target if name is filled
-        setTimeout(() => {
-            const nameIn = document.getElementById('p-name');
-            if(nameIn.value) document.getElementById('p-target').focus();
-            else nameIn.focus();
-        }, 100);
+    getIcon(name) { const n = name.toLowerCase(); const icons = { 'água': '💧', 'water': '💧', 'treino': '💪', 'gym': '💪', 'ler': '📚', 'read': '📚', 'code': '💻', 'money': '💰', 'açúcar': '🍬', 'sugar': '🍬', 'social': '📱' }; for(const k in icons) if(n.includes(k)) return icons[k]; return '⚡'; }
+    addProgress(id, amt) { const v = parseFloat(amt); if(isNaN(v)||v===0) return; this.protocols = this.protocols.map(p => { if(p.id===id) p.current = Math.round((p.current+v)*100)/100; return p; }); const t = this.formatDateKey(new Date()); if(!this.history[t]) { this.history[t]=[]; localStorage.setItem('nexus_history', JSON.stringify(this.history)); this.renderCalendar(); } this.save(); }
+    createProtocol() { const n=document.getElementById('p-name').value, t=parseFloat(document.getElementById('p-target').value), u=document.getElementById('p-unit').value, c=document.getElementById('p-cycle').value; if(!n||!t) return; this.protocols.push({id:Date.now().toString(36), name:n, target:t, unit:u, cycle:c, current:0, lastReset:new Date().toISOString()}); this.closeModal(); this.save(); this.switchTab('protocols'); }
+    deleteProtocol(id) { if(confirm('Excluir?')) { this.protocols = this.protocols.filter(p=>p.id!==id); this.save(); } }
+    handleInput(id) { const i=document.getElementById(`input-${id}`); this.addProgress(id, i.value); i.value=''; i.focus(); }
+    openModal(pre={}) { 
+        this.modalOverlay.innerHTML = `<div class="modal"><h2 style="margin-bottom:1.5rem;color:var(--primary)">${this.t('modalTitle')}</h2><input type="text" id="p-name" class="form-control" placeholder="${this.t('phNam')}" value="${pre.name||''}"><div style="display:flex;gap:10px"><input type="number" id="p-target" class="form-control" placeholder="100" value="${pre.target||''}"><input type="text" id="p-unit" class="form-control" placeholder="ml" value="${pre.unit||''}"></div><select id="p-cycle" class="form-control"><option value="daily" ${pre.cycle==='daily'?'selected':''}>${this.t('cycles.daily')}</option><option value="weekly" ${pre.cycle==='weekly'?'selected':''}>${this.t('cycles.weekly')}</option><option value="monthly" ${pre.cycle==='monthly'?'selected':''}>${this.t('cycles.monthly')}</option><option value="infinite" ${pre.cycle==='infinite'?'selected':''}>${this.t('cycles.infinite')}</option></select><div style="text-align:right;margin-top:1rem"><button class="btn" style="background:transparent;border:none;color:#888" onclick="nexus.closeModal()">${this.t('btnCancel')}</button><button class="btn btn-add" onclick="nexus.createProtocol()">${this.t('btnConfirm')}</button></div></div>`;
+        this.modalOverlay.style.display = 'flex';
     }
     closeModal() { this.modalOverlay.style.display = 'none'; }
 }
-
 document.addEventListener('DOMContentLoaded', () => { try { window.nexus = new NexusOS(); } catch (e) { console.error(e); } });
-document.getElementById('modal-overlay').addEventListener('click', (e) => { if (e.target.id === 'modal-overlay') nexus.closeModal(); });
+document.getElementById('modal-overlay').addEventListener('click', (e) => { if(e.target.id === 'modal-overlay') nexus.closeModal(); });
 </script>
 </body>
 </html>
