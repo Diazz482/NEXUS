@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NEXUS LIFE OS v10.1</title>
+    <title>NEXUS LIFE OS v10.2</title>
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='4' width='56' height='56' rx='18' fill='none' stroke='%2300f0ff' stroke-width='4'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='bold' fill='%2300f0ff' font-size='28' letter-spacing='-1'%3ENS%3C/text%3E%3C/svg%3E">
 
@@ -19,7 +19,7 @@
             --danger: #ff477e; 
             --gold: #ffd700;   
             --event: #bd00ff;
-            --global: #9d00ff; /* Cor para Internacional */
+            --global: #9d00ff;
             --text-main: #f0f0f0;
             --text-muted: #888888;
             --border: #333333;
@@ -117,11 +117,8 @@
         .fin-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
         .fin-card.patrimony { border-color: var(--gold); background: rgba(255, 215, 0, 0.05); grid-column: 1 / -1; text-align: center; }
         .fin-card.patrimony .fin-val { color: var(--gold); font-size: 1.8rem; }
-        
-        /* NOVO: Card de Patrimônio Global */
         .fin-card.global-net { border-color: var(--global); background: rgba(157, 0, 255, 0.05); grid-column: 1 / -1; text-align: center; }
         .fin-card.global-net .fin-val { color: var(--global); font-size: 2rem; text-shadow: 0 0 15px rgba(157, 0, 255, 0.3); }
-
         .fin-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 1.2rem; display: flex; flex-direction: column; justify-content: center; }
         .fin-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700; }
         .fin-val { font-size: 1.2rem; font-weight: 700; color: white; white-space: nowrap; }
@@ -147,12 +144,14 @@
         .curr-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
         .curr-result { font-size: 2rem; font-weight: 800; color: var(--primary); margin-top: 1rem; }
         .curr-rate-info { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; }
-        
-        /* NOVO: Minhas Carteiras (Inputs) */
         .wallet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; width: 100%; max-width: 500px; margin: 0 auto; }
         .wallet-item { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
         .wallet-label { color: var(--global); font-weight: bold; font-size: 0.9rem; }
         .wallet-input { background: var(--bg-input); border: 1px solid var(--border); color: white; padding: 0.5rem; border-radius: 8px; font-size: 1rem; width: 100%; }
+        
+        /* NOVO: Botão Add to Wallet */
+        .btn-add-wallet { display: none; margin-top: 1rem; background: var(--global); color: white; width: 100%; padding: 0.8rem; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; animation: fadeIn 0.5s; }
+        .btn-add-wallet:hover { opacity: 0.9; }
 
         /* --- SUGGESTIONS --- */
         .suggestions-container { display: none; padding-bottom: 4rem; animation: fadeIn 0.3s; }
@@ -276,6 +275,7 @@
                         <div id="conversion-result" class="curr-result">0.00</div>
                         <div id="curr-rate-info" class="curr-rate-info">Taxa atualizada via API</div>
                     </div>
+                    <button id="btn-add-wallet" class="btn-add-wallet" onclick="nexus.addToWallet()">📥 ADICIONAR À CARTEIRA</button>
                 </div>
 
                 <h2 style="color:var(--text-muted); margin-bottom:1rem; text-transform:uppercase; font-size:0.9rem; letter-spacing:1px; font-weight:700">Minhas Reservas Internacionais</h2>
@@ -311,7 +311,7 @@
 
 <script>
 /**
- * NEXUS CORE v10.1 (International Net Worth)
+ * NEXUS CORE v10.2 (Auto Add to Wallet)
  */
 
 const UNIT_SYSTEM = {
@@ -363,7 +363,8 @@ class NexusOS {
         this.history = JSON.parse(localStorage.getItem('nexus_history')) || {}; 
         this.finance = JSON.parse(localStorage.getItem('nexus_finance')) || []; 
         this.agenda = JSON.parse(localStorage.getItem('nexus_agenda')) || []; 
-        this.foreign = JSON.parse(localStorage.getItem('nexus_foreign')) || { USD:0, EUR:0, GBP:0, BTC:0 }; // NOVO: Carteira
+        this.foreign = JSON.parse(localStorage.getItem('nexus_foreign')) || { USD:0, EUR:0, GBP:0, BTC:0 }; 
+        this.lastConversion = null; // Stores last conversion result
 
         this.today = new Date(); this.selectedDate = new Date(); this.calendarViewDate = new Date();
         this.currentTab = 'protocols';
@@ -384,7 +385,7 @@ class NexusOS {
         this.render(); 
         this.renderSuggestions();
         this.renderSidebarAgenda();
-        this.loadWalletInputs(); // Preenche inputs da carteira
+        this.loadWalletInputs();
     }
 
     switchTab(tab) {
@@ -513,29 +514,23 @@ class NexusOS {
             else if(t.type === 'inv') { bal -= val; inv += val; }
         });
 
-        // CALCULO PATRIMONIO INTERNACIONAL
         let foreignTotalBRL = 0;
         try {
-             // Mock rates para nao quebrar se API falhar, mas tenta fetch
              const rates = { USD: 0, EUR: 0, GBP: 0, BTC: 0 };
              const res = await fetch('https://api.exchangerate-api.com/v4/latest/BRL');
              const data = await res.json();
-             // Inverte as taxas pq a API é based em BRL? Não, api base BRL dá quanto vale 1 BRL em USD.
-             // Se base BRL: 1 BRL = 0.20 USD -> 1 USD = 1/0.20 = 5 BRL
              if(data.rates) {
                 if(data.rates.USD) rates.USD = 1 / data.rates.USD;
                 if(data.rates.EUR) rates.EUR = 1 / data.rates.EUR;
                 if(data.rates.GBP) rates.GBP = 1 / data.rates.GBP;
              }
-             // BTC separado ou mock
-             rates.BTC = 350000; // Mock seguro, API acima pode não ter BTC
-
+             rates.BTC = 350000;
              foreignTotalBRL += (this.foreign.USD || 0) * rates.USD;
              foreignTotalBRL += (this.foreign.EUR || 0) * rates.EUR;
              foreignTotalBRL += (this.foreign.GBP || 0) * rates.GBP;
              foreignTotalBRL += (this.foreign.BTC || 0) * rates.BTC;
 
-        } catch(e) { console.log('Offline calc'); }
+        } catch(e) {}
 
         const totalGlobalNetWorth = bal + inv + foreignTotalBRL;
 
@@ -605,6 +600,10 @@ class NexusOS {
         const target = document.getElementById('target-currency').value;
         const resDiv = document.getElementById('conversion-result');
         const infoDiv = document.getElementById('curr-rate-info');
+        const btnAdd = document.getElementById('btn-add-wallet');
+        
+        btnAdd.style.display = 'none'; // Hide initially
+        
         if(!brl) return;
         resDiv.innerText = "Carregando...";
         try {
@@ -615,23 +614,45 @@ class NexusOS {
                 const converted = brl * rate;
                 resDiv.innerText = `${target} ${converted.toFixed(2)}`;
                 infoDiv.innerText = `Taxa: 1 BRL = ${rate} ${target}`;
+                
+                // Store last conversion and show button
+                this.lastConversion = { target, amount: converted };
+                btnAdd.innerText = `📥 ADICIONAR ${converted.toFixed(2)} ${target} ÀS RESERVAS`;
+                btnAdd.style.display = 'block';
+                
             } else resDiv.innerText = "Erro";
         } catch (e) { resDiv.innerText = "Offline"; }
+    }
+    
+    addToWallet() {
+        if(!this.lastConversion) return;
+        const { target, amount } = this.lastConversion;
+        
+        // Add to existing balance
+        const current = this.foreign[target] || 0;
+        this.updateWallet(target, current + amount);
+        
+        // Refresh inputs to show new total
+        this.loadWalletInputs();
+        
+        // Hide button
+        document.getElementById('btn-add-wallet').style.display = 'none';
+        
+        alert(`Sucesso! ${amount.toFixed(2)} ${target} adicionados à sua carteira.`);
     }
 
     // Load/Save Wallet
     loadWalletInputs() {
         if(document.getElementById('wallet-usd')) {
-            document.getElementById('wallet-usd').value = this.foreign.USD || '';
-            document.getElementById('wallet-eur').value = this.foreign.EUR || '';
-            document.getElementById('wallet-gbp').value = this.foreign.GBP || '';
-            document.getElementById('wallet-btc').value = this.foreign.BTC || '';
+            document.getElementById('wallet-usd').value = (this.foreign.USD || 0).toFixed(2);
+            document.getElementById('wallet-eur').value = (this.foreign.EUR || 0).toFixed(2);
+            document.getElementById('wallet-gbp').value = (this.foreign.GBP || 0).toFixed(2);
+            document.getElementById('wallet-btc').value = (this.foreign.BTC || 0).toFixed(4);
         }
     }
     updateWallet(curr, val) {
         this.foreign[curr] = parseFloat(val) || 0;
         localStorage.setItem('nexus_foreign', JSON.stringify(this.foreign));
-        // Se estiver na aba Finanças, atualizaria, mas aqui estamos na aba Câmbio
     }
 
     renderSuggestions() {
